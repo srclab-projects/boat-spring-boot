@@ -1,0 +1,31 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "org.jetbrains.kotlin.jvm") {
+                useVersion "${kotlinVersion}"
+                return
+            }
+            if (requested.id.id == "org.jetbrains.kotlin.plugin.spring") {
+                useVersion "${kotlinVersion}"
+                return
+            }
+        }
+    }
+}
+
+rootProject.name = 'easy-spring-boot-build'
+
+file("${rootDir}/spring-boot").eachDir {
+    include "spring-boot:${it.name}"
+}
+file("${rootDir}/spring-boot-autoconfigure").eachDirMatch(~/.*-spring-boot-autoconfigure/) {
+    include "spring-boot-autoconfigure:${it.name}"
+}
+file("${rootDir}/spring-boot-starter").eachDirMatch(~/.*-spring-boot-starter/) {
+    include "spring-boot-starter:${it.name}"
+}

@@ -1,0 +1,33 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+}
+
+description = "Easy for Spring Boot - Common"
+
+apply from: dependenciesGradle
+
+dependencies {
+    api("org.springframework.boot:spring-boot-starter")
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.apache.commons:commons-lang3")
+    implementation('commons-beanutils:commons-beanutils')
+    implementation("org.apache.commons:commons-collections4")
+    implementation('com.google.guava:guava')
+
+    testCompile("org.testng:testng")
+}
+
+test {
+    useTestNG()
+    include("**/*Test.class")
+}
+
+apply from: deployGradle
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}

@@ -1,0 +1,14 @@
+description = "Easy for Spring Boot - Build"
+
+ext {
+    dependenciesGradle = "${project.rootDir}/buildSrc/dependencies.gradle"
+    deployGradle = "${project.rootDir}/buildSrc/deploy.gradle"
+}
+
+allprojects {
+    group "xyz.srclab.spring.boot"
+    println("Configure ${project.group}:${project.name}:${project.version}")
+}
+
+subprojects {
+}

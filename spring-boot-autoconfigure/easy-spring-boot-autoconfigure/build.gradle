@@ -1,0 +1,20 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+}
+
+description = "Easy for Spring Boot - Auto Configure"
+
+apply from: dependenciesGradle
+
+dependencies {
+    api(project(":spring-boot:bean"))
+
+    testCompile("org.testng:testng")
+}
+
+test {
+    useTestNG()
+    include("**/*Test.class")
+}
+
+apply from: deployGradle
