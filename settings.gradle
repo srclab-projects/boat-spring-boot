@@ -20,12 +20,15 @@ pluginManagement {
 
 rootProject.name = 'easy-spring-boot-build'
 
-file("${rootDir}/spring-boot").eachDir {
-    include "spring-boot:${it.name}"
+file("${rootDir}/spring-boot").eachDir { file ->
+    include "spring-boot:${file.name}"
 }
-file("${rootDir}/spring-boot-autoconfigure").eachDirMatch(~/.*-spring-boot-autoconfigure/) {
-    include "spring-boot-autoconfigure:${it.name}"
+file("${rootDir}/spring-boot-autoconfigure").eachDir { file ->
+    include "spring-boot-autoconfigure:${file.name}"
 }
-file("${rootDir}/spring-boot-starter").eachDirMatch(~/.*-spring-boot-starter/) {
-    include "spring-boot-starter:${it.name}"
+file("${rootDir}/spring-boot-starter").eachDir { file ->
+    include "spring-boot-starter:${file.name}"
+}
+file("${rootDir}/test").eachDir { file ->
+    include "test:${file.name}"
 }

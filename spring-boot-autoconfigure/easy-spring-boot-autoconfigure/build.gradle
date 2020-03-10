@@ -19,3 +19,5 @@ test {
 }
 
 apply from: deployGradle
+
+apply from: compileKotlinGradle

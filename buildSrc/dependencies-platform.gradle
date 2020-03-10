@@ -3,19 +3,33 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    libVersions = [
+            kotlinVersion            : kotlinVersion,
+            springBootVersion        : "2.2.4.RELEASE",
+            commonsLangVersion       : "3.9",
+            commonsCollectionsVersion: "4.4",
+            commonsBeanutilsVersion  : "1.9.4",
+            commonsCodecVersion      : "1.14",
+            guavaVersion             : "28.2-jre",
+            testngVersion            : "7.1.0",
+    ]
+}
+
 dependencies {
-    implementation platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}")
+    implementation platform("org.jetbrains.kotlin:kotlin-bom:${libVersions.kotlinVersion}")
 
-    implementation platform("org.springframework.boot:spring-boot-starter:${springBootVersion}")
-    implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    implementation platform("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+    implementation platform("org.springframework.boot:spring-boot-starter:${libVersions.springBootVersion}")
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${libVersions.springBootVersion}")
+    implementation platform(
+            "org.springframework.boot:spring-boot-configuration-processor:${libVersions.springBootVersion}")
 
-    implementation platform("org.apache.commons:commons-lang3:3.9")
-    implementation platform("org.apache.commons:commons-collections4:4.4")
-    implementation platform('commons-beanutils:commons-beanutils:1.9.4')
-    implementation platform("commons-codec:commons-codec:1.14")
-    implementation platform("com.google.guava:guava:28.2-jre")
+    implementation platform("org.apache.commons:commons-lang3:${libVersions.commonsLangVersion}")
+    implementation platform("org.apache.commons:commons-collections4:${libVersions.commonsCollectionsVersion}")
+    implementation platform("commons-beanutils:commons-beanutils:${libVersions.commonsBeanutilsVersion}")
+    implementation platform("commons-codec:commons-codec:${libVersions.commonsCodecVersion}")
+    implementation platform("com.google.guava:guava:${libVersions.guavaVersion}")
 
-    testCompile platform("org.testng:testng:7.1.0")
-    implementation platform("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    implementation platform("org.testng:testng:${libVersions.testngVersion}")
+    implementation platform("org.springframework.boot:spring-boot-starter-test:${libVersions.springBootVersion}")
 }

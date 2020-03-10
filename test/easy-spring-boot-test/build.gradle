@@ -1,0 +1,24 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+}
+
+description = "Test: easy-spring-boot-starter"
+
+apply from: dependenciesPlatformGradle
+//apply from: testDependencies
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation(project(":spring-boot-starter:easy-spring-boot-starter"))
+    implementation(project(":spring-boot:test"))
+    implementation("org.testng:testng")
+}
+
+test {
+    useTestNG()
+    include("**/*Test.class")
+}
+
+apply from: deployGradle
+
+apply from: compileKotlinGradle

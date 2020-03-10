@@ -4,6 +4,8 @@ plugins {
 
 description = "Easy for Spring Boot"
 
+apply from: dependenciesPlatformGradle
+
 dependencies {
     api(project(":spring-boot-autoconfigure:easy-spring-boot-autoconfigure"))
 }
@@ -14,3 +16,5 @@ test {
 }
 
 apply from: deployGradle
+
+apply from: compileKotlinGradle
