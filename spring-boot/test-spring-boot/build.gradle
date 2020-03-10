@@ -1,0 +1,30 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+}
+
+description = "Easy for Spring Boot: Test"
+
+apply from: repositoriesGradle
+
+java {
+    registerFeature('optionalSupport') {
+        usingSourceSet(sourceSets.main)
+    }
+}
+
+dependencies {
+    implementation(platform(project(":spring-boot:dependencies-spring-boot")))
+
+    api(project(":spring-boot:common-spring-boot"))
+    api("org.testng:testng")
+    api("org.springframework.boot:spring-boot-starter-test")
+}
+
+test {
+    useTestNG()
+    include("**/*Test.class")
+}
+
+apply from: deployGradle
+
+apply from: compileKotlinGradle

@@ -1,0 +1,36 @@
+description = "Easy for Spring Boot: Build"
+
+ext {
+    // Basic project info
+    projectGroup = "xyz.srclab.spring.boot"
+    projectVersion = "0.0.0-SNAPSHOT"
+    testProjectGroup = "${projectGroup}.test"
+    testProjectVersion = "${projectVersion}"
+
+    repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
+    deployGradle = "${project.rootDir}/buildSrc/deploy.gradle"
+    compileKotlinGradle = "${project.rootDir}/buildSrc/compile-kotlin.gradle"
+}
+
+group = projectGroup
+version = projectVersion
+
+allprojects { project ->
+    processProjectInfo(project)
+}
+
+subprojects {
+}
+
+def processProjectInfo(Project project) {
+    if (project == rootProject) {
+        // nop
+    } else if (project.group == "easy-spring-boot-build.test") {
+        project.group = testProjectGroup
+        project.version = testProjectVersion
+    } else {
+        project.group = projectGroup
+        project.version = projectVersion
+    }
+    println("Configure ${project.group}:${project.name}:${project.version}")
+}
