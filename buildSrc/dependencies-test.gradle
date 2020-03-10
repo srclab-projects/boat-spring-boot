@@ -1,0 +1,5 @@
+dependencies {
+    testCompile("org.testng:testng")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile(project(":spring-boot:test"))
+}

@@ -11,6 +11,4 @@ open class TestService1 {
     private lateinit var testService2: TestService2
 
     fun service(): String = "provide by $javaClass"
-
-    fun hasService2(): Boolean = testService2 != null
 }

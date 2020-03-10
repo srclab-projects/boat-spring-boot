@@ -4,17 +4,12 @@ plugins {
 
 description = "Easy for Spring Boot - Bean"
 
-apply from: dependenciesGradle
+apply from: dependenciesPlatformGradle
+apply from: commonDependencies
+apply from: testDependencies
 
 dependencies {
     api(project(":spring-boot:common"))
-
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.apache.commons:commons-lang3")
-    implementation("org.apache.commons:commons-collections4")
-
-    testCompile("org.testng:testng")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 test {

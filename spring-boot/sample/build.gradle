@@ -2,13 +2,14 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Easy for Spring Boot - Common"
+description = "Easy for Spring Boot - Sample"
 
 apply from: dependenciesPlatformGradle
 apply from: commonDependencies
 apply from: testDependencies
 
 dependencies {
+    api(project(":spring-boot:common"))
 }
 
 test {

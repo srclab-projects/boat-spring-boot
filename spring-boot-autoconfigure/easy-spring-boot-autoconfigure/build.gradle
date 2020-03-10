@@ -2,14 +2,15 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Easy for Spring Boot - Auto Configure"
+description = "Easy for Spring Boot"
 
-apply from: dependenciesGradle
+apply from: dependenciesPlatformGradle
+apply from: commonDependencies
+apply from: autoconfigureDependencies
+apply from: testDependencies
 
 dependencies {
     api(project(":spring-boot:bean"))
-
-    testCompile("org.testng:testng")
 }
 
 test {
