@@ -2,19 +2,22 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Easy for Spring Boot: Sample"
+description = "Easy Test for Spring Boot: Auto Configuration"
 
 apply from: dependenciesPlatformGradle
 apply from: commonDependencies
+apply from: autoconfigureDependencies
 apply from: testDependencies
 
 dependencies {
-    api(project(":spring-boot:common"))
+    api(project(":spring-boot:bean"))
 }
 
 test {
     useTestNG()
     include("**/*Test.class")
 }
+
+apply from: deployGradle
 
 apply from: compileKotlinGradle

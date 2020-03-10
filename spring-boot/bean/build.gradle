@@ -2,7 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Easy for Spring Boot - Bean"
+description = "Easy for Spring Boot: Bean"
 
 apply from: dependenciesPlatformGradle
 apply from: commonDependencies

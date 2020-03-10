@@ -2,7 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Easy for Spring Boot"
+description = "Easy for Spring Boot: Auton Configuration"
 
 apply from: dependenciesPlatformGradle
 apply from: commonDependencies

@@ -19,6 +19,4 @@ test {
     include("**/*Test.class")
 }
 
-apply from: deployGradle
-
 apply from: compileKotlinGradle
