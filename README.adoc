@@ -1,0 +1,6 @@
+= Easy for Spring Boot
+:github: https://github.com/srclab-projects/easy-spring-boot
+
+Like its name Easy for Spring Boot makes it easy to spring boot. It takes an shortcut,
+cleanliness and recommended view of the Spring boot so that users, who's often confused
+by spring boot's configuration, can quickly get to the bits they need.
