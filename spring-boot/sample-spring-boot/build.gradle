@@ -2,7 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Test: easy-spring-boot-starter"
+description = "Easy for Spring Boot: Sample"
 
 apply from: repositoriesGradle
 
@@ -15,8 +15,9 @@ java {
 dependencies {
     implementation(platform(project(":spring-boot:dependencies-spring-boot")))
 
-    implementation(project(":spring-boot-starter:easy-spring-boot-starter"))
-    implementation(project(":spring-boot-starter:test-spring-boot-starter"))
+    api(project(":spring-boot:common-spring-boot"))
+
+    testCompile(project(":spring-boot:test-spring-boot"))
 }
 
 test {

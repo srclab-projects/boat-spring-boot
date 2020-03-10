@@ -1,0 +1,37 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+}
+
+description = "Easy for Spring Boot: Common"
+
+apply from: repositoriesGradle
+
+java {
+    registerFeature('optionalSupport') {
+        usingSourceSet(sourceSets.main)
+    }
+}
+
+dependencies {
+    implementation(platform(project(":spring-boot:dependencies-spring-boot")))
+
+    api("org.springframework.boot:spring-boot-starter")
+
+    api("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    api("org.apache.commons:commons-lang3")
+    api('commons-beanutils:commons-beanutils')
+    api("org.apache.commons:commons-collections4")
+//    api('com.google.guava:guava')
+
+    testCompile("org.testng:testng")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+test {
+    useTestNG()
+    include("**/*Test.class")
+}
+
+apply from: deployGradle
+
+apply from: compileKotlinGradle

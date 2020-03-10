@@ -2,15 +2,21 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Easy Test for Spring Boot: Auto Configuration"
+description = "Easy for Spring Boot Auto Configuration: Test"
 
-apply from: dependenciesPlatformGradle
-apply from: commonDependencies
-apply from: autoconfigureDependencies
-apply from: testDependencies
+apply from: repositoriesGradle
+
+java {
+    registerFeature('optionalSupport') {
+        usingSourceSet(sourceSets.main)
+    }
+}
 
 dependencies {
-    api(project(":spring-boot:bean"))
+    implementation(platform(project(":spring-boot:dependencies-spring-boot")))
+
+    api(project(":spring-boot:test-spring-boot"))
+    api("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 test {

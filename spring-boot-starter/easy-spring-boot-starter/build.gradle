@@ -4,9 +4,17 @@ plugins {
 
 description = "Easy for Spring Boot"
 
-apply from: dependenciesPlatformGradle
+apply from: repositoriesGradle
+
+java {
+    registerFeature('optionalSupport') {
+        usingSourceSet(sourceSets.main)
+    }
+}
 
 dependencies {
+    implementation(platform(project(":spring-boot:dependencies-spring-boot")))
+
     api(project(":spring-boot-autoconfigure:easy-spring-boot-autoconfigure"))
 }
 

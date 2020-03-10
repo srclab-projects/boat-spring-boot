@@ -7,13 +7,8 @@ ext {
     testProjectGroup = "${projectGroup}.test"
     testProjectVersion = "${projectVersion}"
 
-    dependenciesPlatformGradle = "${project.rootDir}/buildSrc/dependencies-platform.gradle"
-    commonDependencies = "${project.rootDir}/buildSrc/dependencies-common.gradle"
-    autoconfigureDependencies = "${project.rootDir}/buildSrc/dependencies-autoconfigure.gradle"
-    testDependencies = "${project.rootDir}/buildSrc/dependencies-test.gradle"
-
+    repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
     deployGradle = "${project.rootDir}/buildSrc/deploy.gradle"
-
     compileKotlinGradle = "${project.rootDir}/buildSrc/compile-kotlin.gradle"
 }
 
