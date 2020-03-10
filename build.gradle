@@ -1,4 +1,4 @@
-description = "Easy for Spring Boot - Build"
+description = "Easy for Spring Boot: Build"
 
 ext {
     // Basic project info
