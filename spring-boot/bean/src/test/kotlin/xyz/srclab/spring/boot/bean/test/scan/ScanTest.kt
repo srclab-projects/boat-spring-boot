@@ -38,7 +38,7 @@ class ScanTest : AbstractTestNGSpringContextTests() {
         )
 
         val scanner3 = BeanScanner.newBuilder().includeAll()
-            .addExcludeFilter(TypeFilter { metadataReader: MetadataReader, metadataReaderFactory: MetadataReaderFactory ->
+            .excludeFilter(TypeFilter { metadataReader: MetadataReader, metadataReaderFactory: MetadataReaderFactory ->
                 metadataReader.classMetadata.className == SomeClass::class.java.name
             })
             .build()
@@ -51,7 +51,7 @@ class ScanTest : AbstractTestNGSpringContextTests() {
         )
 
         val scanner4 = BeanScanner.newBuilder().includeAll()
-            .addExcludeFilters(TypeFilter { metadataReader: MetadataReader, metadataReaderFactory: MetadataReaderFactory ->
+            .excludeFilters(TypeFilter { metadataReader: MetadataReader, metadataReaderFactory: MetadataReaderFactory ->
                 metadataReader.classMetadata.className == SomeClass::class.java.name
             }, TypeFilter { metadataReader: MetadataReader, metadataReaderFactory: MetadataReaderFactory ->
                 metadataReader.classMetadata.className == SomeComponent::class.java.name

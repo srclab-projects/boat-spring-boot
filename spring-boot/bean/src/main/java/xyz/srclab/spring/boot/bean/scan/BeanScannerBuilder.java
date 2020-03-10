@@ -36,35 +36,35 @@ public class BeanScannerBuilder {
         return this;
     }
 
-    public BeanScannerBuilder addIncludeFilter(TypeFilter filter) {
-        includeFilter.add(filter);
-        return this;
-    }
-
-    public BeanScannerBuilder addIncludeFilters(TypeFilter... filters) {
-        return addIncludeFilters(Arrays.asList(filters));
-    }
-
-    public BeanScannerBuilder addIncludeFilters(Iterable<TypeFilter> filters) {
-        includeFilter.addAll(IterableHelper.castCollection(filters));
-        return this;
-    }
-
     public BeanScannerBuilder includeAll() {
         includeFilter.add(PASS_ALL);
         return this;
     }
 
-    public BeanScannerBuilder addExcludeFilter(TypeFilter filter) {
+    public BeanScannerBuilder includeFilter(TypeFilter filter) {
+        includeFilter.add(filter);
+        return this;
+    }
+
+    public BeanScannerBuilder includeFilters(TypeFilter... filters) {
+        return includeFilters(Arrays.asList(filters));
+    }
+
+    public BeanScannerBuilder includeFilters(Iterable<TypeFilter> filters) {
+        includeFilter.addAll(IterableHelper.castCollection(filters));
+        return this;
+    }
+
+    public BeanScannerBuilder excludeFilter(TypeFilter filter) {
         excludeFilter.add(filter);
         return this;
     }
 
-    public BeanScannerBuilder addExcludeFilters(TypeFilter... filters) {
-        return addExcludeFilters(Arrays.asList(filters));
+    public BeanScannerBuilder excludeFilters(TypeFilter... filters) {
+        return excludeFilters(Arrays.asList(filters));
     }
 
-    public BeanScannerBuilder addExcludeFilters(Iterable<TypeFilter> filters) {
+    public BeanScannerBuilder excludeFilters(Iterable<TypeFilter> filters) {
         excludeFilter.addAll(IterableHelper.castCollection(filters));
         return this;
     }

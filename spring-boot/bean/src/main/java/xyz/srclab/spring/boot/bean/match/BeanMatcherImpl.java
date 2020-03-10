@@ -104,24 +104,24 @@ public class BeanMatcherImpl implements BeanMatcher {
             ApplicationContext applicationContext
     ) {
         Map<String, Object> result = new HashMap<>();
-        Collection<Class<?>> types = ofCommon.getTypes();
-        Collection<Class<? extends Annotation>> annotations = ofCommon.getAnnotations();
-        Collection<String> namePatterns = ofCommon.getNamePatterns();
-        if (!types.isEmpty()) {
-            for (Class<?> type : types) {
+        Collection<Class<?>> includeTypes = ofCommon.getIncludeTypes();
+        Collection<Class<? extends Annotation>> includeAnnotations = ofCommon.getIncludeAnnotations();
+        Collection<String> includeNamePatterns = ofCommon.getIncludeNamePatterns();
+        if (!includeTypes.isEmpty()) {
+            for (Class<?> type : includeTypes) {
                 result.putAll(applicationContext.getBeansOfType(type));
             }
         }
-        if (!annotations.isEmpty()) {
-            for (Class<? extends Annotation> annotation : annotations) {
+        if (!includeAnnotations.isEmpty()) {
+            for (Class<? extends Annotation> annotation : includeAnnotations) {
                 result.putAll(applicationContext.getBeansWithAnnotation(annotation));
             }
         }
-        if (!namePatterns.isEmpty()) {
+        if (!includeNamePatterns.isEmpty()) {
             String[] names = applicationContext.getBeanDefinitionNames();
             AntPathMatcher antPathMatcher = new AntPathMatcher();
             for (String name : names) {
-                for (String namePattern : namePatterns) {
+                for (String namePattern : includeNamePatterns) {
                     if (antPathMatcher.match(namePattern, name)) {
                         result.put(name, applicationContext.getBean(name));
                         break;
@@ -129,6 +129,7 @@ public class BeanMatcherImpl implements BeanMatcher {
                 }
             }
         }
+        excludeCandidates(result, ofCommon.getExcludeConditions());
         return result;
     }
 
@@ -139,11 +140,11 @@ public class BeanMatcherImpl implements BeanMatcher {
     ) {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> context = new HashMap<>(matchContext);
-        Collection<Class<?>> types = ofCommon.getTypes();
-        Collection<Class<? extends Annotation>> annotations = ofCommon.getAnnotations();
-        Collection<String> namePatterns = ofCommon.getNamePatterns();
-        if (!types.isEmpty()) {
-            for (Class<?> type : types) {
+        Collection<Class<?>> includeTypes = ofCommon.getIncludeTypes();
+        Collection<Class<? extends Annotation>> includeAnnotations = ofCommon.getIncludeAnnotations();
+        Collection<String> includeNamePatterns = ofCommon.getIncludeNamePatterns();
+        if (!includeTypes.isEmpty()) {
+            for (Class<?> type : includeTypes) {
                 Iterator<Map.Entry<String, Object>> it = context.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry<String, Object> entry = it.next();
@@ -152,13 +153,14 @@ public class BeanMatcherImpl implements BeanMatcher {
                         it.remove();
                     }
                     if (context.isEmpty()) {
+                        excludeCandidates(result, ofCommon.getExcludeConditions());
                         return result;
                     }
                 }
             }
         }
-        if (!annotations.isEmpty()) {
-            for (Class<? extends Annotation> annotation : annotations) {
+        if (!includeAnnotations.isEmpty()) {
+            for (Class<? extends Annotation> annotation : includeAnnotations) {
                 Iterator<Map.Entry<String, Object>> it = context.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry<String, Object> entry = it.next();
@@ -168,20 +170,22 @@ public class BeanMatcherImpl implements BeanMatcher {
                         it.remove();
                     }
                     if (context.isEmpty()) {
+                        excludeCandidates(result, ofCommon.getExcludeConditions());
                         return result;
                     }
                 }
             }
         }
-        if (!namePatterns.isEmpty()) {
+        if (!includeNamePatterns.isEmpty()) {
             String[] names = context.keySet().toArray(ArrayUtils.EMPTY_STRING_ARRAY);
             AntPathMatcher antPathMatcher = new AntPathMatcher();
             for (String name : names) {
-                for (String namePattern : namePatterns) {
+                for (String namePattern : includeNamePatterns) {
                     if (antPathMatcher.match(namePattern, name)) {
                         result.put(name, applicationContext.getBean(name));
                         context.remove(name);
                         if (context.isEmpty()) {
+                            excludeCandidates(result, ofCommon.getExcludeConditions());
                             return result;
                         }
                         break;
@@ -189,6 +193,20 @@ public class BeanMatcherImpl implements BeanMatcher {
                 }
             }
         }
+        excludeCandidates(result, ofCommon.getExcludeConditions());
         return result;
+    }
+
+    private void excludeCandidates(Map<String, Object> candidates, Collection<BeanExcludePredicate> excludePredicates) {
+        Collection<String> keys = new HashSet<>();
+        candidates.forEach((name, bean) -> {
+            for (BeanExcludePredicate excludePredicate : excludePredicates) {
+                if (excludePredicate.test(name, bean)) {
+                    keys.add(name);
+                    break;
+                }
+            }
+        });
+        MapHelper.removeAll(candidates, keys);
     }
 }

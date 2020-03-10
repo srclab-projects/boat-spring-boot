@@ -14,6 +14,7 @@ public class BeanConditionBuilder {
     private Collection<Class<?>> includeTypes = new LinkedList<>();
     private Collection<Class<? extends Annotation>> includeAnnotations = new LinkedList<>();
     private Collection<String> includeNamePatterns = new LinkedList<>();
+    private Collection<BeanExcludePredicate> excludeConditions = new LinkedList<>();
 
     public BeanConditionBuilder() {
     }
@@ -27,8 +28,7 @@ public class BeanConditionBuilder {
         return this;
     }
 
-    @SafeVarargs
-    public final BeanConditionBuilder includeAnnotations(Class<? extends Annotation>... annotations) {
+    public BeanConditionBuilder includeAnnotations(Class<? extends Annotation>... annotations) {
         return includeAnnotations(Arrays.asList(annotations));
     }
 
@@ -43,6 +43,15 @@ public class BeanConditionBuilder {
 
     public BeanConditionBuilder includeNamePattern(Iterable<String> namePatterns) {
         this.includeNamePatterns.addAll(IterableHelper.castCollection(namePatterns));
+        return this;
+    }
+
+    public BeanConditionBuilder excludeConditions(BeanExcludePredicate... excludePredicates) {
+        return excludeConditions(Arrays.asList(excludePredicates));
+    }
+
+    public BeanConditionBuilder excludeConditions(Iterable<BeanExcludePredicate> excludePredicates) {
+        this.excludeConditions.addAll(IterableHelper.castCollection(excludePredicates));
         return this;
     }
 
@@ -118,26 +127,33 @@ public class BeanConditionBuilder {
 
     static class OfCommon implements BeanCondition {
 
-        private final Collection<Class<?>> types;
-        private final Collection<Class<? extends Annotation>> annotations;
-        private final Collection<String> namePatterns;
+        private final Collection<Class<?>> includeTypes;
+        private final Collection<Class<? extends Annotation>> includeAnnotations;
+        private final Collection<String> includeNamePatterns;
+        private final Collection<BeanExcludePredicate> excludeConditions;
 
         private OfCommon(BeanConditionBuilder builder) {
-            this.types = Collections.unmodifiableCollection(builder.includeTypes);
-            this.annotations = Collections.unmodifiableCollection(builder.includeAnnotations);
-            this.namePatterns = Collections.unmodifiableCollection(builder.includeNamePatterns);
+            this.includeTypes = Collections.unmodifiableCollection(builder.includeTypes);
+            this.includeAnnotations = Collections.unmodifiableCollection(builder.includeAnnotations);
+            this.includeNamePatterns = Collections.unmodifiableCollection(builder.includeNamePatterns);
+            this.excludeConditions = Collections.unmodifiableCollection(builder.excludeConditions);
+            ;
         }
 
-        public Collection<Class<?>> getTypes() {
-            return types;
+        public Collection<Class<?>> getIncludeTypes() {
+            return includeTypes;
         }
 
-        public Collection<Class<? extends Annotation>> getAnnotations() {
-            return annotations;
+        public Collection<Class<? extends Annotation>> getIncludeAnnotations() {
+            return includeAnnotations;
         }
 
-        public Collection<String> getNamePatterns() {
-            return namePatterns;
+        public Collection<String> getIncludeNamePatterns() {
+            return includeNamePatterns;
+        }
+
+        public Collection<BeanExcludePredicate> getExcludeConditions() {
+            return excludeConditions;
         }
     }
 }

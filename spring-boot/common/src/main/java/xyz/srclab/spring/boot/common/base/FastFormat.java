@@ -24,11 +24,11 @@ public class FastFormat {
     }
 
     private String format() {
-        processArgs();
+        processArguments();
         return MessageFormatter.arrayFormat(pattern, args, null).getMessage();
     }
 
-    private void processArgs() {
+    private void processArguments() {
         if (ArrayUtils.isEmpty(args)) {
             return;
         }

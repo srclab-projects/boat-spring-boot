@@ -7,6 +7,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.testng.Assert
 import org.testng.annotations.Test
 import xyz.srclab.spring.boot.bean.match.BeanCondition
+import xyz.srclab.spring.boot.bean.match.BeanExcludePredicate
 import xyz.srclab.spring.boot.bean.test.component.*
 import xyz.srclab.spring.boot.bean.test.config.Config
 import javax.annotation.Resource
@@ -34,8 +35,17 @@ class MatchTest : AbstractTestNGSpringContextTests() {
 
     @Test
     fun testMatch() {
-        val condition1 = BeanCondition.newBuilder()
-            .includeTypes(TestService1::class.java, TestService2::class.java, TestService3::class.java)
+        val condition1 = BeanCondition
+            .includeTypes(
+                TestService1::class.java,
+                TestService2::class.java,
+                TestService3::class.java,
+                TestService4::class.java,
+                TestService5::class.java
+            )
+            .excludeConditions(BeanExcludePredicate { _, bean ->
+                TestService4::class.java == bean.javaClass || TestService5::class.java == bean.javaClass
+            })
             .build()
         val match1 = condition1.matcher().match(context)
         println("match1: $match1")
@@ -47,7 +57,7 @@ class MatchTest : AbstractTestNGSpringContextTests() {
             )
         )
 
-        val condition2 = BeanCondition.newBuilder()
+        val condition2 = BeanCondition
             .includeAnnotations(TestAnnotation2::class.java)
             .build()
         val match2 = condition2.matcher().match(context)
@@ -60,7 +70,7 @@ class MatchTest : AbstractTestNGSpringContextTests() {
             )
         )
 
-        val condition3 = BeanCondition.newBuilder()
+        val condition3 = BeanCondition
             .includeNamePattern("*Service5*")
             .build()
         val match3 = condition3.matcher().match(context)

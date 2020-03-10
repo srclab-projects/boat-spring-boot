@@ -1,10 +1,8 @@
 package xyz.srclab.spring.boot.common.collection;
 
 import org.apache.commons.collections4.IterableUtils;
-import org.apache.commons.collections4.SetUtils;
 
 import java.util.Collection;
-import java.util.Set;
 
 public class IterableHelper {
 
