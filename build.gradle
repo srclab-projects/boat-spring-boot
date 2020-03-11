@@ -3,13 +3,19 @@ description = "Easy for Spring Boot: Build"
 ext {
     // Basic project info
     projectGroup = "xyz.srclab.spring.boot"
-    projectVersion = "0.0.0-SNAPSHOT"
+    //projectVersion = "0.0.0-SNAPSHOT"
+    projectVersion = "0.0.0"
     testProjectGroup = "${projectGroup}.test"
     testProjectVersion = "${projectVersion}"
 
+    // Build components
     repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
     deployGradle = "${project.rootDir}/buildSrc/deploy.gradle"
     compileKotlinGradle = "${project.rootDir}/buildSrc/compile-kotlin.gradle"
+
+    // password components
+    passwordGradle = "${project.rootDir}/buildSrc/password.gradle"
+    privateGradle = "${System.getProperty("user.home")}/Home/Auth/private.gradle"
 }
 
 group = projectGroup
@@ -34,3 +40,5 @@ def processProjectInfo(Project project) {
     }
     println("Configure ${project.group}:${project.name}:${project.version}")
 }
+
+apply from: passwordGradle
