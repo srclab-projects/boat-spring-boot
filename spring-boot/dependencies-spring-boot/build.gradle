@@ -41,15 +41,59 @@ dependencies {
 }
 
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 publishing {
-    repositories {
-        mavenLocal()
-    }
-
     publications {
         maven(MavenPublication) {
             from components.javaPlatform
+
+            pom {
+                name = project.name
+                description = project.description
+                url = "https://github.com/srclab-projects/easy-spring-boot"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        email = "fredsuvn@163.com"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/srclab-projects/easy-spring-boot.git"
+                    developerConnection = "scm:git:https://github.com/srclab-projects/easy-spring-boot.git"
+                    url = "https://github.com/srclab-projects/easy-spring-boot"
+                }
+            }
         }
+    }
+
+    repositories {
+        mavenLocal()
+
+        maven {
+            name 'sonatypeRepository'
+            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = "${sonatypeUserName}"
+                password = "${sonatypePassword}"
+            }
+        }
+        maven {
+            name = 'sonatypeSnapshotRepository'
+            url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+            credentials {
+                username = "${sonatypeUserName}"
+                password = "${sonatypePassword}"
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.maven
     }
 }
