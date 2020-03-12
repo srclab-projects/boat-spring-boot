@@ -1,14 +1,5 @@
 description = "Easy for Spring Boot: Build"
 
-// Basic project info
-ext {
-    projectGroup = "xyz.srclab.spring.boot"
-    projectVersion = "1.0.0"
-    //projectVersion = "1.0.0-SNAPSHOT"
-    sampleProjectGroup = "${projectGroup}.sample"
-    sampleProjectVersion = "${projectVersion}"
-}
-
 // Include gradle
 ext {
     repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
@@ -25,7 +16,7 @@ ext {
 }
 
 group = projectGroup
-version = projectVersion
+version = (Boolean.parseBoolean(snapshot) ? projectVersion : "${projectVersion}-SNAPSHOT")
 
 allprojects { project ->
     processProjectInfo(project)
