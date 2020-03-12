@@ -1,4 +1,4 @@
-package other.autoconfigure.test
+package other.test.easy
 
 import org.springframework.stereotype.Component
 import xyz.srclab.spring.boot.bean.configure.BeanPostConfigure

@@ -1,22 +1,22 @@
-pluginManagement {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "org.jetbrains.kotlin.jvm") {
-                useVersion "${kotlinVersion}"
-                return
-            }
-            if (requested.id.id == "org.jetbrains.kotlin.plugin.spring") {
-                useVersion "${kotlinVersion}"
-                return
-            }
-        }
-    }
-}
+//pluginManagement {
+//    repositories {
+//        mavenLocal()
+//        mavenCentral()
+//        gradlePluginPortal()
+//    }
+//    resolutionStrategy {
+//        eachPlugin {
+//            if (requested.id.id == "org.jetbrains.kotlin.jvm") {
+//                useVersion "${kotlinVersion}"
+//                return
+//            }
+//            if (requested.id.id == "org.jetbrains.kotlin.plugin.spring") {
+//                useVersion "${kotlinVersion}"
+//                return
+//            }
+//        }
+//    }
+//}
 
 rootProject.name = 'easy-spring-boot-build'
 
@@ -29,6 +29,6 @@ file("${rootDir}/spring-boot-autoconfigure").eachDir { file ->
 file("${rootDir}/spring-boot-starter").eachDir { file ->
     include "spring-boot-starter:${file.name}"
 }
-file("${rootDir}/test").eachDir { file ->
-    include "test:${file.name}"
+file("${rootDir}/spring-boot-sample").eachDir { file ->
+    include "spring-boot-sample:${file.name}"
 }
