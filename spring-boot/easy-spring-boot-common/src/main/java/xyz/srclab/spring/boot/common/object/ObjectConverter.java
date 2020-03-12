@@ -2,8 +2,6 @@ package xyz.srclab.spring.boot.common.object;
 
 public interface ObjectConverter {
 
-    Object NO_CONVERSION = new Object();
-
     static ObjectConverterBuilder newBuilder() {
         return ObjectConverterBuilder.newBuilder();
     }

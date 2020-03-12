@@ -16,4 +16,9 @@ public class CommonBeanOperator implements BeanOperator {
     public ObjectConverter getObjectConverter() {
         return CommonObjectConverter.INSTANCE;
     }
+
+    @Override
+    public BeanOperatorStrategy.CopyProperty getCopyPropertyStrategy() {
+        return CommonBeanOperatorStrategy.CopyProperty.INSTANCE;
+    }
 }
