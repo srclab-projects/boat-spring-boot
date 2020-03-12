@@ -1,21 +1,27 @@
 description = "Easy for Spring Boot: Build"
 
+// Basic project info
 ext {
-    // Basic project info
     projectGroup = "xyz.srclab.spring.boot"
-    //projectVersion = "0.0.0-SNAPSHOT"
-    projectVersion = "0.0.0"
-    testProjectGroup = "${projectGroup}.test"
-    testProjectVersion = "${projectVersion}"
+    projectVersion = "1.0.0"
+    //projectVersion = "1.0.0-SNAPSHOT"
+    sampleProjectGroup = "${projectGroup}.sample"
+    sampleProjectVersion = "${projectVersion}"
+}
 
-    // Build components
+// Include gradle
+ext {
     repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
     deployGradle = "${project.rootDir}/buildSrc/deploy.gradle"
     compileKotlinGradle = "${project.rootDir}/buildSrc/compile-kotlin.gradle"
-
-    // password components
     passwordGradle = "${project.rootDir}/buildSrc/password.gradle"
-    privateGradle = "${System.getProperty("user.home")}/Home/Auth/private.gradle"
+}
+
+// Personal info
+// Note overwrite these if your info are not same with me
+ext {
+    userHomePath = System.getProperty("user.home")
+    userAuthPath = "${userHomePath}/Home/Auth"
 }
 
 group = projectGroup
@@ -31,9 +37,9 @@ subprojects {
 def processProjectInfo(Project project) {
     if (project == rootProject) {
         // nop
-    } else if (project.group == "easy-spring-boot-build.test") {
-        project.group = testProjectGroup
-        project.version = testProjectVersion
+    } else if (project.group == "easy-spring-boot-build.spring-boot-sample") {
+        project.group = sampleProjectGroup
+        project.version = sampleProjectVersion
     } else {
         project.group = projectGroup
         project.version = projectVersion
