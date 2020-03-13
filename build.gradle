@@ -15,7 +15,9 @@ ext {
 apply from: gradles.auth
 
 group = projectGroup
-version = (Boolean.parseBoolean(snapshot) ? projectVersion : "${projectVersion}-SNAPSHOT")
+projectVersion = (isTrue(snapshot) ? "${projectVersion}-SNAPSHOT" : projectVersion)
+sampleProjectVersion = (isTrue(snapshot) ? "${sampleProjectVersion}-SNAPSHOT" : sampleProjectVersion)
+version = projectVersion
 
 allprojects { project ->
     processProjectInfo(project)
@@ -26,7 +28,7 @@ subprojects {
 
 def processProjectInfo(Project project) {
     if (project == rootProject) {
-        // nop
+        // NOP
     } else if (project.group == "easy-spring-boot-build.spring-boot-sample") {
         project.group = sampleProjectGroup
         project.version = sampleProjectVersion
@@ -35,4 +37,12 @@ def processProjectInfo(Project project) {
         project.version = projectVersion
     }
     println("Configure ${project.group}:${project.name}:${project.version}")
+}
+
+static def isTrue(String string) {
+    return string != null && (
+            Boolean.parseBoolean(string)
+                    || string.equalsIgnoreCase("yes")
+                    || string.equalsIgnoreCase("1")
+    )
 }
