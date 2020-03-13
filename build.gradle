@@ -3,7 +3,8 @@ description = "Easy for Spring Boot: Build"
 // Include gradle
 ext {
     repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
-    deployGradle = "${project.rootDir}/buildSrc/deploy.gradle"
+    deployJavaGradle = "${project.rootDir}/buildSrc/deploy-java.gradle"
+    deployPlatformGradle = "${project.rootDir}/buildSrc/deploy-platform.gradle"
     compileKotlinGradle = "${project.rootDir}/buildSrc/compile-kotlin.gradle"
     passwordGradle = "${project.rootDir}/buildSrc/password.gradle"
 }

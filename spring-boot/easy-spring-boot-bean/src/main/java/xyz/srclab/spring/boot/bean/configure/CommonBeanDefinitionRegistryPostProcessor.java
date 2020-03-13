@@ -20,7 +20,7 @@ public class CommonBeanDefinitionRegistryPostProcessor implements
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        //Do nothing.
+        // NOP
     }
 
     @Override

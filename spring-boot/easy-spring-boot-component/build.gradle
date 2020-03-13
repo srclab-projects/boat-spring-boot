@@ -2,7 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
 }
 
-description = "Easy for Spring Boot Auton Configuration"
+description = "Easy for Spring Boot: Component"
 
 apply from: repositoriesGradle
 
@@ -14,20 +14,15 @@ java {
 
 dependencies {
     implementation(platform(project(":spring-boot-starter:easy-spring-boot-starter-parent")))
-    annotationProcessor(platform(project(":spring-boot-starter:easy-spring-boot-starter-parent")))
 
     api(project(":spring-boot:easy-spring-boot-bean"))
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
 
-    testCompile(project(":spring-boot-starter:easy-spring-boot-starter-test"))
+    testCompile(project(":spring-boot:easy-spring-boot-test"))
 }
 
 test {
     useTestNG()
     include("**/*Test.class")
 }
-
-apply from: deployJavaGradle
 
 apply from: compileKotlinGradle
