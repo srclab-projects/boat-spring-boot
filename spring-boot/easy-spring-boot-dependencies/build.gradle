@@ -17,7 +17,7 @@ ext {
     ]
 }
 
-apply from: repositoriesGradle
+apply from: gradles.repositories
 
 dependencies {
     constraints {
@@ -51,4 +51,4 @@ dependencies {
     }
 }
 
-apply from: deployPlatformGradle
+apply from: gradles.deployPlatform

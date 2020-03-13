@@ -1,10 +1,12 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+    id "org.jetbrains.kotlin.jvm"
 }
 
 description = "Easy for Spring Boot: Sample"
 
-apply from: repositoriesGradle
+apply from: gradles.compileKotlin
+
+apply from: gradles.repositories
 
 java {
     registerFeature('optionalSupport') {
@@ -24,5 +26,3 @@ test {
     useTestNG()
     include("**/*Test.class")
 }
-
-apply from: compileKotlinGradle

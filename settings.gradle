@@ -1,22 +1,13 @@
-//pluginManagement {
-//    repositories {
-//        mavenLocal()
-//        mavenCentral()
-//        gradlePluginPortal()
-//    }
-//    resolutionStrategy {
-//        eachPlugin {
-//            if (requested.id.id == "org.jetbrains.kotlin.jvm") {
-//                useVersion "${kotlinVersion}"
-//                return
-//            }
-//            if (requested.id.id == "org.jetbrains.kotlin.plugin.spring") {
-//                useVersion "${kotlinVersion}"
-//                return
-//            }
-//        }
-//    }
-//}
+pluginManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    plugins {
+        id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+    }
+}
 
 rootProject.name = 'easy-spring-boot-build'
 

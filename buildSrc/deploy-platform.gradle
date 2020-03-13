@@ -37,16 +37,16 @@ publishing {
             name 'sonatypeRepository'
             url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
             credentials {
-                username = "${sonatypeUserName}"
-                password = "${sonatypePassword}"
+                username = "${tokens.sonatypeUserName}"
+                password = "${tokens.sonatypePassword}"
             }
         }
         maven {
             name = 'sonatypeSnapshotRepository'
             url = 'https://oss.sonatype.org/content/repositories/snapshots/'
             credentials {
-                username = "${sonatypeUserName}"
-                password = "${sonatypePassword}"
+                username = "${tokens.sonatypeUserName}"
+                password = "${tokens.sonatypePassword}"
             }
         }
     }

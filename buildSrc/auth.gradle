@@ -1,0 +1,17 @@
+ext {
+    // These will be override by private.gradle
+    tokens = [
+            sonatypeUserName        : "0123456789",
+            sonatypePassword        : "0123456789",
+            signingKeyId            : "0123456789",
+            signingPassword         : "0123456789",
+            signingSecretKeyRingFile: "0123456789.gpg",
+    ]
+}
+
+// Note make your own private.gradle to overwrite personal info
+apply from: "${paths.userAuth}/private.gradle"
+
+ext."signing.keyId" = tokens.signingKeyId
+ext."signing.password" = tokens.signingPassword
+ext."signing.secretKeyRingFile" = "${paths.userAuth}/${tokens.signingSecretKeyRingFile}"

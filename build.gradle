@@ -1,20 +1,25 @@
 description = "Easy for Spring Boot: Build"
 
-// Include gradle
+// Gradle files to be applied:
 ext {
-    repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
-    deployJavaGradle = "${project.rootDir}/buildSrc/deploy-java.gradle"
-    deployPlatformGradle = "${project.rootDir}/buildSrc/deploy-platform.gradle"
-    compileKotlinGradle = "${project.rootDir}/buildSrc/compile-kotlin.gradle"
-    passwordGradle = "${project.rootDir}/buildSrc/password.gradle"
+    gradles = [
+            repositories    : "${rootProject.rootDir}/buildSrc/repositories.gradle",
+            deploySpringBoot: "${rootProject.rootDir}/buildSrc/deploy-spring-boot.gradle",
+            deployPlatform  : "${rootProject.rootDir}/buildSrc/deploy-platform.gradle",
+            compileKotlin   : "${rootProject.rootDir}/buildSrc/compile-kotlin.gradle",
+            auth            : "${rootProject.rootDir}/buildSrc/auth.gradle",
+    ]
 }
 
-// Personal info
+// Path info
 // Note overwrite these if your info are not same with me
 ext {
-    userHomePath = System.getProperty("user.home")
-    userAuthPath = "${userHomePath}/Home/Auth"
+    paths = [
+            userHome: "${System.getProperty("user.home")}",
+    ]
 }
+ext.paths.userAuth = "${paths.userHome}/Home/Auth"
+apply from: gradles.auth
 
 group = projectGroup
 version = (Boolean.parseBoolean(snapshot) ? projectVersion : "${projectVersion}-SNAPSHOT")
@@ -38,5 +43,3 @@ def processProjectInfo(Project project) {
     }
     println("Configure ${project.group}:${project.name}:${project.version}")
 }
-
-apply from: passwordGradle
