@@ -11,14 +11,7 @@ ext {
     ]
 }
 
-// Path info
-// Note overwrite these if your info are not same with me
-ext {
-    paths = [
-            userHome: "${System.getProperty("user.home")}",
-    ]
-}
-ext.paths.userAuth = "${paths.userHome}/Home/Auth"
+// Note in gradles.auth some personal setting should be implemented.
 apply from: gradles.auth
 
 group = projectGroup
