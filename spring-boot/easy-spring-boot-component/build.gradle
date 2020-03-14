@@ -2,7 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-description = "Easy for Spring Boot: Test"
+description = "Easy for Spring Boot: Component"
 
 apply from: gradles.compileKotlin
 
@@ -17,7 +17,9 @@ java {
 dependencies {
     implementation(platform(project(":spring-boot-starter:easy-spring-boot-starter-parent")))
 
-    api(project(":spring-boot-autoconfigure:easy-spring-boot-autoconfigure-test"))
+    api(project(":spring-boot:easy-spring-boot-bean"))
+
+    testCompile(project(":spring-boot:easy-spring-boot-test"))
 }
 
 test {

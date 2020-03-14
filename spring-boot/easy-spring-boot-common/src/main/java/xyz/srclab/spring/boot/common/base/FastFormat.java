@@ -5,6 +5,10 @@ import org.slf4j.helpers.MessageFormatter;
 
 public class FastFormat {
 
+    public static String format(String pattern, Object... args) {
+        return new FastFormat(pattern, args).format();
+    }
+
     private final String pattern;
     private final Object[] args;
 
@@ -17,13 +21,17 @@ public class FastFormat {
 
     @Override
     public String toString() {
+        return format();
+    }
+
+    private String format() {
         if (message == null) {
-            message = format();
+            message = doFormat();
         }
         return message;
     }
 
-    private String format() {
+    private String doFormat() {
         processArguments();
         return MessageFormatter.arrayFormat(pattern, args, null).getMessage();
     }

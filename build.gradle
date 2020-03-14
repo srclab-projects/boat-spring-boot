@@ -1,30 +1,22 @@
 description = "Easy for Spring Boot: Build"
 
-// Basic project info
+// Gradle files to be applied:
 ext {
-    projectGroup = "xyz.srclab.spring.boot"
-    projectVersion = "1.0.0"
-    //projectVersion = "1.0.0-SNAPSHOT"
-    sampleProjectGroup = "${projectGroup}.sample"
-    sampleProjectVersion = "${projectVersion}"
+    gradles = [
+            repositories    : "${rootProject.rootDir}/buildSrc/repositories.gradle",
+            deploySpringBoot: "${rootProject.rootDir}/buildSrc/deploy-spring-boot.gradle",
+            deployPlatform  : "${rootProject.rootDir}/buildSrc/deploy-platform.gradle",
+            compileKotlin   : "${rootProject.rootDir}/buildSrc/compile-kotlin.gradle",
+            auth            : "${rootProject.rootDir}/buildSrc/auth.gradle",
+    ]
 }
 
-// Include gradle
-ext {
-    repositoriesGradle = "${project.rootDir}/buildSrc/repositories.gradle"
-    deployGradle = "${project.rootDir}/buildSrc/deploy.gradle"
-    compileKotlinGradle = "${project.rootDir}/buildSrc/compile-kotlin.gradle"
-    passwordGradle = "${project.rootDir}/buildSrc/password.gradle"
-}
-
-// Personal info
-// Note overwrite these if your info are not same with me
-ext {
-    userHomePath = System.getProperty("user.home")
-    userAuthPath = "${userHomePath}/Home/Auth"
-}
+// Note in gradles.auth some personal setting should be implemented.
+apply from: gradles.auth
 
 group = projectGroup
+projectVersion = (isTrue(snapshot) ? "${projectVersion}-SNAPSHOT" : projectVersion)
+sampleProjectVersion = (isTrue(snapshot) ? "${sampleProjectVersion}-SNAPSHOT" : sampleProjectVersion)
 version = projectVersion
 
 allprojects { project ->
@@ -36,7 +28,7 @@ subprojects {
 
 def processProjectInfo(Project project) {
     if (project == rootProject) {
-        // nop
+        // NOP
     } else if (project.group == "easy-spring-boot-build.spring-boot-sample") {
         project.group = sampleProjectGroup
         project.version = sampleProjectVersion
@@ -47,4 +39,10 @@ def processProjectInfo(Project project) {
     println("Configure ${project.group}:${project.name}:${project.version}")
 }
 
-apply from: passwordGradle
+static def isTrue(String string) {
+    return string != null && (
+            Boolean.parseBoolean(string)
+                    || string.equalsIgnoreCase("yes")
+                    || string.equalsIgnoreCase("1")
+    )
+}

@@ -1,10 +1,12 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+    id "org.jetbrains.kotlin.jvm"
 }
 
 description = "Easy for Spring Boot: Test"
 
-apply from: repositoriesGradle
+apply from: gradles.compileKotlin
+
+apply from: gradles.repositories
 
 java {
     registerFeature('optionalSupport') {
@@ -13,7 +15,7 @@ java {
 }
 
 dependencies {
-    implementation(platform(project(":spring-boot:easy-spring-boot-parent")))
+    implementation(platform(project(":spring-boot-starter:easy-spring-boot-starter-parent")))
 
     api(project(":spring-boot:easy-spring-boot-common"))
     api("org.testng:testng")
@@ -25,6 +27,4 @@ test {
     include("**/*Test.class")
 }
 
-apply from: deployGradle
-
-apply from: compileKotlinGradle
+apply from: gradles.deploySpringBoot

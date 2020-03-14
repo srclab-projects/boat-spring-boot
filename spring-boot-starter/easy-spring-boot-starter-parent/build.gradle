@@ -9,7 +9,7 @@ javaPlatform {
 }
 
 dependencies {
-    api platform(platform(project(":spring-boot:easy-spring-boot-dependencies")))
+    api platform(platform(project(":spring-boot:easy-spring-boot-parent")))
 }
 
 apply from: gradles.deployPlatform
