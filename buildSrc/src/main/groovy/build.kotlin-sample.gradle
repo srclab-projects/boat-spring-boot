@@ -1,0 +1,6 @@
+plugins {
+  id 'build.core'
+  id 'build.kotlin-compile'
+}
+
+printer.info("${project.name}: import kotlin-sample")
