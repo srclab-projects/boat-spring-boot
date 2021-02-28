@@ -1,0 +1,17 @@
+plugins {
+  id 'build.kotlin-publish-jar'
+}
+
+description = "Boat Spring Boot Starters for Core: Core and basic interfaces, functions and utilities for Spring Boot."
+
+java {
+  registerFeature('optionalSupport') {
+    usingSourceSet(sourceSets.main)
+  }
+}
+
+dependencies {
+  implementation(platform(project(":boat-spring-boot-dependencies")))
+
+  api(project(":boat-spring-boot-core"))
+}

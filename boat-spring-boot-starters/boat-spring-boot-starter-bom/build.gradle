@@ -2,7 +2,7 @@ plugins {
   id 'build.kotlin-publish-platform'
 }
 
-description = "Boat Spring Boot Starters for BOM: Boat Spring Boot projects BOM."
+description = "Boat Spring Boot Starters for BOM"
 
 javaPlatform {
   allowDependencies()
