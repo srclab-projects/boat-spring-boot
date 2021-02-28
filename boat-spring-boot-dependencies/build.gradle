@@ -10,4 +10,5 @@ javaPlatform {
 
 dependencies {
   api platform("xyz.srclab.bom:srclab-dependencies:${infos.dependenciesVersion}")
+  api platform("xyz.srclab.common:boat-bom:0.1.0")
 }

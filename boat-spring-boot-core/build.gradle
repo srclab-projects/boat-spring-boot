@@ -1,0 +1,24 @@
+plugins {
+  id 'build.kotlin-publish-jar'
+}
+
+description = "Boat Spring Boot Core: Core and basic interfaces, functions and utilities for Spring Boot."
+
+java {
+  registerFeature('optionalSupport') {
+    usingSourceSet(sourceSets.main)
+  }
+}
+
+dependencies {
+  implementation(platform(project(":boat-spring-boot-dependencies")))
+
+  api("xyz.srclab.common:boat-core")
+
+  testCompile("xyz.srclab.common:boat-test")
+}
+
+test {
+  useTestNG()
+  include("**/*Test.class", "**/*TestKt.class")
+}
