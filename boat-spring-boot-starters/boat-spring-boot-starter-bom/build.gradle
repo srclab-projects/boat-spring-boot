@@ -1,0 +1,15 @@
+plugins {
+  id 'build.kotlin-publish-platform'
+}
+
+description = "Boat Spring Boot Starters for BOM: Boat Spring Boot projects BOM."
+
+javaPlatform {
+  allowDependencies()
+}
+
+dependencies {
+  constraints {
+    api(project(":boat-spring-boot-bom"))
+  }
+}

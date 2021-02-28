@@ -14,6 +14,7 @@ dependencies {
   implementation(platform(project(":boat-spring-boot-dependencies")))
 
   api("xyz.srclab.common:boat-core")
+  api("org.springframework.boot:spring-boot-starter")
 
   testCompile("xyz.srclab.common:boat-test")
 }
