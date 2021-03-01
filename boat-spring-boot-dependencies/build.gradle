@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
   id 'build.kotlin-publish-platform'
 }
@@ -9,6 +11,7 @@ javaPlatform {
 }
 
 dependencies {
-  api platform("xyz.srclab.bom:srclab-dependencies:${infos.dependenciesVersion}")
+  api platform(SpringBootPlugin.BOM_COORDINATES)
   api platform("xyz.srclab.common:boat-bom:0.1.0")
+  api platform("xyz.srclab.bom:srclab-dependencies:${infos.dependenciesVersion}")
 }

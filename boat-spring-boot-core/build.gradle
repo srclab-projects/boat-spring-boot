@@ -16,8 +16,16 @@ dependencies {
   api("xyz.srclab.common:boat-core")
   api("org.springframework.boot:spring-boot-starter")
 
+  annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
+  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+  developmentOnly("org.springframework.boot:spring-boot-devtools")
+
   testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
 }
+
+
+//compileJava.dependsOn(processResources)
+compileKotlin.inputs.files(processResources)
 
 test {
   useTestNG()

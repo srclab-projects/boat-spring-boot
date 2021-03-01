@@ -4,9 +4,14 @@ plugins {
   id 'org.jetbrains.dokka'
   id 'maven-publish'
   id 'signing'
+  id 'org.springframework.boot'
 }
 
 printer.info("${project.name}: import kotlin-publish-jar")
+
+jar {
+  enabled = true
+}
 
 task sourceJar(type: Jar) {
   classifier "sources"
@@ -29,7 +34,8 @@ artifacts {
   archives sourceJar
   archives javadocJar
 }
-
+compileKotlin.inputs.files(processResources)
+compileJava.inputs.files(processResources)
 if (infos.publish.isPublish) {
   publishing {
     publications {
