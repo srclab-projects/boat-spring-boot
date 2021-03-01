@@ -15,17 +15,20 @@ dependencies {
 
   api("xyz.srclab.common:boat-core")
   api("org.springframework.boot:spring-boot-starter")
-
-  annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
-  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+//  implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
+//  implementation("org.springframework.boot:spring-boot-configuration-processor")
+  annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor:2.4.3")
+  annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.4.3")
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 
   testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
 }
 
 
-//compileJava.dependsOn(processResources)
+compileKotlin.dependsOn(processResources)
+compileJava.dependsOn(processResources)
 compileKotlin.inputs.files(processResources)
+compileJava.inputs.files(processResources)
 
 test {
   useTestNG()

@@ -5,6 +5,7 @@ plugins {
   id 'maven-publish'
   id 'signing'
   id 'org.springframework.boot'
+  id "org.jetbrains.kotlin.kapt"
 }
 
 printer.info("${project.name}: import kotlin-publish-jar")
