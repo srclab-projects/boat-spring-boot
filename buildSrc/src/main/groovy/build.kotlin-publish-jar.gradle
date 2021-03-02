@@ -32,12 +32,12 @@ artifacts {
   archives javadocJar
 }
 
-//compileKotlin.inputs.files(processResources)
-compileJava.inputs.files(processResources)
-
 jar {
   enabled = true
 }
+
+//compileKotlin.inputs.files(processResources)
+//compileJava.inputs.files(processResources)
 
 if (infos.publish.isPublish) {
   publishing {

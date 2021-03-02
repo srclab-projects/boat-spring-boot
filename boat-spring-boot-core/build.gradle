@@ -15,19 +15,15 @@ dependencies {
 
   api("xyz.srclab.common:boat-core")
   api("org.springframework.boot:spring-boot-starter")
-//  implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
-//  implementation("org.springframework.boot:spring-boot-configuration-processor")
-  annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor:2.4.3")
-  annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.4.3")
-  developmentOnly("org.springframework.boot:spring-boot-devtools")
 
   testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
+
+  kapt("org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+
+  //developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 
-
-compileKotlin.dependsOn(processResources)
-compileJava.dependsOn(processResources)
-compileKotlin.inputs.files(processResources)
 compileJava.inputs.files(processResources)
 
 test {
