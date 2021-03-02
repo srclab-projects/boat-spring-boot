@@ -10,10 +10,6 @@ plugins {
 
 printer.info("${project.name}: import kotlin-publish-jar")
 
-jar {
-  enabled = true
-}
-
 task sourceJar(type: Jar) {
   classifier "sources"
   from sourceSets.main.allSource
@@ -38,6 +34,10 @@ artifacts {
 
 //compileKotlin.inputs.files(processResources)
 compileJava.inputs.files(processResources)
+
+jar {
+  enabled = true
+}
 
 if (infos.publish.isPublish) {
   publishing {
