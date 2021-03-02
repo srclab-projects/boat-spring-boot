@@ -2,10 +2,10 @@ plugins {
   id 'build.core'
   id 'build.kotlin-compile'
   id 'org.jetbrains.dokka'
+  id 'org.jetbrains.kotlin.kapt'
   id 'maven-publish'
   id 'signing'
   id 'org.springframework.boot'
-  id "org.jetbrains.kotlin.kapt"
 }
 
 printer.info("${project.name}: import kotlin-publish-jar")
@@ -35,8 +35,10 @@ artifacts {
   archives sourceJar
   archives javadocJar
 }
-compileKotlin.inputs.files(processResources)
+
+//compileKotlin.inputs.files(processResources)
 compileJava.inputs.files(processResources)
+
 if (infos.publish.isPublish) {
   publishing {
     publications {
