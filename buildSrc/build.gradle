@@ -1,2 +1,14 @@
+plugins {
+  id 'groovy-gradle-plugin'
+}
 
+repositories {
+  gradlePluginPortal()
+  jcenter()
+}
 
+dependencies {
+  implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+  implementation "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion"
+  implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+}

@@ -1,48 +1,31 @@
-description = "Easy for Spring Boot: Build"
-
-// Gradle files to be applied:
-ext {
-    gradles = [
-            repositories    : "${rootProject.rootDir}/buildSrc/repositories.gradle",
-            deploySpringBoot: "${rootProject.rootDir}/buildSrc/deploy-spring-boot.gradle",
-            deployPlatform  : "${rootProject.rootDir}/buildSrc/deploy-platform.gradle",
-            compileKotlin   : "${rootProject.rootDir}/buildSrc/compile-kotlin.gradle",
-            auth            : "${rootProject.rootDir}/buildSrc/auth.gradle",
-    ]
+plugins {
+  id 'build.core'
 }
 
-// Note in gradles.auth some personal setting should be implemented.
-apply from: gradles.auth
+description = "Build for Boat Spring Boot projects"
 
-group = projectGroup
-projectVersion = (isTrue(snapshot) ? "${projectVersion}-SNAPSHOT" : projectVersion)
-sampleProjectVersion = (isTrue(snapshot) ? "${sampleProjectVersion}-SNAPSHOT" : sampleProjectVersion)
-version = projectVersion
+printer.info("Build $project.name")
 
-allprojects { project ->
-    processProjectInfo(project)
+allprojects { p ->
+  //Do for each project
+  processProject(p)
 }
 
-subprojects {
+//subprojects { p ->
+//  //Do for each project
+//  processProject(p)
+//}
+
+tasks.withType(JavaCompile) {
+  options.encoding = "UTF-8"
 }
 
-def processProjectInfo(Project project) {
-    if (project == rootProject) {
-        // NOP
-    } else if (project.group == "easy-spring-boot-build.spring-boot-sample") {
-        project.group = sampleProjectGroup
-        project.version = sampleProjectVersion
-    } else {
-        project.group = projectGroup
-        project.version = projectVersion
-    }
-    println("Configure ${project.group}:${project.name}:${project.version}")
-}
-
-static def isTrue(String string) {
-    return string != null && (
-            Boolean.parseBoolean(string)
-                    || string.equalsIgnoreCase("yes")
-                    || string.equalsIgnoreCase("1")
-    )
+def processProject(anyProject) {
+  anyProject.group = infos.group
+  anyProject.version = infos.version
+  if (anyProject == rootProject) {
+    printer.info("Configure project ${anyProject.group}:${anyProject.name}:${anyProject.version} (root)")
+  } else {
+    printer.info("Configure project ${anyProject.group}:${anyProject.name}:${anyProject.version}")
+  }
 }

@@ -1,0 +1,76 @@
+plugins {
+  id 'build.core'
+  id 'maven-publish'
+  id 'java-platform'
+  id 'signing'
+}
+
+printer.info("${project.name}: import kotlin-publish-platform")
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      from components.javaPlatform
+
+      pom {
+        name = project.name
+        description = project.description
+        url = infos.url
+        inceptionYear = infos.inceptionYear
+        licenses {
+          infos.licenses.forEach { each ->
+            license {
+              name = each.name
+              url = each.url
+            }
+          }
+        }
+        scm {
+          connection = "scm:git:${infos.url}.git"
+          developerConnection = "scm:git:${infos.url}.git"
+          url = infos.url
+        }
+        developers {
+          infos.developers.forEach { each ->
+            developer {
+              email = each.email
+            }
+          }
+        }
+      }
+    }
+  }
+
+  repositories {
+    mavenLocal()
+    if (infos.sonatype) {
+      maven {
+        name = "sonatype"
+        url = infos.oss.staging
+        credentials {
+          username = "${passwords.sonatype.username}"
+          password = "${passwords.sonatype.password}"
+        }
+      }
+      if (infos.snapshot) {
+        maven {
+          name = "sonatypeSnapshot"
+          url = infos.oss.snapshot
+          credentials {
+            username = "${passwords.sonatype.username}"
+            password = "${passwords.sonatype.password}"
+          }
+        }
+      }
+    }
+  }
+
+  if (infos.signing) {
+    ext."signing.keyId" = passwords.gpg.keyId
+    ext."signing.password" = passwords.gpg.password
+    ext."signing.secretKeyRingFile" = passwords.gpg.secretKeyRingFile
+    signing {
+      sign publishing.publications.maven
+    }
+  }
+}

@@ -1,0 +1,118 @@
+plugins {
+  id 'build.core'
+  id 'build.kotlin-compile'
+  id 'org.jetbrains.dokka'
+  id 'org.jetbrains.kotlin.kapt'
+  id 'maven-publish'
+  id 'signing'
+  id 'org.springframework.boot'
+}
+
+printer.info("${project.name}: import kotlin-publish-jar")
+
+task sourceJar(type: Jar) {
+  classifier "sources"
+  from sourceSets.main.allSource
+}
+
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//  classifier "javadoc"
+//  from javadoc.destinationDir
+//}
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc {
+  outputDirectory = javadoc.destinationDir
+}) {
+  classifier "javadoc"
+  from javadoc.destinationDir
+}
+
+artifacts {
+  archives jar
+  archives sourceJar
+  archives javadocJar
+}
+
+jar {
+  enabled = true
+}
+
+//compileKotlin.inputs.files(processResources)
+//compileJava.inputs.files(processResources)
+
+if (infos.publish.isPublish) {
+  publishing {
+    publications {
+      maven(MavenPublication) {
+        from components.java
+
+        artifact(sourceJar) {
+          classifier = 'sources'
+        }
+
+        artifact(javadocJar) {
+          classifier = 'javadoc'
+        }
+
+        pom {
+          name = project.name
+          description = project.description
+          url = infos.url
+          inceptionYear = infos.inceptionYear
+          licenses {
+            infos.licenses.forEach { each ->
+              license {
+                name = each.name
+                url = each.url
+              }
+            }
+          }
+          scm {
+            connection = "scm:git:${infos.url}.git"
+            developerConnection = "scm:git:${infos.url}.git"
+            url = infos.url
+          }
+          developers {
+            infos.developers.forEach { each ->
+              developer {
+                email = each.email
+              }
+            }
+          }
+        }
+      }
+    }
+
+    repositories {
+      mavenLocal()
+      if (infos.publish.isSnapshot) {
+        maven {
+          name = "${infos.publish.snapshotId}Snapshot"
+          url = infos.publish.urls.snapshot
+          credentials {
+            username = "${passwords."${infos.publish.snapshotId}".username}"
+            password = "${passwords."${infos.publish.snapshotId}".password}"
+          }
+        }
+      }
+      if (infos.publish.isOfficial) {
+        maven {
+          name = "${infos.publish.officialId}"
+          url = infos.publish.urls.staging
+          credentials {
+            username = "${passwords."${infos.publish.officialId}".username}"
+            password = "${passwords."${infos.publish.officialId}".password}"
+          }
+        }
+      }
+    }
+
+    if (infos.publish.isSigning) {
+      ext."signing.keyId" = passwords."${infos.publish.signingId}".keyId
+      ext."signing.password" = passwords."${infos.publish.signingId}".password
+      ext."signing.secretKeyRingFile" = passwords."${infos.publish.signingId}".secretKeyRingFile
+      signing {
+        sign publishing.publications.maven
+      }
+    }
+  }
+}

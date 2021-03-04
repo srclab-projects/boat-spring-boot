@@ -1,0 +1,23 @@
+plugins {
+  id "build.kotlin-publish-jar"
+}
+
+description = "Boat Spring Boot Test Dependencies Management"
+
+java {
+  registerFeature('optionalSupport') {
+    usingSourceSet(sourceSets.main)
+  }
+}
+
+dependencies {
+  implementation(platform(project(":boat-spring-boot-dependencies")))
+
+  api("xyz.srclab.common:boat-test")
+  api("org.springframework.boot:spring-boot-starter-test")
+}
+
+test {
+  useTestNG()
+  include("**/*Test.class", "**/*TestKt.class")
+}

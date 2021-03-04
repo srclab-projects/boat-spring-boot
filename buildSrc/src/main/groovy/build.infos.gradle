@@ -1,0 +1,75 @@
+/*
+ * Info about project.
+ */
+ext["infos"] = [
+
+    //Version
+    version            : "0.1.0",
+
+    //Dependencies version
+    dependenciesVersion: "1.1.1",
+
+    //Group
+    group              : "xyz.srclab.spring.boot",
+
+    //Project url
+    url                : "https://github.com/srclab-projects/boat-spring-boot",
+
+    //Project inception year
+    inceptionYear      : "2020",
+
+    //Licenses
+    licenses           : [
+        [
+            name: "The Apache License, Version 2.0",
+            url : "http://www.apache.org/licenses/LICENSE-2.0.txt",
+        ],
+    ],
+
+    //Developers
+    developers         : [
+        [
+            id   : "fredsuvn",
+            name : "孙谦",
+            email: "fredsuvn@163.com",
+            url  : "https://github.com/fredsuvn",
+        ],
+        [
+            id             : "SrcLab",
+            name           : "SrcLab Team",
+            email          : "srclab@163.com",
+            organization   : "SrcLab",
+            organizationUrl: "https://github.com/srclab-projects",
+        ],
+    ],
+
+    //Publish info
+    publish            : [
+        //Whether publish
+        isPublish : true,
+
+        //Whether publish as snapshot
+        isSnapshot: false,
+
+        //Snapshot id
+        snapshotId: "sonatype",
+
+        //Whether publish as Official
+        isOfficial: true,
+
+        //Publish id
+        officialId: "sonatype",
+
+        //Whether signing
+        isSigning : false,
+
+        //Signing id
+        signingId : "gpg",
+
+        //Oss urls
+        urls      : [
+            staging : "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
+            snapshot: "https://oss.sonatype.org/content/repositories/snapshots/",
+        ],
+    ],
+]

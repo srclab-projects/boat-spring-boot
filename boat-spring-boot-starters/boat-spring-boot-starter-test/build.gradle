@@ -1,0 +1,17 @@
+plugins {
+  id 'build.kotlin-publish-jar'
+}
+
+description = "Boat Spring Boot Starters for Test"
+
+java {
+  registerFeature('optionalSupport') {
+    usingSourceSet(sourceSets.main)
+  }
+}
+
+dependencies {
+  implementation(platform(project(":boat-spring-boot-dependencies")))
+
+  api(project(":boat-spring-boot-test"))
+}

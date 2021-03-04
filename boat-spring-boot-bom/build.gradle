@@ -1,0 +1,25 @@
+plugins {
+  id 'build.kotlin-publish-platform'
+}
+
+description = "Boat Spring Boot Bom"
+
+javaPlatform {
+  allowDependencies()
+}
+
+dependencies {
+  constraints {
+    file("${rootDir}/").eachDir { dir ->
+      if (dir.name == "boat-spring-boot-starters") {
+        dir.eachDir { subDir ->
+          api(project(":${dir.name}:${subDir.name}"))
+        }
+        return
+      }
+      if (dir.name.startsWith("boat-spring-boot-")) {
+        api(project(":${dir.name}"))
+      }
+    }
+  }
+}
