@@ -6,8 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import xyz.srclab.annotations.Nullable;
-import xyz.srclab.spring.boot.core.CoreBean;
+import xyz.srclab.spring.boot.core.CoreProperties;
 
 import javax.annotation.Resource;
 
@@ -18,12 +17,11 @@ public class CoreTest extends AbstractTestNGSpringContextTests {
     private static final Logger logger = LoggerFactory.getLogger(CoreTest.class);
 
     @Resource
-    private CoreBean coreBean;
+    private CoreProperties coreProperties;
 
     @Test
     public void testAutoConfigure() {
-        @Nullable String coreProperty = coreBean.getCoreProperty();
-        logger.info("Core property: {}", coreProperty);
-        Assert.assertEquals(coreProperty, "1234");
+        logger.info("Core spring version: {}", coreProperties.getSpringVersion());
+        Assert.assertEquals(coreProperties.getSpringVersion(), "666");
     }
 }
