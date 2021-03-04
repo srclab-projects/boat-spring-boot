@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import xyz.srclab.spring.boot.core.CoreBean
 import xyz.srclab.spring.boot.core.CoreBeanProperties
+import xyz.srclab.spring.boot.core.MyBeanDefinitionRegistryPostProcessor
 
 @Configuration
 open class CoreAutoConfiguration {
@@ -21,5 +22,10 @@ open class CoreAutoConfiguration {
     @Bean
     open fun coreBeanProperties(): CoreBeanProperties {
         return CoreBeanProperties()
+    }
+
+    @Bean
+    open fun myBeanDefinitionRegistryPostProcessor(): MyBeanDefinitionRegistryPostProcessor {
+        return MyBeanDefinitionRegistryPostProcessor()
     }
 }
