@@ -2,8 +2,8 @@ package test.xyz.srclab.spring.boot.bean;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
-import xyz.srclab.spring.boot.bean.SpringBeanGenerator;
 import xyz.srclab.spring.boot.bean.SpringBeanRegistration;
+import xyz.srclab.spring.boot.bean.SpringSingletonGenerator;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ public class BeanRegistration implements SpringBeanRegistration {
 
     @NotNull
     @Override
-    public Map<String, Object> registryBeans() {
+    public Map<String, Object> registerSingletons() {
         Map<String, Object> map = new HashMap<>();
         map.put("bean1", "bean1");
         return map;
@@ -23,9 +23,9 @@ public class BeanRegistration implements SpringBeanRegistration {
 
     @NotNull
     @Override
-    public Set<SpringBeanGenerator> registryBeanGenerators() {
-        Set<SpringBeanGenerator> set = new HashSet<>();
-        set.add(new SpringBeanGenerator() {
+    public Set<SpringSingletonGenerator> registerSingletonGenerators() {
+        Set<SpringSingletonGenerator> set = new HashSet<>();
+        set.add(new SpringSingletonGenerator() {
             @NotNull
             @Override
             public String name() {
