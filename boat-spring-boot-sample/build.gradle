@@ -1,0 +1,24 @@
+plugins {
+  id 'build.kotlin-sample'
+}
+
+description = "Boat Spring Boot Samples"
+
+java {
+  registerFeature('optionalSupport') {
+    usingSourceSet(sourceSets.main)
+  }
+}
+
+dependencies {
+  implementation(platform(project(":boat-spring-boot-dependencies")))
+
+  implementation(project(":boat-spring-boot-starters:boat-spring-boot-starter"))
+
+  testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
+}
+
+test {
+  useTestNG()
+  include("**/*Sample.class", "**/*SampleKt.class")
+}

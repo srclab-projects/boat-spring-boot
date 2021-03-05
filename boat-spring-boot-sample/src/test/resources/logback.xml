@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <property name="LOG.HOME" value="${app.logs}"/>
+
+  <property name="LOG.PATTERN"
+            value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{requestId:-none}] %-5level %logger{36} - %msg%n"/>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${LOG.PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <root>
+    <level value="debug"/>
+    <appender-ref ref="STDOUT"/>
+  </root>
+
+  <logger name="org.springframework" level="info"/>
+
+  <!--
+  <property name="LOG.PATTERN"
+            value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%X{requestId:-none}] %-5level %logger{36} - %msg%n"/>
+  <property name="LOG.PATTERN.CALLER"
+            value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%X{requestId:-none}] %-5level [%thread] %replace(%caller{1}){'\t|Caller.{1}0|\r\n', ''} - %msg%n"/>
+  -->
+
+  <!--
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG.HOME}/access.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG.HOME}/access.%d{yyyyMMdd}.log.gz</fileNamePattern>
+      <maxHistory>180</maxHistory>
+    </rollingPolicy>
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+        <pattern>${LOG.PATTERN}</pattern>
+      </layout>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>TRACE</level>
+      <onMatch>DENY</onMatch>
+      <onMismatch>ACCEPT</onMismatch>
+    </filter>
+  </appender>
+
+  <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG.HOME}/error.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG.HOME}/error.%d{yyyyMMdd}.log.gz</fileNamePattern>
+      <maxHistory>180</maxHistory>
+    </rollingPolicy>
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+        <pattern>${LOG.PATTERN}</pattern>
+      </layout>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+  -->
+</configuration>
