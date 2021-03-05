@@ -6,7 +6,7 @@ import xyz.srclab.spring.boot.bean.SpringSingletonGenerator
 import java.util.*
 
 @Component
-class BeanRegistrationKt : SpringBeanRegistration {
+open class BeanRegistrationKt : SpringBeanRegistration {
 
     override fun registerSingletons(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()

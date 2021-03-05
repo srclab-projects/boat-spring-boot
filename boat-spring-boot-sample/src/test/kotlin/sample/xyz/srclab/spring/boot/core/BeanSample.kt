@@ -10,7 +10,7 @@ import javax.annotation.Resource
 
 //@SpringBootTest
 @ContextConfiguration(classes = [TestStarter::class])
-class BeanSampleKt : AbstractTestNGSpringContextTests() {
+open class BeanSampleKt : AbstractTestNGSpringContextTests() {
 
     @Resource
     private lateinit var testBeanPostProcessor: TestBeanPostProcessor

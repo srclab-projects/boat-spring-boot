@@ -8,7 +8,7 @@ import xyz.srclab.spring.boot.bean.SpringBeanPostProcessor
 import java.util.*
 
 @Component
-class TestBeanPostProcessorKt : SpringBeanPostProcessor {
+open class TestBeanPostProcessorKt : SpringBeanPostProcessor {
 
     private val sequence: MutableList<String> = LinkedList()
     private var isPostProcessBeanDefinitionRegistry = false
