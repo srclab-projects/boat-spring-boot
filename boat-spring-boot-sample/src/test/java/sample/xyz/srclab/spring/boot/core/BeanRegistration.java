@@ -1,4 +1,4 @@
-package test.xyz.srclab.spring.boot.bean;
+package sample.xyz.srclab.spring.boot.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;

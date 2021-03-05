@@ -5,17 +5,17 @@ import xyz.srclab.common.base.INAPPLICABLE_JVM_NAME
 /**
  * To registry spring bean with singleton.
  *
- * @see SpringBeanGenerator
+ * @see SpringSingletonGenerator
  */
 interface SpringBeanRegistration {
 
     @JvmDefault
-    fun registryBeans(): Map<String, Any> {
+    fun registerSingletons(): Map<String, Any> {
         return emptyMap()
     }
 
     @JvmDefault
-    fun registryBeanGenerators(): Set<SpringBeanGenerator> {
+    fun registerSingletonGenerators(): Set<SpringSingletonGenerator> {
         return emptySet()
     }
 }
@@ -23,7 +23,7 @@ interface SpringBeanRegistration {
 /**
  * To generate singleton bean by [SpringBeanRegistration]
  */
-interface SpringBeanGenerator {
+interface SpringSingletonGenerator {
 
     @Suppress(INAPPLICABLE_JVM_NAME)
     val name: String
