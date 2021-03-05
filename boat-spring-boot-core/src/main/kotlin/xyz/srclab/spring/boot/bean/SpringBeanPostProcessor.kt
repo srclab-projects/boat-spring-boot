@@ -9,7 +9,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 
 /**
- * Global Spring bean post processor:
+ * Global Spring bean lifecycle post processor:
  * ```
  * Spring starts
  *   -> load bean definition
