@@ -6,11 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import test.xyz.srclab.spring.boot.schedule.Starter;
 import xyz.srclab.spring.boot.core.CoreProperties;
 
 import javax.annotation.Resource;
 
-@SpringBootTest
+@SpringBootTest(classes = Starter.class)
 //@ContextConfiguration(classes = {TestStarter.class})
 public class CoreTest extends AbstractTestNGSpringContextTests {
 

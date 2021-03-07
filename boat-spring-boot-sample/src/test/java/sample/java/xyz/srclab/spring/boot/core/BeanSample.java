@@ -1,4 +1,4 @@
-package test.xyz.srclab.spring.boot.bean;
+package sample.java.xyz.srclab.spring.boot.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,26 +12,29 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 
 @SpringBootTest(classes = Starter.class)
-@DependsOn("testRegistry")
 //@ContextConfiguration(classes = {TestStarter.class})
-public class BeanTest extends AbstractTestNGSpringContextTests {
+@DependsOn("myBeanRegistry")
+public class BeanSample extends AbstractTestNGSpringContextTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(BeanTest.class);
-
-    @Resource
-    private TestBeanLifecyclePostProcessor testBeanPostProcessor;
+    private static final Logger logger = LoggerFactory.getLogger(BeanSample.class);
 
     @Resource
-    private TestProperties testProperties;
+    private MyBeanLifecyclePostProcessor myBeanLifecyclePostProcessor;
 
     @Resource
-    private TestBean testBean;
+    private String bean1;
+
+    @Resource
+    private String bean2;
+
+    @Resource
+    private MyBean myBean;
 
     @Test
     public void testBeanPostProcessor() {
-        logger.info("Bean processing sequence: {}", testBeanPostProcessor.getSequence());
+        logger.info("Bean processing sequence: {}", myBeanLifecyclePostProcessor.getSequence());
         Assert.assertEquals(
-                testBeanPostProcessor.getSequence(),
+                myBeanLifecyclePostProcessor.getSequence(),
                 Arrays.asList(
                         "postProcessBeanDefinitionRegistry",
                         "postProcessBeanFactory",
@@ -46,7 +49,11 @@ public class BeanTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testBeanManager() {
-        logger.info("testBean.getBeanString(): {}", testBean.getBeanString());
-        Assert.assertEquals(testBean.getBeanString(), testProperties.getBean1() + testProperties.getBean2());
+        logger.info("bean1: {}", bean1);
+        Assert.assertEquals(bean1, "bean1");
+        logger.info("bean2: {}", bean2);
+        Assert.assertEquals(bean2, "bean2");
+        logger.info("myBean: {}", myBean.getBeanString());
+        Assert.assertEquals(myBean.getBeanString(), bean1 + bean2);
     }
 }
