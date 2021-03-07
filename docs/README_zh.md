@@ -19,7 +19,6 @@
 * [简介](#introduction)
 * [获取](#getting)
 * [使用](#usage)
-  * [Core](#usage-core)
 * [共享和联系方式](#contact)
 * [License](#lecense)
 
@@ -64,73 +63,149 @@ https://github.com/srclab-projects/boat-spring-boot
 
 ## <a id="usage"/>使用
 
-### <a id="usage-core"/>Spring Boot Core (boat-spring-boot-starter)
+* [Core (boat-spring-boot-starter)](#usage-core)
+  * [Bean](#usage-core-bean)
+  * [Task](#usage-core-task)
+  * [Schedule](#usage-core-schedule)
 
-Core提供:
+### <a id="usage-core"/>Core (boat-spring-boot-starter)
 
-* SpringBeanPostProcessor: Spring的bean全局全生命周期后置处理器;
-* SpringBeanRegistration: 动态bean注册.
+#### <a id="usage-core-bean"/>Bean
 
-#### Java Examples
+Bean provides:
+
+* BeanLifecyclePostProcessor: Spring Bean lifecycle post processor;
+* BeanRegistry: Dynamic bean registry.
+
+##### Java Examples
 
 ```java
 
 @Component
-public class BeanRegistration implements SpringBeanRegistration {
+public class MyBeanRegistry extends BeanRegistry {
 
   @NotNull
   @Override
-  public Map<String, Object> registerSingletons() {
-    Map<String, Object> map = new HashMap<>();
-    map.put("bean1", "bean1");
-    return map;
+  protected Map<String, Object> registerSingletons() {
+    Map<String, Object> result = new HashMap<>();
+    result.put("bean1", "bean1");
+    result.put("bean2", "bean2");
+    return result;
   }
 
   @NotNull
   @Override
-  public Set<SpringSingletonGenerator> registerSingletonGenerators() {
-    Set<SpringSingletonGenerator> set = new HashSet<>();
-    set.add(new SpringSingletonGenerator() {
-      @NotNull
-      @Override
-      public String name() {
-        return "bean2";
-      }
-
-      @NotNull
-      @Override
-      public Object generate() {
-        return "bean2";
-      }
-    });
-    return set;
+  protected Set<BeanProperties> registerBeans() {
+    Set<BeanProperties> result = new HashSet<>();
+    BeanProperties beanProperties = new BeanProperties();
+    beanProperties.setName("myBean");
+    beanProperties.setClassName(MyBean.class.getName());
+    result.add(beanProperties);
+    return result;
   }
 }
 ```
 
-#### Kotlin Examples
+##### Kotlin Examples
 
 ```kotlin
 @Component
-open class BeanRegistrationKt : SpringBeanRegistration {
+open class MyBeanRegistry : BeanRegistry() {
 
   override fun registerSingletons(): Map<String, Any> {
-    val map: MutableMap<String, Any> = HashMap()
-    map["bean1Kt"] = "bean1Kt"
-    return map
+    val result: MutableMap<String, Any> = HashMap()
+    result["bean1"] = "bean1"
+    result["bean2"] = "bean2"
+    return result
   }
 
-  override fun registerSingletonGenerators(): Set<SpringSingletonGenerator> {
-    val set: MutableSet<SpringSingletonGenerator> = HashSet()
-    set.add(object : SpringSingletonGenerator {
+  override fun registerBeans(): Set<BeanProperties> {
+    val result: MutableSet<BeanProperties> = HashSet()
+    val beanProperties = BeanProperties()
+    beanProperties.name = "myBean"
+    beanProperties.className = MyBean::class.java.name
+    result.add(beanProperties)
+    return result
+  }
+}
+```
 
-      override val name: String = "bean2Kt"
+#### <a id="usage-core-task"/>Task
 
-      override fun generate(): Any {
-        return "bean2Kt"
-      }
-    })
-    return set
+Task provides:
+
+* ThreadPoolProperties: Properties for thread pool;
+* TaskExecutors: Help fast create TaskExecutor with ThreadPoolProperties.
+
+##### Java Examples
+
+```java
+
+@Configuration
+@EnableAsync
+public class MyTaskExecutorConfiguration {
+
+  @Bean
+  public TaskExecutor taskExecutor() {
+    ThreadPoolProperties poolProperties = new ThreadPoolProperties();
+    poolProperties.setThreadNamePrefix("6666");
+    return TaskExecutors.newTaskExecutor(poolProperties);
+  }
+}
+```
+
+##### Kotlin Examples
+
+```kotlin
+@Configuration
+@EnableAsync
+open class MyTaskExecutorConfigurationKt {
+
+  @Bean
+  open fun taskExecutor(): TaskExecutor {
+    val poolProperties = ThreadPoolProperties()
+    poolProperties.threadNamePrefix = "6666"
+    return newTaskExecutor(poolProperties)
+  }
+}
+```
+
+#### <a id="usage-core-schedule"/>Schedule
+
+Schedule provides:
+
+* ScheduledPoolProperties: Properties for scheduled thread pool;
+* TaskSchedulers: Help fast create TaskScheduler with ScheduledPoolProperties.
+
+##### Java Examples
+
+```java
+
+@Configuration
+@EnableScheduling
+public class MyTaskSchedulerConfiguration {
+
+  @Bean
+  public TaskScheduler taskScheduler() {
+    ScheduledPoolProperties poolProperties = new ScheduledPoolProperties();
+    poolProperties.setThreadNamePrefix("6666");
+    return TaskSchedulers.newTaskScheduler(poolProperties);
+  }
+}
+```
+
+##### Kotlin Examples
+
+```kotlin
+@Configuration
+@EnableScheduling
+open class MyTaskSchedulerConfiguration {
+
+  @Bean
+  open fun taskScheduler(): TaskScheduler {
+    val poolProperties = ScheduledPoolProperties()
+    poolProperties.threadNamePrefix = "6666"
+    return newTaskScheduler(poolProperties)
   }
 }
 ```
