@@ -17,9 +17,9 @@ open class CoreAutoConfiguration {
         return CoreProperties()
     }
 
-//    @ConditionalOnMissingBean
-//    @Bean("xyz.srclab.spring.boot.bean.BeanLifecycleManager")
-//    open fun beanLifecycleManager(): BeanLifecycleManager {
-//        return BeanLifecycleManager()
-//    }
+    //@ConditionalOnMissingBean
+    //@Bean("xyz.srclab.spring.boot.bean.BeanLifecycleManager")
+    //open fun beanLifecycleManager(): BeanLifecycleManager {
+    //    return BeanLifecycleManager()
+    //}
 }
