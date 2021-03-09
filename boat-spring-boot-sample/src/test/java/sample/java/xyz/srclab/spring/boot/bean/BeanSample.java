@@ -1,4 +1,4 @@
-package sample.java.xyz.srclab.spring.boot.core;
+package sample.java.xyz.srclab.spring.boot.bean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

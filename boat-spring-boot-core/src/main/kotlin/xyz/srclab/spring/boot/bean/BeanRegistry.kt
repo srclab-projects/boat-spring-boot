@@ -1,6 +1,7 @@
 package xyz.srclab.spring.boot.bean
 
 import org.springframework.context.ConfigurableApplicationContext
+import xyz.srclab.common.base.INAPPLICABLE_JVM_NAME
 import xyz.srclab.common.base.loadClass
 import javax.annotation.PostConstruct
 import javax.annotation.Resource
@@ -9,8 +10,8 @@ import javax.annotation.Resource
  * Help register bean dynamically.
  *
  * Override methods:
- * * [registerSingletons] to register singletons without autowire;
- * * [registerBeans] to register bean with autowire.
+ * * [registeredSingletons] to register singletons without autowire;
+ * * [registeredBeans] to register bean with autowire.
  *
  * Note use @DependOn to make sure dynamic beans are registered before autowired.
  *
@@ -21,24 +22,26 @@ abstract class BeanRegistry {
     @Resource
     private lateinit var configurableApplicationContext: ConfigurableApplicationContext
 
-    protected abstract fun registerSingletons(): Map<String, Any>
+    @Suppress(INAPPLICABLE_JVM_NAME)
+    protected abstract val registeredSingletons: Map<String, Any>
+        @JvmName("registeredSingletons") get
 
-    protected abstract fun registerBeans(): Set<BeanProperties>
+    @Suppress(INAPPLICABLE_JVM_NAME)
+    protected abstract val registeredBeans: Set<BeanProperties>
+        @JvmName("registeredBeans") get
 
     @PostConstruct
     private fun register() {
         val beanFactory = configurableApplicationContext.beanFactory
-        val registerSingletons = registerSingletons()
-        if (registerSingletons.isNotEmpty()) {
-            for (registerSingleton in registerSingletons) {
-                beanFactory.registerSingleton(registerSingleton.key, registerSingleton.value)
+        if (registeredSingletons.isNotEmpty()) {
+            for (registeredSingleton in registeredSingletons) {
+                beanFactory.registerSingleton(registeredSingleton.key, registeredSingleton.value)
             }
         }
-        val registerBeans = registerBeans()
-        if (registerBeans.isNotEmpty()) {
-            for (registerBean in registerBeans) {
-                val bean = beanFactory.createBean(registerBean.className.loadClass<Any>())
-                beanFactory.registerSingleton(registerBean.name, bean)
+        if (registeredBeans.isNotEmpty()) {
+            for (registeredBean in registeredBeans) {
+                val bean = beanFactory.createBean(registeredBean.className.loadClass<Any>())
+                beanFactory.registerSingleton(registeredBean.name, bean)
             }
         }
     }

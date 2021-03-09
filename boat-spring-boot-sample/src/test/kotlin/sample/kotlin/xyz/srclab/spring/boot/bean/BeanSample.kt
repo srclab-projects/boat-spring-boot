@@ -1,4 +1,4 @@
-package sample.kotlin.xyz.srclab.spring.boot.core
+package sample.kotlin.xyz.srclab.spring.boot.bean
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication

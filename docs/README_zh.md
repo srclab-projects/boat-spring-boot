@@ -86,7 +86,7 @@ public class MyBeanRegistry extends BeanRegistry {
 
   @NotNull
   @Override
-  protected Map<String, Object> registerSingletons() {
+  protected Map<String, Object> registeredSingletons() {
     Map<String, Object> result = new HashMap<>();
     result.put("bean1", "bean1");
     result.put("bean2", "bean2");
@@ -95,7 +95,7 @@ public class MyBeanRegistry extends BeanRegistry {
 
   @NotNull
   @Override
-  protected Set<BeanProperties> registerBeans() {
+  protected Set<BeanProperties> registeredBeans() {
     Set<BeanProperties> result = new HashSet<>();
     BeanProperties beanProperties = new BeanProperties();
     beanProperties.setName("myBean");
@@ -112,21 +112,23 @@ public class MyBeanRegistry extends BeanRegistry {
 @Component
 open class MyBeanRegistry : BeanRegistry() {
 
-  override fun registerSingletons(): Map<String, Any> {
-    val result: MutableMap<String, Any> = HashMap()
-    result["bean1"] = "bean1"
-    result["bean2"] = "bean2"
-    return result
-  }
+  override val registeredSingletons: Map<String, Any>
+    get() {
+      val result: MutableMap<String, Any> = HashMap()
+      result["bean1"] = "bean1"
+      result["bean2"] = "bean2"
+      return result
+    }
 
-  override fun registerBeans(): Set<BeanProperties> {
-    val result: MutableSet<BeanProperties> = HashSet()
-    val beanProperties = BeanProperties()
-    beanProperties.name = "myBean"
-    beanProperties.className = MyBean::class.java.name
-    result.add(beanProperties)
-    return result
-  }
+  override val registeredBeans: Set<BeanProperties>
+    get() {
+      val result: MutableSet<BeanProperties> = HashSet()
+      val beanProperties = BeanProperties()
+      beanProperties.name = "myBean"
+      beanProperties.className = MyBean::class.java.name
+      result.add(beanProperties)
+      return result
+    }
 }
 ```
 

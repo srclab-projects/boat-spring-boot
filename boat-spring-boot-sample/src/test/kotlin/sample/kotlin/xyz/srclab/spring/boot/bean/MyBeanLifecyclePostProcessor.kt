@@ -1,4 +1,4 @@
-package sample.kotlin.xyz.srclab.spring.boot.core
+package sample.kotlin.xyz.srclab.spring.boot.bean
 
 import org.springframework.beans.PropertyValues
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory

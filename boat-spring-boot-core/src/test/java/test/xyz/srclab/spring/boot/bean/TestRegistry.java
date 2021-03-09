@@ -19,7 +19,7 @@ public class TestRegistry extends BeanRegistry {
 
     @NotNull
     @Override
-    protected Map<String, Object> registerSingletons() {
+    protected Map<String, Object> registeredSingletons() {
         Map<String, Object> result = new HashMap<>();
         result.put("bean1", testProperties.getBean1());
         result.put("bean2", testProperties.getBean2());
@@ -28,7 +28,7 @@ public class TestRegistry extends BeanRegistry {
 
     @NotNull
     @Override
-    protected Set<BeanProperties> registerBeans() {
+    protected Set<BeanProperties> registeredBeans() {
         Set<BeanProperties> result = new HashSet<>();
         BeanProperties beanProperties = new BeanProperties();
         beanProperties.setName("testBean");
