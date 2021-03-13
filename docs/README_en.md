@@ -216,11 +216,11 @@ open class MyTaskSchedulerConfiguration {
 
 #### <a id="usage-core-exception"/>Exception
 
-异常包提供:
+Exception provides:
 
-* ExceptionStateHandler: 用户定义的bean, 将异常转为State;
-* ExceptionStateService: 自动注入的全局异常处理服务, 使用ExceptionStateHandler;
-* EnableExceptionStateService: 开启ExceptionStateService的注解.
+* ExceptionStateHandler: Handler bean defined by user, to convert exception to State;
+* ExceptionStateService: Auto-created global exception processing, use ExceptionStateHandler;
+* EnableExceptionStateService: Annotation to enable ExceptionStateService function.
 
 ##### Java Examples
 
