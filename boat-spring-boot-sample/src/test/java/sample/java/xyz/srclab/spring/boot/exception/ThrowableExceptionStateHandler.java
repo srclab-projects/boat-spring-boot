@@ -1,4 +1,4 @@
-package test.xyz.srclab.spring.boot.exception;
+package sample.java.xyz.srclab.spring.boot.exception;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;

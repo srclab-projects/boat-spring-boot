@@ -77,6 +77,7 @@ https://github.com/srclab-projects/boat-spring-boot
 ** <<usage-core-bean>>
 ** <<usage-core-task>>
 ** <<usage-core-schedule>>
+** <<usage-core-exception>>
 
 [#usage-core]
 === Core (boat-spring-boot-starter)
@@ -225,6 +226,106 @@ open class MyTaskSchedulerConfiguration {
         val poolProperties = ScheduledPoolProperties()
         poolProperties.threadNamePrefix = "6666"
         return newTaskScheduler(poolProperties)
+    }
+}
+----
+
+[#usage-core-exception]
+==== Exception
+
+Exception provides:
+
+* ExceptionStateHandler: Handler bean defined by user, to convert exception to State;
+* ExceptionStateService: Auto-created global exception processing, use ExceptionStateHandler;
+* EnableExceptionStateService: Annotation to enable ExceptionStateService function.
+
+===== Java Examples
+
+[source,java]
+----
+@SpringBootTest(classes = Starter.class)
+@EnableExceptionStateService
+public class ExceptionStateServiceSample extends AbstractTestNGSpringContextTests {
+
+    @Resource
+    private ExceptionStateService exceptionStateService;
+
+    @Test
+    public void testExceptionStateService() {
+        ExceptionStatus runtime = exceptionStateService.toState(new RuntimeException());
+        Assert.assertEquals(runtime.code(), "102");
+        ExceptionStatus throwable = exceptionStateService.toState(new Exception());
+        Assert.assertEquals(throwable.code(), "101");
+    }
+}
+
+@Component
+public class RuntimeExceptionExceptionStateHandler implements ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+
+    @NotNull
+    @Override
+    public Class<RuntimeException> supportedExceptionType() {
+        return RuntimeException.class;
+    }
+
+    @NotNull
+    @Override
+    public ExceptionStatus handle(@NotNull RuntimeException exception) {
+        return ExceptionStatus.of("102");
+    }
+}
+
+@Component
+public class ThrowableExceptionStateHandler implements ExceptionStateHandler<Throwable, ExceptionStatus> {
+
+    @NotNull
+    @Override
+    public Class<Throwable> supportedExceptionType() {
+        return Throwable.class;
+    }
+
+    @NotNull
+    @Override
+    public ExceptionStatus handle(@NotNull Throwable throwable) {
+        return ExceptionStatus.of("101");
+    }
+}
+----
+
+===== Kotlin Examples
+
+[source,kotlin]
+----
+@SpringBootTest(classes = [Starter::class])
+@EnableExceptionStateService
+class ExceptionStateServiceSample : AbstractTestNGSpringContextTests() {
+
+    @Resource
+    private lateinit var exceptionStateService: ExceptionStateService
+
+    @Test
+    fun testExceptionStateService() {
+        val runtime = exceptionStateService.toState<ExceptionStatus>(RuntimeException())
+        Assert.assertEquals(runtime.code, "102")
+        val throwable = exceptionStateService.toState<ExceptionStatus>(Exception())
+        Assert.assertEquals(throwable.code, "101")
+    }
+}
+
+@Component
+open class RuntimeExceptionExceptionStateHandler :
+    ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+    override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
+    override fun handle(e: RuntimeException): ExceptionStatus {
+        return ExceptionStatus.of("102")
+    }
+}
+
+@Component
+open class ThrowableExceptionStateHandler : ExceptionStateHandler<Throwable, ExceptionStatus> {
+    override val supportedExceptionType: Class<Throwable> = Throwable::class.java
+    override fun handle(e: Throwable): ExceptionStatus {
+        return ExceptionStatus.of("101")
     }
 }
 ----
