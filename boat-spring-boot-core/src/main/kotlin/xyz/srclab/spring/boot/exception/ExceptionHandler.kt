@@ -1,18 +1,12 @@
 package xyz.srclab.spring.boot.exception
 
-import xyz.srclab.common.base.INAPPLICABLE_JVM_NAME
+import xyz.srclab.common.collect.sorted
 import xyz.srclab.common.state.State
 
 /**
- * Handler to do with [E].
+ * Processor used to do with [Throwable] by a group of [ExceptionStateHandler]s.
  *
- * @see ExceptionProcessor
+ * @see ExceptionStateHandler
  */
-interface ExceptionHandler<E : Throwable, C, D, T : State<C, D, T>> {
-
-    @Suppress(INAPPLICABLE_JVM_NAME)
-    val supportedExceptionType: Class<*>
-        @JvmName("supportedExceptionType") get
-
-    fun handle(e: E): T
+open class ExceptionHandler<T : State<*, *, T>>() {
 }

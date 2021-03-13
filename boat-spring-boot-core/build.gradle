@@ -15,6 +15,7 @@ dependencies {
 
   api("xyz.srclab.common:boat-core")
   api("org.springframework.boot:spring-boot-starter")
+  api("org.springframework.boot:spring-boot-starter-web")
 
   testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
 

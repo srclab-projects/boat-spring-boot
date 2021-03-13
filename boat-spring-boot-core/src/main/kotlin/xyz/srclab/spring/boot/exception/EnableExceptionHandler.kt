@@ -1,20 +1,16 @@
 package xyz.srclab.spring.boot.exception
 
 import xyz.srclab.common.collect.sorted
-import xyz.srclab.common.state.State
 
-/**
- * Processor used to do with [Throwable] by a group of [ExceptionHandler]s.
- *
- * @see ExceptionHandler
- */
-open class ExceptionProcessor<C, D, T : State<C, D, T>>(handlers: Iterable<ExceptionHandler<Throwable, C, D, T>>) {
+annotation class EnableExceptionHandler()
 
-    private val handlerMap: Map<Class<*>, ExceptionHandler<Throwable, C, D, T>>
-    private val handlerArray: Array<ExceptionHandler<Throwable, C, D, T>>
+private class A(handlers: Iterable<ExceptionStateHandler<Throwable, T>>) {
+
+    private val handlerMap: Map<Class<*>, ExceptionStateHandler<Throwable, T>>
+    private val handlerArray: Array<ExceptionStateHandler<Throwable, T>>
 
     init {
-        val handlerMap: MutableMap<Class<*>, ExceptionHandler<Throwable, C, D, T>> = HashMap()
+        val handlerMap: MutableMap<Class<*>, ExceptionStateHandler<Throwable, T>> = HashMap()
         for (handler in handlers) {
             if (handlerMap.containsKey(handler.supportedExceptionType)) {
                 throw IllegalArgumentException(

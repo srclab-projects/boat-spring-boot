@@ -2,9 +2,9 @@ package test.xyz.srclab.spring.boot.exception;
 
 import org.jetbrains.annotations.NotNull;
 import xyz.srclab.common.exception.ExceptionStatus;
-import xyz.srclab.spring.boot.exception.ExceptionHandler;
+import xyz.srclab.spring.boot.exception.ExceptionStateHandler;
 
-public class ExceptionExceptionHandler implements ExceptionHandler<Exception, String, String, ExceptionStatus> {
+public class ExceptionExceptionStateHandler implements ExceptionStateHandler<Exception, ExceptionStatus> {
 
     @NotNull
     @Override
@@ -15,6 +15,6 @@ public class ExceptionExceptionHandler implements ExceptionHandler<Exception, St
     @NotNull
     @Override
     public ExceptionStatus handle(@NotNull Exception exception) {
-        return ExceptionStatus.of("101");
+        return ExceptionStatus.of("102");
     }
 }
