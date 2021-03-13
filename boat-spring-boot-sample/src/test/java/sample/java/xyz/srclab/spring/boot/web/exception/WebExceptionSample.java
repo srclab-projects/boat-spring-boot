@@ -1,4 +1,4 @@
-package test.xyz.srclab.spring.boot.web.exception;
+package sample.java.xyz.srclab.spring.boot.web.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +19,9 @@ import javax.annotation.Resource;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @EnableWebExceptionStateService
-public class WebExceptionTest extends AbstractTestNGSpringContextTests {
+public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebExceptionTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
 
     @LocalServerPort
     private int port;

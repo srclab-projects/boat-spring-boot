@@ -20,5 +20,5 @@ import xyz.srclab.spring.boot.exception.ExceptionStateService
 @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE, AnnotationTarget.TYPEALIAS)
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
-@Import(ExceptionStateService::class)
+@Import(WebExceptionAdvice::class)
 annotation class EnableWebExceptionStateService

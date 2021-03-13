@@ -68,6 +68,8 @@ https://github.com/srclab-projects/boat-spring-boot
   * [Task](#usage-core-task)
   * [Schedule](#usage-core-schedule)
   * [Exception](#usage-core-exception)
+* [Web (boat-spring-boot-web-starter)](#usage-web)
+  * [Exception](#usage-web-exception)
 
 ### <a id="usage-core"/>Core (boat-spring-boot-starter)
 
@@ -307,6 +309,87 @@ open class ThrowableExceptionStateHandler : ExceptionStateHandler<Throwable, Exc
   override val supportedExceptionType: Class<Throwable> = Throwable::class.java
   override fun handle(e: Throwable): ExceptionStatus {
     return ExceptionStatus.of("101")
+  }
+}
+```
+
+### <a id="usage-web"/>Web (boat-spring-boot-web-starter)
+
+#### <a id="usage-web-exception"/>Exception
+
+Web异常提供:
+
+* EnableWebExceptionStateService: Web全局异常处理, 使用core包的EnableExceptionStateService, 查阅它的资料就知道.
+
+##### Java Examples
+
+```java
+
+@SpringBootTest(
+    classes = Starter.class,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+@EnableWebExceptionStateService
+public class WebExceptionSample extends AbstractTestNGSpringContextTests {
+
+  private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
+
+  @LocalServerPort
+  private int port;
+
+  @Resource
+  private TestRestTemplate restTemplate;
+
+  @Test
+  public void testException() {
+    String result = restTemplate.getForObject(
+        "http://localhost:" + port + "/test/exception?body=testException",
+        String.class
+    );
+    logger.info("/test/exception?body=testException: " + result);
+    Assert.assertEquals(result, "testException");
+
+    result = restTemplate.getForObject(
+        "http://localhost:" + port + "/test/exception?body=testException0",
+        String.class
+    );
+    logger.info("/test/exception?body=testException: " + result);
+    Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
+  }
+}
+```
+
+##### Kotlin Examples
+
+```kotlin
+@SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableWebExceptionStateService
+class WebExceptionSample : AbstractTestNGSpringContextTests() {
+
+  @LocalServerPort
+  private val port = 0
+
+  @Resource
+  private val restTemplate: TestRestTemplate? = null
+
+  @Test
+  fun testException() {
+    var result = restTemplate!!.getForObject(
+      "http://localhost:$port/test/exception?body=testException",
+      String::class.java
+    )
+    Companion.logger.info("/test/exception?body=testException: $result")
+    Assert.assertEquals(result, "testException")
+    result = restTemplate.getForObject(
+      "http://localhost:$port/test/exception?body=testException0",
+      String::class.java
+    )
+    Companion.logger.info("/test/exception?body=testException: $result")
+    Assert.assertEquals(result, ExceptionStatus.of("102").toJsonString())
+  }
+
+  companion object {
+    private val logger = LoggerFactory.getLogger(WebExceptionSample::class.java)
   }
 }
 ```
