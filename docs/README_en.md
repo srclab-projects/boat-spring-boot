@@ -315,7 +315,7 @@ open class ThrowableExceptionStateHandler : ExceptionStateHandler<Throwable, Exc
 ## <a id="contact"/>Contribution and Contact
 
 * fredsuvn@163.com
-* https://github.com/srclab-projects
+* https://github.com/srclab-projects/boat-spring-boot
 * QQ group: 1037555759
 
 ## <a id="lecense"/>License
