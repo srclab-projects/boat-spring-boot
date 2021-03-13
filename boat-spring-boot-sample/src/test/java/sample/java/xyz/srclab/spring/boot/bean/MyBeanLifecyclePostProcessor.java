@@ -1,4 +1,4 @@
-package sample.java.xyz.srclab.spring.boot.core;
+package sample.java.xyz.srclab.spring.boot.bean;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;

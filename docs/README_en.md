@@ -68,15 +68,16 @@ https://github.com/srclab-projects/boat-spring-boot
   * [Bean](#usage-core-bean)
   * [Task](#usage-core-task)
   * [Schedule](#usage-core-schedule)
+  * [Exception](#usage-core-exception)
 
 ### <a id="usage-core"/>Core (boat-spring-boot-starter)
 
 #### <a id="usage-core-bean"/>Bean
 
-Bean提供:
+Bean provides:
 
-* BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
-* BeanRegistry: 动态bean注册.
+* BeanLifecyclePostProcessor: Spring Bean lifecycle post processor;
+* BeanRegistry: Dynamic bean registry.
 
 ##### Java Examples
 
@@ -87,7 +88,7 @@ public class MyBeanRegistry extends BeanRegistry {
 
   @NotNull
   @Override
-  protected Map<String, Object> registerSingletons() {
+  protected Map<String, Object> registeredSingletons() {
     Map<String, Object> result = new HashMap<>();
     result.put("bean1", "bean1");
     result.put("bean2", "bean2");
@@ -96,7 +97,7 @@ public class MyBeanRegistry extends BeanRegistry {
 
   @NotNull
   @Override
-  protected Set<BeanProperties> registerBeans() {
+  protected Set<BeanProperties> registeredBeans() {
     Set<BeanProperties> result = new HashSet<>();
     BeanProperties beanProperties = new BeanProperties();
     beanProperties.setName("myBean");
@@ -113,30 +114,32 @@ public class MyBeanRegistry extends BeanRegistry {
 @Component
 open class MyBeanRegistry : BeanRegistry() {
 
-  override fun registerSingletons(): Map<String, Any> {
-    val result: MutableMap<String, Any> = HashMap()
-    result["bean1"] = "bean1"
-    result["bean2"] = "bean2"
-    return result
-  }
+  override val registeredSingletons: Map<String, Any>
+    get() {
+      val result: MutableMap<String, Any> = HashMap()
+      result["bean1"] = "bean1"
+      result["bean2"] = "bean2"
+      return result
+    }
 
-  override fun registerBeans(): Set<BeanProperties> {
-    val result: MutableSet<BeanProperties> = HashSet()
-    val beanProperties = BeanProperties()
-    beanProperties.name = "myBean"
-    beanProperties.className = MyBean::class.java.name
-    result.add(beanProperties)
-    return result
-  }
+  override val registeredBeans: Set<BeanProperties>
+    get() {
+      val result: MutableSet<BeanProperties> = HashSet()
+      val beanProperties = BeanProperties()
+      beanProperties.name = "myBean"
+      beanProperties.className = MyBean::class.java.name
+      result.add(beanProperties)
+      return result
+    }
 }
 ```
 
 #### <a id="usage-core-task"/>Task
 
-Task提供:
+Task provides:
 
-* ThreadPoolProperties: 线程池属性;
-* TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties.
+* ThreadPoolProperties: Properties for thread pool;
+* TaskExecutors: Help fast create TaskExecutor with ThreadPoolProperties.
 
 ##### Java Examples
 
@@ -173,10 +176,10 @@ open class MyTaskExecutorConfigurationKt {
 
 #### <a id="usage-core-schedule"/>Schedule
 
-Schedule提供:
+Schedule provides:
 
-* ScheduledPoolProperties: 调度线程池属性;
-* TaskSchedulers: 快速创建TaskScheduler, 通常使用ScheduledPoolProperties.
+* ScheduledPoolProperties: Properties for scheduled thread pool;
+* TaskSchedulers: Help fast create TaskScheduler with ScheduledPoolProperties.
 
 ##### Java Examples
 
@@ -207,6 +210,104 @@ open class MyTaskSchedulerConfiguration {
     val poolProperties = ScheduledPoolProperties()
     poolProperties.threadNamePrefix = "6666"
     return newTaskScheduler(poolProperties)
+  }
+}
+```
+
+#### <a id="usage-core-exception"/>Exception
+
+异常包提供:
+
+* ExceptionStateHandler: 用户定义的bean, 将异常转为State;
+* ExceptionStateService: 自动注入的全局异常处理服务, 使用ExceptionStateHandler;
+* EnableExceptionStateService: 开启ExceptionStateService的注解.
+
+##### Java Examples
+
+```java
+
+@SpringBootTest(classes = Starter.class)
+@EnableExceptionStateService
+public class ExceptionStateServiceSample extends AbstractTestNGSpringContextTests {
+
+  @Resource
+  private ExceptionStateService exceptionStateService;
+
+  @Test
+  public void testExceptionStateService() {
+    ExceptionStatus runtime = exceptionStateService.toState(new RuntimeException());
+    Assert.assertEquals(runtime.code(), "102");
+    ExceptionStatus throwable = exceptionStateService.toState(new Exception());
+    Assert.assertEquals(throwable.code(), "101");
+  }
+}
+
+@Component
+public class RuntimeExceptionExceptionStateHandler implements ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+
+  @NotNull
+  @Override
+  public Class<RuntimeException> supportedExceptionType() {
+    return RuntimeException.class;
+  }
+
+  @NotNull
+  @Override
+  public ExceptionStatus handle(@NotNull RuntimeException exception) {
+    return ExceptionStatus.of("102");
+  }
+}
+
+@Component
+public class ThrowableExceptionStateHandler implements ExceptionStateHandler<Throwable, ExceptionStatus> {
+
+  @NotNull
+  @Override
+  public Class<Throwable> supportedExceptionType() {
+    return Throwable.class;
+  }
+
+  @NotNull
+  @Override
+  public ExceptionStatus handle(@NotNull Throwable throwable) {
+    return ExceptionStatus.of("101");
+  }
+}
+```
+
+##### Kotlin Examples
+
+```kotlin
+@SpringBootTest(classes = [Starter::class])
+@EnableExceptionStateService
+class ExceptionStateServiceSample : AbstractTestNGSpringContextTests() {
+
+  @Resource
+  private lateinit var exceptionStateService: ExceptionStateService
+
+  @Test
+  fun testExceptionStateService() {
+    val runtime = exceptionStateService.toState<ExceptionStatus>(RuntimeException())
+    Assert.assertEquals(runtime.code, "102")
+    val throwable = exceptionStateService.toState<ExceptionStatus>(Exception())
+    Assert.assertEquals(throwable.code, "101")
+  }
+}
+
+@Component
+open class RuntimeExceptionExceptionStateHandler :
+  ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+  override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
+  override fun handle(e: RuntimeException): ExceptionStatus {
+    return ExceptionStatus.of("102")
+  }
+}
+
+@Component
+open class ThrowableExceptionStateHandler : ExceptionStateHandler<Throwable, ExceptionStatus> {
+  override val supportedExceptionType: Class<Throwable> = Throwable::class.java
+  override fun handle(e: Throwable): ExceptionStatus {
+    return ExceptionStatus.of("101")
   }
 }
 ```

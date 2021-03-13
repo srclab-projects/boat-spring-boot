@@ -1,4 +1,4 @@
-package sample.java.xyz.srclab.spring.boot.core;
+package sample.java.xyz.srclab.spring.boot.bean;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class MyBeanRegistry extends BeanRegistry {
 
     @NotNull
     @Override
-    protected Map<String, Object> registerSingletons() {
+    protected Map<String, Object> registeredSingletons() {
         Map<String, Object> result = new HashMap<>();
         result.put("bean1", "bean1");
         result.put("bean2", "bean2");
@@ -24,7 +24,7 @@ public class MyBeanRegistry extends BeanRegistry {
 
     @NotNull
     @Override
-    protected Set<BeanProperties> registerBeans() {
+    protected Set<BeanProperties> registeredBeans() {
         Set<BeanProperties> result = new HashSet<>();
         BeanProperties beanProperties = new BeanProperties();
         beanProperties.setName("myBean");

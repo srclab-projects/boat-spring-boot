@@ -1,4 +1,4 @@
-package sample.java.xyz.srclab.spring.boot.core;
+package sample.java.xyz.srclab.spring.boot.exception;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
