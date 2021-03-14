@@ -228,23 +228,23 @@ open class MyTaskSchedulerConfiguration {
 ```java
 
 @SpringBootTest(classes = Starter.class)
-@EnableExceptionStateService
-public class ExceptionStateServiceSample extends AbstractTestNGSpringContextTests {
+@EnableExceptionStatusService
+public class ExceptionStatusServiceSample extends AbstractTestNGSpringContextTests {
 
   @Resource
-  private ExceptionStateService exceptionStateService;
+  private ExceptionStatusService exceptionStatusService;
 
   @Test
   public void testExceptionStateService() {
-    ExceptionStatus runtime = exceptionStateService.toState(new RuntimeException());
+    ExceptionStatus runtime = exceptionStatusService.toState(new RuntimeException());
     Assert.assertEquals(runtime.code(), "102");
-    ExceptionStatus throwable = exceptionStateService.toState(new Exception());
+    ExceptionStatus throwable = exceptionStatusService.toState(new Exception());
     Assert.assertEquals(throwable.code(), "101");
   }
 }
 
 @Component
-public class RuntimeExceptionExceptionStateHandler implements ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+public class RuntimeExceptionStatusHandler implements ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
 
   @NotNull
   @Override
@@ -260,7 +260,7 @@ public class RuntimeExceptionExceptionStateHandler implements ExceptionStateHand
 }
 
 @Component
-public class ThrowableExceptionStateHandler implements ExceptionStateHandler<Throwable, ExceptionStatus> {
+public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable, ExceptionStatus> {
 
   @NotNull
   @Override
@@ -280,24 +280,24 @@ public class ThrowableExceptionStateHandler implements ExceptionStateHandler<Thr
 
 ```kotlin
 @SpringBootTest(classes = [Starter::class])
-@EnableExceptionStateService
-class ExceptionStateServiceSample : AbstractTestNGSpringContextTests() {
+@EnableExceptionStatusService
+class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
 
   @Resource
-  private lateinit var exceptionStateService: ExceptionStateService
+  private lateinit var exceptionStatusService: ExceptionStatusService
 
   @Test
   fun testExceptionStateService() {
-    val runtime = exceptionStateService.toState<ExceptionStatus>(RuntimeException())
+    val runtime = exceptionStatusService.toState<ExceptionStatus>(RuntimeException())
     Assert.assertEquals(runtime.code, "102")
-    val throwable = exceptionStateService.toState<ExceptionStatus>(Exception())
+    val throwable = exceptionStatusService.toState<ExceptionStatus>(Exception())
     Assert.assertEquals(throwable.code, "101")
   }
 }
 
 @Component
-open class RuntimeExceptionExceptionStateHandler :
-  ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+open class RuntimeExceptionStatusHandler :
+  ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
   override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
   override fun handle(e: RuntimeException): ExceptionStatus {
     return ExceptionStatus.of("102")
@@ -305,7 +305,7 @@ open class RuntimeExceptionExceptionStateHandler :
 }
 
 @Component
-open class ThrowableExceptionStateHandler : ExceptionStateHandler<Throwable, ExceptionStatus> {
+open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionStatus> {
   override val supportedExceptionType: Class<Throwable> = Throwable::class.java
   override fun handle(e: Throwable): ExceptionStatus {
     return ExceptionStatus.of("101")
@@ -329,7 +329,7 @@ Web异常提供:
     classes = Starter.class,
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@EnableWebExceptionStateService
+@EnableWebExceptionStatusService
 public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 
   private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
@@ -363,7 +363,7 @@ public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 
 ```kotlin
 @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableWebExceptionStateService
+@EnableWebExceptionStatusService
 class WebExceptionSample : AbstractTestNGSpringContextTests() {
 
   @LocalServerPort

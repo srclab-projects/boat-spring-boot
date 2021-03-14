@@ -13,11 +13,11 @@ import javax.annotation.Resource
 /**
  * Provides global exception service.
  *
- * @see EnableExceptionStateService
- * @see ExceptionStateHandler
+ * @see EnableExceptionStatusService
+ * @see ExceptionStatusHandler
  */
-@Component("xyz.srclab.spring.boot.exception.ExceptionStateService")
-open class ExceptionStateService {
+@Component("xyz.srclab.spring.boot.exception.ExceptionStatusService")
+open class ExceptionStatusService {
 
     @Resource
     private lateinit var applicationContext: ApplicationContext
@@ -26,8 +26,8 @@ open class ExceptionStateService {
 
     @PostConstruct
     private fun init() {
-        val handlers = LinkedList<ExceptionStateHandler<Throwable, *>>()
-        for (entry in applicationContext.getBeansOfType(ExceptionStateHandler::class.java)) {
+        val handlers = LinkedList<ExceptionStatusHandler<Throwable, *>>()
+        for (entry in applicationContext.getBeansOfType(ExceptionStatusHandler::class.java)) {
             handlers.add(entry.value.asAny())
         }
         exceptionStateConverter = FastConverter.newFastConverter(handlers.map {

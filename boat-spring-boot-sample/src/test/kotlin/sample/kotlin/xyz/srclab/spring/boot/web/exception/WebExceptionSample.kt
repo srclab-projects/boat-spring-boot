@@ -13,12 +13,12 @@ import org.testng.Assert
 import org.testng.annotations.Test
 import xyz.srclab.common.exception.ExceptionStatus
 import xyz.srclab.common.serialize.json.toJsonString
-import xyz.srclab.spring.boot.exception.ExceptionStateHandler
-import xyz.srclab.spring.boot.web.exception.EnableWebExceptionStateService
+import xyz.srclab.spring.boot.exception.ExceptionStatusHandler
+import xyz.srclab.spring.boot.web.exception.EnableWebExceptionStatusService
 import javax.annotation.Resource
 
 @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableWebExceptionStateService
+@EnableWebExceptionStatusService
 class WebExceptionSample : AbstractTestNGSpringContextTests() {
 
     @LocalServerPort
@@ -62,8 +62,8 @@ open class TestController {
 }
 
 @Component
-open class RuntimeExceptionExceptionStateHandler :
-    ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+open class RuntimeExceptionStatusHandler :
+    ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
     override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
     override fun handle(e: RuntimeException): ExceptionStatus {
         return ExceptionStatus.of("102")
@@ -71,7 +71,7 @@ open class RuntimeExceptionExceptionStateHandler :
 }
 
 @Component
-open class ThrowableExceptionStateHandler : ExceptionStateHandler<Throwable, ExceptionStatus> {
+open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionStatus> {
     override val supportedExceptionType: Class<Throwable> = Throwable::class.java
     override fun handle(e: Throwable): ExceptionStatus {
         return ExceptionStatus.of("101")

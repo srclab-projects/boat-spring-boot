@@ -5,20 +5,20 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
-import xyz.srclab.spring.boot.exception.ExceptionStateService
+import xyz.srclab.spring.boot.exception.ExceptionStatusService
 import javax.annotation.Resource
 
-@Import(ExceptionStateService::class)
+@Import(ExceptionStatusService::class)
 @ControllerAdvice
 @Component("xyz.srclab.spring.boot.web.exception.WebExceptionAdvice")
 open class WebExceptionAdvice {
 
     @Resource
-    private lateinit var exceptionStateService: ExceptionStateService
+    private lateinit var exceptionStatusService: ExceptionStatusService
 
     @ExceptionHandler
     @ResponseBody
     open fun doException(e: Throwable): Any {
-        return exceptionStateService.toState(e)
+        return exceptionStatusService.toState(e)
     }
 }

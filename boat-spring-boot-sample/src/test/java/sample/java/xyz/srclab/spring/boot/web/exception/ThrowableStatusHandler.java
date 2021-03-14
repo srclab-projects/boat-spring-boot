@@ -1,12 +1,12 @@
-package test.xyz.srclab.spring.boot.web.exception;
+package sample.java.xyz.srclab.spring.boot.web.exception;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import xyz.srclab.common.exception.ExceptionStatus;
-import xyz.srclab.spring.boot.exception.ExceptionStateHandler;
+import xyz.srclab.spring.boot.exception.ExceptionStatusHandler;
 
 @Component
-public class ThrowableExceptionStateHandler implements ExceptionStateHandler<Throwable, ExceptionStatus> {
+public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable, ExceptionStatus> {
 
     @NotNull
     @Override

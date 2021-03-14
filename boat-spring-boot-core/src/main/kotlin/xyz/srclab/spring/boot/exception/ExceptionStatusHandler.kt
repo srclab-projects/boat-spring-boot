@@ -6,9 +6,9 @@ import xyz.srclab.common.state.State
 /**
  * Handler to convert throwable object [E] to state object [T].
  *
- * @see EnableExceptionStateService
+ * @see EnableExceptionStatusService
  */
-interface ExceptionStateHandler<E : Throwable, T : State<*, *, T>> {
+interface ExceptionStatusHandler<E : Throwable, T : State<*, *, T>> {
 
     @Suppress(INAPPLICABLE_JVM_NAME)
     val supportedExceptionType: Class<out Throwable>
