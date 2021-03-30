@@ -7,30 +7,30 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.testng.Assert
 import org.testng.annotations.Test
 import xyz.srclab.common.exception.ExceptionStatus
-import xyz.srclab.spring.boot.exception.EnableExceptionStateService
-import xyz.srclab.spring.boot.exception.ExceptionStateHandler
-import xyz.srclab.spring.boot.exception.ExceptionStateService
+import xyz.srclab.spring.boot.exception.EnableExceptionService
+import xyz.srclab.spring.boot.exception.ExceptionStatusHandler
+import xyz.srclab.spring.boot.exception.ExceptionStatusService
 import javax.annotation.Resource
 
 @SpringBootTest(classes = [Starter::class])
-@EnableExceptionStateService
-class ExceptionStateServiceSample : AbstractTestNGSpringContextTests() {
+@EnableExceptionService
+class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
 
     @Resource
-    private lateinit var exceptionStateService: ExceptionStateService
+    private lateinit var exceptionStatusService: ExceptionStatusService
 
     @Test
     fun testExceptionStateService() {
-        val runtime = exceptionStateService.toState<ExceptionStatus>(RuntimeException())
+        val runtime = exceptionStatusService.toState<ExceptionStatus>(RuntimeException())
         Assert.assertEquals(runtime.code, "102")
-        val throwable = exceptionStateService.toState<ExceptionStatus>(Exception())
+        val throwable = exceptionStatusService.toState<ExceptionStatus>(Exception())
         Assert.assertEquals(throwable.code, "101")
     }
 }
 
 @Component
-open class RuntimeExceptionExceptionStateHandler :
-    ExceptionStateHandler<RuntimeException, ExceptionStatus> {
+open class RuntimeExceptionStatusHandler :
+    ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
     override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
     override fun handle(e: RuntimeException): ExceptionStatus {
         return ExceptionStatus.of("102")
@@ -38,7 +38,7 @@ open class RuntimeExceptionExceptionStateHandler :
 }
 
 @Component
-open class ThrowableExceptionStateHandler : ExceptionStateHandler<Throwable, ExceptionStatus> {
+open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionStatus> {
     override val supportedExceptionType: Class<Throwable> = Throwable::class.java
     override fun handle(e: Throwable): ExceptionStatus {
         return ExceptionStatus.of("101")

@@ -1,7 +1,6 @@
 package xyz.srclab.spring.boot.exception
 
 import org.springframework.context.ApplicationContext
-import org.springframework.stereotype.Component
 import xyz.srclab.common.base.asAny
 import xyz.srclab.common.convert.FastConvertHandler
 import xyz.srclab.common.convert.FastConverter
@@ -13,11 +12,10 @@ import javax.annotation.Resource
 /**
  * Provides global exception service.
  *
- * @see EnableExceptionStateService
- * @see ExceptionStateHandler
+ * @see EnableExceptionService
+ * @see ExceptionStatusHandler
  */
-@Component("xyz.srclab.spring.boot.exception.ExceptionStateService")
-open class ExceptionStateService {
+open class ExceptionStatusService {
 
     @Resource
     private lateinit var applicationContext: ApplicationContext
@@ -26,8 +24,8 @@ open class ExceptionStateService {
 
     @PostConstruct
     private fun init() {
-        val handlers = LinkedList<ExceptionStateHandler<Throwable, *>>()
-        for (entry in applicationContext.getBeansOfType(ExceptionStateHandler::class.java)) {
+        val handlers = LinkedList<ExceptionStatusHandler<Throwable, *>>()
+        for (entry in applicationContext.getBeansOfType(ExceptionStatusHandler::class.java)) {
             handlers.add(entry.value.asAny())
         }
         exceptionStateConverter = FastConverter.newFastConverter(handlers.map {

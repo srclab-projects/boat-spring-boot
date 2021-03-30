@@ -2,7 +2,7 @@ plugins {
   id 'build.kotlin-publish-jar'
 }
 
-description = "Boat Spring Boot Core: Core and basic interfaces, functions and utilities for Spring Boot."
+description = "Boat Spring Boot Web: Web interfaces, functions and utilities for Spring Boot."
 
 java {
   registerFeature('optionalSupport') {
@@ -13,8 +13,8 @@ java {
 dependencies {
   implementation(platform(project(":boat-spring-boot-dependencies")))
 
-  api("xyz.srclab.common:boat-all")
-  api("org.springframework.boot:spring-boot-starter")
+  api(project(":boat-spring-boot-starters:boat-spring-boot-starter"))
+  api("org.springframework.boot:spring-boot-starter-web")
 
   testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
 

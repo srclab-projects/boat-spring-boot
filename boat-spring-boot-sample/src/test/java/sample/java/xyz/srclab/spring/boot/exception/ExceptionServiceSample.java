@@ -5,23 +5,23 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.srclab.common.exception.ExceptionStatus;
-import xyz.srclab.spring.boot.exception.EnableExceptionStateService;
-import xyz.srclab.spring.boot.exception.ExceptionStateService;
+import xyz.srclab.spring.boot.exception.EnableExceptionService;
+import xyz.srclab.spring.boot.exception.ExceptionStatusService;
 
 import javax.annotation.Resource;
 
 @SpringBootTest(classes = Starter.class)
-@EnableExceptionStateService
-public class ExceptionStateServiceSample extends AbstractTestNGSpringContextTests {
+@EnableExceptionService
+public class ExceptionServiceSample extends AbstractTestNGSpringContextTests {
 
     @Resource
-    private ExceptionStateService exceptionStateService;
+    private ExceptionStatusService exceptionStatusService;
 
     @Test
     public void testExceptionStateService() {
-        ExceptionStatus runtime = exceptionStateService.toState(new RuntimeException());
+        ExceptionStatus runtime = exceptionStatusService.toState(new RuntimeException());
         Assert.assertEquals(runtime.code(), "102");
-        ExceptionStatus throwable = exceptionStateService.toState(new Exception());
+        ExceptionStatus throwable = exceptionStatusService.toState(new Exception());
         Assert.assertEquals(throwable.code(), "101");
     }
 }
