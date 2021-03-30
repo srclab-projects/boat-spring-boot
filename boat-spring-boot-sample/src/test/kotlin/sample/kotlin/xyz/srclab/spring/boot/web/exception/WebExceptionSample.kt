@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,12 +15,12 @@ import org.testng.Assert
 import org.testng.annotations.Test
 import xyz.srclab.common.exception.ExceptionStatus
 import xyz.srclab.common.serialize.json.toJsonString
-import xyz.srclab.spring.boot.exception.ExceptionStatusHandler
-import xyz.srclab.spring.boot.web.exception.EnableWebExceptionStatusService
+import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService
+import xyz.srclab.spring.boot.web.exception.WebExceptionHandler
 import javax.annotation.Resource
 
 @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableWebExceptionStatusService
+@EnableWebExceptionService
 class WebExceptionSample : AbstractTestNGSpringContextTests() {
 
     @LocalServerPort
@@ -63,18 +65,18 @@ open class TestController {
 
 @Component
 open class RuntimeExceptionStatusHandler :
-    ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
+    WebExceptionHandler<RuntimeException> {
     override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
-    override fun handle(e: RuntimeException): ExceptionStatus {
-        return ExceptionStatus.of("102")
+    override fun handle(e: RuntimeException): ResponseEntity<ExceptionStatus> {
+        return ResponseEntity(ExceptionStatus.of("102"), HttpStatus.OK)
     }
 }
 
 @Component
-open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionStatus> {
+open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
     override val supportedExceptionType: Class<Throwable> = Throwable::class.java
-    override fun handle(e: Throwable): ExceptionStatus {
-        return ExceptionStatus.of("101")
+    override fun handle(e: Throwable): ResponseEntity<ExceptionStatus> {
+        return ResponseEntity(ExceptionStatus.of("101"), HttpStatus.OK)
     }
 }
 

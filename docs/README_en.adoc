@@ -340,7 +340,9 @@ open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionS
 
 Web exception provides:
 
-* EnableWebExceptionStateService: Global web exception processing, use core's EnableExceptionStateService, see it.
+* EnableWebExceptionService: Annotation to enable web exception service;
+* WebExceptionService: Auto-created global web exception processing, use WebExceptionHandler;
+* WebExceptionHandler: Handler bean defined by user, to convert exception to ResponseEntity.
 
 ===== Java Examples
 
@@ -350,7 +352,7 @@ Web exception provides:
         classes = Starter.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@EnableWebExceptionStatusService
+@EnableWebExceptionService
 public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 
     private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
@@ -378,6 +380,55 @@ public class WebExceptionSample extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
     }
 }
+
+@RequestMapping("test")
+@RestController
+public class TestController {
+
+    @RequestMapping("exception")
+    public String testException(String body) {
+        if ("testException".equals(body)) {
+            return body;
+        }
+        throw new IllegalArgumentException("Must be testException!");
+    }
+}
+
+@Component
+public class RuntimeExceptionHandler implements WebExceptionHandler<RuntimeException> {
+
+    @NotNull
+    @Override
+    public Class<RuntimeException> supportedExceptionType() {
+        return RuntimeException.class;
+    }
+
+    @NotNull
+    @Override
+    public ResponseEntity<ExceptionStatus> handle(@NotNull RuntimeException exception) {
+        return new ResponseEntity<>(ExceptionStatus.of("102"), HttpStatus.OK);
+    }
+}
+
+@Component
+public class ThrowableHandler implements WebExceptionHandler<Throwable> {
+
+    @NotNull
+    @Override
+    public Class<Throwable> supportedExceptionType() {
+        return Throwable.class;
+    }
+
+    @NotNull
+    @Override
+    public ResponseEntity<ExceptionStatus> handle(@NotNull Throwable throwable) {
+        return new ResponseEntity<>(ExceptionStatus.of("101"), HttpStatus.OK);
+    }
+}
+
+@SpringBootApplication
+public class Starter {
+}
 ----
 
 ===== Kotlin Examples
@@ -385,7 +436,7 @@ public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 [source,kotlin]
 ----
 @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableWebExceptionStatusService
+@EnableWebExceptionService
 class WebExceptionSample : AbstractTestNGSpringContextTests() {
 
     @LocalServerPort
@@ -414,6 +465,39 @@ class WebExceptionSample : AbstractTestNGSpringContextTests() {
         private val logger = LoggerFactory.getLogger(WebExceptionSample::class.java)
     }
 }
+
+@RequestMapping("test")
+@RestController
+open class TestController {
+
+    @RequestMapping("exception")
+    open fun testException(body: String): String {
+        if (body == "testException") {
+            return body
+        }
+        throw IllegalArgumentException("Must be testException!")
+    }
+}
+
+@Component
+open class RuntimeExceptionStatusHandler :
+    WebExceptionHandler<RuntimeException> {
+    override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
+    override fun handle(e: RuntimeException): ResponseEntity<ExceptionStatus> {
+        return ResponseEntity(ExceptionStatus.of("102"), HttpStatus.OK)
+    }
+}
+
+@Component
+open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
+    override val supportedExceptionType: Class<Throwable> = Throwable::class.java
+    override fun handle(e: Throwable): ResponseEntity<ExceptionStatus> {
+        return ResponseEntity(ExceptionStatus.of("101"), HttpStatus.OK)
+    }
+}
+
+@SpringBootApplication
+open class Starter
 ----
 
 [#contact]

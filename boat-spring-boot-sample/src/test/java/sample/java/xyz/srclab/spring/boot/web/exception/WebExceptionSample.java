@@ -10,7 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.srclab.common.exception.ExceptionStatus;
 import xyz.srclab.common.serialize.json.JsonSerials;
-import xyz.srclab.spring.boot.web.exception.EnableWebExceptionStatusService;
+import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
 
 import javax.annotation.Resource;
 
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
         classes = Starter.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@EnableWebExceptionStatusService
+@EnableWebExceptionService
 public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 
     private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
