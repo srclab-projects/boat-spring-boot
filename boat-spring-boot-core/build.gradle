@@ -13,7 +13,7 @@ java {
 dependencies {
   implementation(platform(project(":boat-spring-boot-dependencies")))
 
-  api("xyz.srclab.common:boat-core")
+  api("xyz.srclab.common:boat-all")
   api("org.springframework.boot:spring-boot-starter")
 
   testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
