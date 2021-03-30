@@ -18,8 +18,9 @@ dependencies {
 
   testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
 
-  kapt("org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion")
-  kapt("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+  kapt(platform(project(":boat-spring-boot-dependencies")))
+  kapt("org.springframework.boot:spring-boot-autoconfigure-processor")
+  kapt("org.springframework.boot:spring-boot-configuration-processor")
 
   //developmentOnly("org.springframework.boot:spring-boot-devtools")
 }

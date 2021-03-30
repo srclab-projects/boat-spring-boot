@@ -13,5 +13,5 @@ javaPlatform {
 dependencies {
   api platform(SpringBootPlugin.BOM_COORDINATES)
   api platform("xyz.srclab.common:boat-bom:0.0.0")
-  api platform("xyz.srclab.bom:srclab-dependencies:1.1.1")
+  api platform("xyz.srclab.bom:srclab-dependencies:2.0.0")
 }
