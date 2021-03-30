@@ -220,16 +220,16 @@ open class MyTaskSchedulerConfiguration {
 
 Exception provides:
 
-* ExceptionStateHandler: Handler bean defined by user, to convert exception to State;
-* ExceptionStateService: Auto-created global exception processing, use ExceptionStateHandler;
-* EnableExceptionStateService: Annotation to enable ExceptionStateService function.
+* EnableExceptionService: Annotation to enable exception service;
+* ExceptionStatusService: Auto-created global exception processing, use ExceptionStateHandler;
+* ExceptionStatusHandler: Handler bean defined by user, to convert exception to State.
 
 ##### Java Examples
 
 ```java
 
 @SpringBootTest(classes = Starter.class)
-@EnableExceptionStatusService
+@EnableExceptionService
 public class ExceptionStatusServiceSample extends AbstractTestNGSpringContextTests {
 
   @Resource
@@ -281,7 +281,7 @@ public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable,
 
 ```kotlin
 @SpringBootTest(classes = [Starter::class])
-@EnableExceptionStatusService
+@EnableExceptionService
 class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
 
   @Resource

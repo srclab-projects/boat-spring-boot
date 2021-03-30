@@ -4,10 +4,9 @@ import org.springframework.context.annotation.Import
 import xyz.srclab.common.state.State
 
 /**
- * Enable exception state handler function.
+ * Enable exception service, include:
  *
- * This function can be used in global exception processing, it use bean of type [ExceptionStatusHandler] to convert
- * exception to [State]. Autowire bean [ExceptionStatusService] to use it.
+ * * [ExceptionStatusService]: autowired bean to convert exception to [State] by [ExceptionStatusHandler].
  *
  * @author sunqian
  *
@@ -17,5 +16,5 @@ import xyz.srclab.common.state.State
 @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE, AnnotationTarget.TYPEALIAS)
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
-@Import(ExceptionStatusService::class)
-annotation class EnableExceptionStatusService
+@Import(ExceptionServiceConfiguration::class)
+annotation class EnableExceptionService

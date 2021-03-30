@@ -219,16 +219,16 @@ open class MyTaskSchedulerConfiguration {
 
 异常包提供:
 
-* ExceptionStateHandler: 用户定义的bean, 将异常转为State;
-* ExceptionStateService: 自动注入的全局异常处理服务, 使用ExceptionStateHandler;
-* EnableExceptionStateService: 开启ExceptionStateService的注解.
+* EnableExceptionService: 开启异常服务的注解;
+* ExceptionStatusService: 自动注入的全局异常处理, 使用ExceptionStateHandler;
+* ExceptionStatusHandler: 用户定义的bean, 用来装换异常到State.
 
 ##### Java Examples
 
 ```java
 
 @SpringBootTest(classes = Starter.class)
-@EnableExceptionStatusService
+@EnableExceptionService
 public class ExceptionStatusServiceSample extends AbstractTestNGSpringContextTests {
 
   @Resource
@@ -280,7 +280,7 @@ public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable,
 
 ```kotlin
 @SpringBootTest(classes = [Starter::class])
-@EnableExceptionStatusService
+@EnableExceptionService
 class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
 
   @Resource

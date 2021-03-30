@@ -7,14 +7,14 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.testng.Assert
 import org.testng.annotations.Test
 import xyz.srclab.common.exception.ExceptionStatus
-import xyz.srclab.spring.boot.exception.EnableExceptionStatusService
+import xyz.srclab.spring.boot.exception.EnableExceptionService
 import xyz.srclab.spring.boot.exception.ExceptionStatusHandler
 import xyz.srclab.spring.boot.exception.ExceptionStatusService
 import javax.annotation.Resource
 
 @SpringBootTest(classes = [Starter::class])
-@EnableExceptionStatusService
-class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
+@EnableExceptionService
+class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
 
     @Resource
     private lateinit var exceptionStatusService: ExceptionStatusService

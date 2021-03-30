@@ -1,7 +1,6 @@
 package xyz.srclab.spring.boot.exception
 
 import org.springframework.context.ApplicationContext
-import org.springframework.stereotype.Component
 import xyz.srclab.common.base.asAny
 import xyz.srclab.common.convert.FastConvertHandler
 import xyz.srclab.common.convert.FastConverter
@@ -13,10 +12,9 @@ import javax.annotation.Resource
 /**
  * Provides global exception service.
  *
- * @see EnableExceptionStatusService
+ * @see EnableExceptionService
  * @see ExceptionStatusHandler
  */
-@Component("xyz.srclab.spring.boot.exception.ExceptionStatusService")
 open class ExceptionStatusService {
 
     @Resource

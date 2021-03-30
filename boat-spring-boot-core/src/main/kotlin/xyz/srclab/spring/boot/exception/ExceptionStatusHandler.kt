@@ -6,7 +6,7 @@ import xyz.srclab.common.state.State
 /**
  * Handler to convert throwable object [E] to state object [T].
  *
- * @see EnableExceptionStatusService
+ * @see EnableExceptionService
  */
 interface ExceptionStatusHandler<E : Throwable, T : State<*, *, T>> {
 
