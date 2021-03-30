@@ -71,6 +71,7 @@ https://github.com/srclab-projects/boat-spring-boot
   * [Exception](#usage-core-exception)
 * [Web (boat-spring-boot-web-starter)](#usage-web)
   * [Exception](#usage-web-exception)
+  * [Utilities](#usage-web-utils)
 
 ### <a id="usage-core"/>Core (boat-spring-boot-starter)
 
@@ -478,6 +479,13 @@ open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
 @SpringBootApplication
 open class Starter
 ```
+
+#### <a id="usage-web-utils"/>Utilities
+
+Some utilities provided by web module:
+
+* WebExceptions: Provides exception tools for web;
+* WebServlets: Provides Servlet tools, such as fast build for ServletRequest, ServletInputStream.
 
 ## <a id="contact"/>Contribution and Contact
 

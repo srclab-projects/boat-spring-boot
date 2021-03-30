@@ -70,6 +70,7 @@ https://github.com/srclab-projects/boat-spring-boot
   * [Exception](#usage-core-exception)
 * [Web (boat-spring-boot-web-starter)](#usage-web)
   * [Exception](#usage-web-exception)
+  * [Utilities](#usage-web-utils)
 
 ### <a id="usage-core"/>Core (boat-spring-boot-starter)
 
@@ -477,6 +478,13 @@ open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
 @SpringBootApplication
 open class Starter
 ```
+
+#### <a id="usage-web-utils"/>Utilities
+
+一些工具类也在web中提供:
+
+* WebExceptions: 提供异常相关的工具方法;
+* WebServlets: 提供Servlet工具, 比如针对ServletRequest, ServletInputStream等的快速构建.
 
 ## <a id="contact"/>贡献和联系方式
 
