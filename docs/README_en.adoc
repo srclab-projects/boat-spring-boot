@@ -6,7 +6,7 @@ Sun Qian <fredsuvn@163.com>
 :url: https://github.com/srclab-projects/boat-spring-boot
 :qq: 1037555759
 :boat-url: https://github.com/srclab-projects/boat
-:boat-spring-boot-version: 0.1.0
+:boat-spring-boot-version: 0.0.0
 
 image::../logo.svg[Boat Spring Boot]
 
@@ -17,6 +17,7 @@ image::../logo.svg[Boat Spring Boot]
 |Date|Revision|Author|Content
 |2020-3-5|1.0.0|{author}|Old project
 |2021-3-5|0.1.0|{author}|New project
+|2021-3-30|{boat-spring-boot-version}|{author}|New version start
 |===
 
 == Toc

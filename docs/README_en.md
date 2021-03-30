@@ -5,7 +5,7 @@
 ## Variables
 
 * author: Sun Qian
-* boat-spring-boot-version: 0.1.0
+* boat-spring-boot-version: 0.0.0
 
 ## Revision
 
@@ -13,6 +13,7 @@
 |---|---|---|---|
 |2020-3-5|1.0.0|{author}|Old project
 |2021-3-5|0.1.0|{author}|New project
+|2021-3-30|{boat-spring-boot-version}|{author}|New version start
 
 ## Toc
 
