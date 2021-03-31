@@ -35,7 +35,7 @@ public class TestFilter extends OncePerRequestFilter {
         String p1 = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
         Map<String, List<String>> parameters = new HashMap<>();
         parameters.put("p1", Collections.singletonList(p1));
-        HttpServletRequest newRequest = WebServlets.newCachedHttpServletRequest(request, parameters);
+        HttpServletRequest newRequest = WebServlets.newPreparedHttpServletRequest(request, parameters);
         try {
             filterChain.doFilter(newRequest, response);
         } catch (Throwable e) {

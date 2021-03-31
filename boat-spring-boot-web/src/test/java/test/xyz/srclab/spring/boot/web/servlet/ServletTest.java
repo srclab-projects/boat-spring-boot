@@ -26,13 +26,21 @@ public class ServletTest extends AbstractTestNGSpringContextTests {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void testException() {
+    public void testServlet() {
         String result = restTemplate.postForObject(
                 "http://localhost:" + port + "/test/servlet",
                 "ppp1",
                 String.class
         );
-        logger.info("/test/exception?body=testException: " + result);
+        logger.info("/test/servlet: " + result);
         Assert.assertEquals(result, "ppp1");
+
+        result = restTemplate.postForObject(
+                "http://localhost:" + port + "/test/index",
+                "ppp2",
+                String.class
+        );
+        logger.info("/test/index: " + result);
+        Assert.assertEquals(result, "encode: ppp2");
     }
 }

@@ -1,6 +1,9 @@
 package xyz.srclab.spring.boot.web.exception
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationContext
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import xyz.srclab.common.base.asAny
 import xyz.srclab.common.convert.FastConvertHandler
@@ -47,6 +50,17 @@ open class WebExceptionService {
      * Convert given exception to [ResponseEntity].
      */
     open fun toResponseEntity(e: Throwable): ResponseEntity<*> {
-        return exceptionConverter.convert(e)
+        return try {
+            exceptionConverter.convert(e)
+        } catch (t: Throwable) {
+            logger.error("Convert exception to ResponseEntity error: ", t)
+            logger.error("Original error: ", e)
+            ResponseEntity<Any?>(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    companion object {
+
+        private val logger: Logger = LoggerFactory.getLogger(WebExceptionService::class.java)
     }
 }
