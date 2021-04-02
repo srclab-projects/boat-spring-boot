@@ -11,7 +11,5 @@ java {
 }
 
 dependencies {
-  implementation(platform(project(":boat-spring-boot-dependencies")))
-
-  api(project(":boat-spring-boot-test"))
+  api project(":boat-spring-boot-test")
 }

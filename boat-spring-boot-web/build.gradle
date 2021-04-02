@@ -11,18 +11,16 @@ java {
 }
 
 dependencies {
-  implementation(platform(project(":boat-spring-boot-dependencies")))
+  api project(":boat-spring-boot-starters:boat-spring-boot-starter")
+  api "org.springframework.boot:spring-boot-starter-web"
 
-  api(project(":boat-spring-boot-starters:boat-spring-boot-starter"))
-  api("org.springframework.boot:spring-boot-starter-web")
+  testCompile project(":boat-spring-boot-starters:boat-spring-boot-starter-test")
 
-  testCompile(project(":boat-spring-boot-starters:boat-spring-boot-starter-test"))
+  kapt platform(project(":boat-spring-boot-dependencies"))
+  kapt "org.springframework.boot:spring-boot-autoconfigure-processor"
+  kapt "org.springframework.boot:spring-boot-configuration-processor"
 
-  kapt(platform(project(":boat-spring-boot-dependencies")))
-  kapt("org.springframework.boot:spring-boot-autoconfigure-processor")
-  kapt("org.springframework.boot:spring-boot-configuration-processor")
-
-  //developmentOnly("org.springframework.boot:spring-boot-devtools")
+  //developmentOnly "org.springframework.boot:spring-boot-devtools"
 }
 
 compileJava.inputs.files(processResources)
