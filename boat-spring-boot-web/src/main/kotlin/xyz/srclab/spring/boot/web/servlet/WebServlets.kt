@@ -9,7 +9,6 @@ import xyz.srclab.common.collect.map
 import xyz.srclab.common.collect.toEnumeration
 import xyz.srclab.common.serialize.json.toJsonStream
 import java.io.BufferedReader
-import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.util.*
 import javax.servlet.ReadListener
@@ -17,18 +16,29 @@ import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
 import javax.servlet.http.HttpServletResponse
+import kotlin.collections.LinkedHashMap
 
-@JvmName("newCachedHttpServletRequest")
-fun HttpServletRequest.toCachedHttpServletRequest(
-    parameterCache: Map<String, List<String>>
-): CachedHttpServletRequest {
-    return CachedHttpServletRequest(this, parameterCache)
+@JvmName("newPreparedHttpServletRequest")
+@JvmOverloads
+fun HttpServletRequest.toPreparedHttpServletRequest(
+    parameters: Map<String, List<String>>,
+    inputStream: ServletInputStream = this.inputStream,
+): PreparedHttpServletRequest {
+    return PreparedHttpServletRequest(this, parameters, inputStream)
 }
 
-@JvmName("newCachedServletInputStream")
+@JvmName("newPreparedServletInputStream")
 @JvmOverloads
-fun ServletInputStream.toCachedServletInputStream(body: ByteArray? = null): CachedServletInputStream {
-    return CachedServletInputStream(this, body)
+fun ServletInputStream.toPreparedServletInputStream(
+    inputStream: InputStream = this,
+): PreparedServletInputStream {
+    return PreparedServletInputStream(this, inputStream)
+}
+
+fun Map<String, *>.putRequest(request: HttpServletRequest) {
+    for (entry in this) {
+        request.setAttribute(entry.key, entry.value)
+    }
 }
 
 @JvmOverloads
@@ -50,32 +60,47 @@ fun ResponseEntity<*>.putResponse(
     }
 }
 
-open class CachedHttpServletRequest(
-    servlet: HttpServletRequest,
-    private val parameterCache: Map<String, List<String>>,
-) : HttpServletRequestWrapper(servlet) {
+open class PreparedHttpServletRequest(
+    source: HttpServletRequest,
+    parameters: Map<String, List<String>>,
+    private val inputStream: ServletInputStream,
+) : HttpServletRequestWrapper(source) {
 
-    private val inputStreamCache: CachedServletInputStream = CachedServletInputStream(servlet.inputStream)
+    private val parameters: MutableMap<String, MutableList<String>> = LinkedHashMap(parameters.map { k, v ->
+        k to LinkedList(v)
+    })
 
     override fun getInputStream(): ServletInputStream {
-        return inputStreamCache.copy()
+        return inputStream
     }
 
     override fun getParameter(name: String): String? {
-        return parameterCache[name]?.first()
+        return parameters[name]?.first()
     }
 
     override fun getParameterNames(): Enumeration<String> {
-        return parameterCache.keys.toEnumeration()
+        return parameters.keys.toEnumeration()
     }
 
     override fun getParameterValues(name: String): Array<String>? {
-        return parameterCache[name]?.toTypedArray()
+        return parameters[name]?.toTypedArray()
     }
 
     override fun getParameterMap(): Map<String, Array<String>> {
-        return parameterCache.map { k, v ->
+        return parameters.map { k, v ->
             k to v.toTypedArray()
+        }
+    }
+
+    override fun setAttribute(name: String, o: Any?) {
+        super.setAttribute(name, o)
+        val list = parameters[name]
+        if (list === null) {
+            val newList = LinkedList<String>()
+            newList.add(o.toString())
+            parameters[name] = newList
+        } else {
+            list.add(o.toString())
         }
     }
 
@@ -84,20 +109,10 @@ open class CachedHttpServletRequest(
     }
 }
 
-open class CachedServletInputStream(
+open class PreparedServletInputStream(
     private val source: ServletInputStream,
-    private var body: ByteArray? = null,
+    private val inputStream: InputStream,
 ) : ServletInputStream() {
-
-    private val inputStream: ByteArrayInputStream by lazy {
-        val bytes = body
-        if (bytes === null) {
-            body = source.readBytes()
-            ByteArrayInputStream(body)
-        } else {
-            ByteArrayInputStream(bytes)
-        }
-    }
 
     override fun read(): Int {
         return inputStream.read()
@@ -145,9 +160,5 @@ open class CachedServletInputStream(
 
     override fun markSupported(): Boolean {
         return inputStream.markSupported()
-    }
-
-    fun copy(): CachedServletInputStream {
-        return CachedServletInputStream(source, body)
     }
 }
