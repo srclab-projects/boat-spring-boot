@@ -94,14 +94,7 @@ open class PreparedHttpServletRequest(
 
     override fun setAttribute(name: String, o: Any?) {
         super.setAttribute(name, o)
-        val list = parameters[name]
-        if (list === null) {
-            val newList = LinkedList<String>()
-            newList.add(o.toString())
-            parameters[name] = newList
-        } else {
-            list.add(o.toString())
-        }
+        parameters.getOrPut(name) { LinkedList() }.add(o.toString())
     }
 
     override fun getReader(): BufferedReader {
