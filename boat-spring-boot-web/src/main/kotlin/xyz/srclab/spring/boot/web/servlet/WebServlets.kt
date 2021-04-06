@@ -5,8 +5,10 @@ package xyz.srclab.spring.boot.web.servlet
 
 import org.springframework.http.ResponseEntity
 import xyz.srclab.common.base.toCharSet
+import xyz.srclab.common.collect.MutableListMap
 import xyz.srclab.common.collect.map
 import xyz.srclab.common.collect.toEnumeration
+import xyz.srclab.common.collect.toMutableListMap
 import xyz.srclab.common.serialize.json.toJsonStream
 import java.io.BufferedReader
 import java.io.InputStream
@@ -16,7 +18,6 @@ import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
 import javax.servlet.http.HttpServletResponse
-import kotlin.collections.LinkedHashMap
 
 @JvmName("newPreparedHttpServletRequest")
 @JvmOverloads
@@ -66,9 +67,9 @@ open class PreparedHttpServletRequest(
     private val inputStream: ServletInputStream,
 ) : HttpServletRequestWrapper(source) {
 
-    private val parameters: MutableMap<String, MutableList<String>> = LinkedHashMap(parameters.map { k, v ->
-        k to LinkedList(v)
-    })
+    private val parameters: MutableListMap<String, String> = parameters.map { k, v ->
+        k to v.toMutableList()
+    }.toMutableMap().toMutableListMap()
 
     override fun getInputStream(): ServletInputStream {
         return inputStream
@@ -94,7 +95,7 @@ open class PreparedHttpServletRequest(
 
     override fun setAttribute(name: String, o: Any?) {
         super.setAttribute(name, o)
-        parameters.getOrPut(name) { LinkedList() }.add(o.toString())
+        parameters.add(name, o.toString())
     }
 
     override fun getReader(): BufferedReader {
