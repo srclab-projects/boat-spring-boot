@@ -13,6 +13,7 @@ java {
 dependencies {
   api project(":boat-spring-boot-starters:boat-spring-boot-starter")
   api "org.springframework.boot:spring-boot-starter-web"
+  api "com.fasterxml.jackson.module:jackson-module-kotlin"
 
   testCompile project(":boat-spring-boot-starters:boat-spring-boot-starter-test")
 
