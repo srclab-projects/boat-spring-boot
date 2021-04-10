@@ -11,8 +11,6 @@ java {
 }
 
 dependencies {
-  implementation platform(project(":boat-spring-boot-dependencies"))
-
   implementation project(":boat-spring-boot-starters:boat-spring-boot-starter")
   implementation project(":boat-spring-boot-starters:boat-spring-boot-starter-web")
 
