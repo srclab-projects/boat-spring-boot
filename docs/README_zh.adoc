@@ -1,24 +1,14 @@
 = Boat Spring Boot: SrcLab核心基础Spring Boot库
 Sun Qian <fredsuvn@163.com>
 :encoding: UTF-8
-:license: https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license]
 :emaill: fredsuvn@163.com
 :url: https://github.com/srclab-projects/boat-spring-boot
 :qq: 1037555759
+:license: https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license]
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.0
 
 image::../logo.svg[Boat Spring Boot]
-
-== 修订
-
-[options="header"]
-|===
-|日期|修订版|作者|内容
-|2020-3-5|1.0.0|{author}|旧项目
-|2021-3-5|0.1.0|{author}|新项目
-|2021-3-30|{boat-spring-boot-version}|{author}|新版本号计数
-|===
 
 == 目录
 

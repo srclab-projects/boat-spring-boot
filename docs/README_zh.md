@@ -7,14 +7,6 @@
 * author: Sun Qian
 * boat-spring-boot-version: 0.0.0
 
-## 修订
-
-|日期|修订版|作者|内容
-|---|---|---|---|
-|2020-3-5|1.0.0|{author}|旧项目
-|2021-3-5|0.1.0|{author}|新项目
-|2021-3-30|{boat-spring-boot-version}|{author}|新版本号计数
-
 ## Toc
 
 * [简介](#introduction)
