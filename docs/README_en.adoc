@@ -1,24 +1,17 @@
-= Boat Spring Boot: SrcLab Core Libraries for Spring Boot
+= image:../logo.svg[Boat Spring Boot] Boat Spring Boot: SrcLab Core Libraries for Spring Boot
+:toc:
+:toclevels: 3
+:last-update-label!:
 Sun Qian <fredsuvn@163.com>
 :encoding: UTF-8
 :emaill: fredsuvn@163.com
 :url: https://github.com/srclab-projects/boat-spring-boot
-:qq: 1037555759
 :license: https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license]
+
+:qq-group: QQ group: 1037555759
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.0
 
-image::../logo.svg[Boat Spring Boot]
-
-== Toc
-
-* <<introduction>>
-* <<getting>>
-* <<usage>>
-* <<contact>>
-* <<license>>
-
-[#introduction]
 == Introduction
 
 Boat Spring Boot is a set of spring-boot projects with {boat-url}[Boat].
@@ -36,18 +29,15 @@ Following the official recommendation of Spring Boot, we should use starter to i
 * boat-spring-boot-starter-test
 * boat-spring-boot-starter-bom
 
-[#getting]
 == Getting
 
-=== Gradle
-
+.Gradle
 [source,groovy,subs="attributes+"]
 ----
 implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boot-version}")
 ----
 
-=== Maven
-
+.Maven
 [source,xml,subs="attributes+"]
 ----
 <dependency>
@@ -57,26 +47,13 @@ implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boo
 </dependency>
 ----
 
-=== Source Code
-
+.Source Code
 https://github.com/srclab-projects/boat-spring-boot
 
-[#usage]
 == Usage
 
-* <<usage-core>>
-** <<usage-core-bean>>
-** <<usage-core-task>>
-** <<usage-core-schedule>>
-** <<usage-core-exception>>
-* <<usage-web>>
-** <<usage-web-exception>>
-** <<usage-web-utils>>
-
-[#usage-core]
 === Core (boat-spring-boot-starter)
 
-[#usage-core-bean]
 ==== Bean
 
 Bean provides:
@@ -84,8 +61,7 @@ Bean provides:
 * BeanLifecyclePostProcessor: Spring Bean lifecycle post processor;
 * BeanRegistry: Dynamic bean registry.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @Component
@@ -113,8 +89,7 @@ public class MyBeanRegistry extends BeanRegistry {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @Component
@@ -140,7 +115,6 @@ open class MyBeanRegistry : BeanRegistry() {
 }
 ----
 
-[#usage-core-task]
 ==== Task
 
 Task provides:
@@ -148,8 +122,7 @@ Task provides:
 * ThreadPoolProperties: Properties for thread pool;
 * TaskExecutors: Help fast create TaskExecutor with ThreadPoolProperties.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @Configuration
@@ -165,8 +138,7 @@ public class MyTaskExecutorConfiguration {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @Configuration
@@ -182,7 +154,6 @@ open class MyTaskExecutorConfigurationKt {
 }
 ----
 
-[#usage-core-schedule]
 ==== Schedule
 
 Schedule provides:
@@ -190,8 +161,7 @@ Schedule provides:
 * ScheduledPoolProperties: Properties for scheduled thread pool;
 * TaskSchedulers: Help fast create TaskScheduler with ScheduledPoolProperties.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @Configuration
@@ -207,8 +177,7 @@ public class MyTaskSchedulerConfiguration {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @Configuration
@@ -224,7 +193,6 @@ open class MyTaskSchedulerConfiguration {
 }
 ----
 
-[#usage-core-exception]
 ==== Exception
 
 Exception provides:
@@ -233,8 +201,7 @@ Exception provides:
 * ExceptionStatusService: Auto-created global exception processing, use ExceptionStateHandler;
 * ExceptionStatusHandler: Handler bean defined by user, to convert exception to State.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @SpringBootTest(classes = Starter.class)
@@ -286,8 +253,7 @@ public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable,
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @SpringBootTest(classes = [Starter::class])
@@ -324,10 +290,8 @@ open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionS
 }
 ----
 
-[#usage-web]
 === Web (boat-spring-boot-web-starter)
 
-[#usage-web-exception]
 ==== Exception
 
 Web exception provides:
@@ -336,8 +300,7 @@ Web exception provides:
 * WebExceptionService: Auto-created global web exception processing, use WebExceptionHandler;
 * WebExceptionHandler: Handler bean defined by user, to convert exception to ResponseEntity.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @SpringBootTest(
@@ -423,8 +386,7 @@ public class Starter {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -492,7 +454,6 @@ open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
 open class Starter
 ----
 
-[#usage-web-utils]
 ==== Utilities
 
 Some utilities provided by web module:
@@ -500,14 +461,12 @@ Some utilities provided by web module:
 * WebExceptions: Provides exception tools for web;
 * WebServlets: Provides Servlet tools, such as fast build for ServletRequest, ServletInputStream.
 
-[#contact]
 == Contribution and Contact
 
 * {emaill}
 * {url}
-* QQ group: 1037555759
+* {qq-group}
 
-[#license]
 == License
 
 {license}

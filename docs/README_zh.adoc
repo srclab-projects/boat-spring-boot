@@ -1,24 +1,20 @@
-= Boat Spring Boot: SrcLab核心基础Spring Boot库
+= image:../logo.svg[Boat Spring Boot] Boat Spring Boot: SrcLab核心基础Spring Boot库
+:toc:
+:toclevels: 3
+:toc-title: 目录
+:last-update-label!:
 Sun Qian <fredsuvn@163.com>
 :encoding: UTF-8
 :emaill: fredsuvn@163.com
 :url: https://github.com/srclab-projects/boat-spring-boot
-:qq: 1037555759
 :license: https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license]
+
+:qq-group: QQ group: 1037555759
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.0
 
-image::../logo.svg[Boat Spring Boot]
-
 == 目录
 
-* <<introduction>>
-* <<getting>>
-* <<usage>>
-* <<contact>>
-* <<license>>
-
-[#introduction]
 == 简介
 
 Boat Spring Boot是一组基于{boat-url}[Boat]的spring-boot项目集合.
@@ -36,18 +32,15 @@ Boat Spring Boot包括:
 * boat-spring-boot-starter-test
 * boat-spring-boot-starter-bom
 
-[#getting]
 == 获取
 
-=== Gradle
-
+.Gradle
 [source,groovy,subs="attributes+"]
 ----
 implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boot-version}")
 ----
 
-=== Maven
-
+.Maven
 [source,xml,subs="attributes+"]
 ----
 <dependency>
@@ -57,26 +50,13 @@ implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boo
 </dependency>
 ----
 
-=== Source Code
-
+.Source Code
 https://github.com/srclab-projects/boat-spring-boot
 
-[#usage]
 == 使用
 
-* <<usage-core>>
-** <<usage-core-bean>>
-** <<usage-core-task>>
-** <<usage-core-schedule>>
-** <<usage-core-exception>>
-* <<usage-web>>
-** <<usage-web-exception>>
-** <<usage-web-utils>>
-
-[#usage-core]
 === Core (boat-spring-boot-starter)
 
-[#usage-core-bean]
 ==== Bean
 
 Bean提供:
@@ -84,8 +64,7 @@ Bean提供:
 * BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
 * BeanRegistry: 动态bean注册.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @Component
@@ -113,8 +92,7 @@ public class MyBeanRegistry extends BeanRegistry {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @Component
@@ -140,7 +118,6 @@ open class MyBeanRegistry : BeanRegistry() {
 }
 ----
 
-[#usage-core-task]
 ==== Task
 
 Task提供:
@@ -148,8 +125,7 @@ Task提供:
 * ThreadPoolProperties: 线程池属性;
 * TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @Configuration
@@ -165,8 +141,7 @@ public class MyTaskExecutorConfiguration {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @Configuration
@@ -182,7 +157,6 @@ open class MyTaskExecutorConfigurationKt {
 }
 ----
 
-[#usage-core-schedule]
 ==== Schedule
 
 Schedule提供:
@@ -190,8 +164,7 @@ Schedule提供:
 * ScheduledPoolProperties: 调度线程池属性;
 * TaskSchedulers: 快速创建TaskScheduler, 通常使用ScheduledPoolProperties.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @Configuration
@@ -207,8 +180,7 @@ public class MyTaskSchedulerConfiguration {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @Configuration
@@ -224,7 +196,6 @@ open class MyTaskSchedulerConfiguration {
 }
 ----
 
-[#usage-core-exception]
 ==== Exception
 
 异常包提供:
@@ -233,8 +204,7 @@ open class MyTaskSchedulerConfiguration {
 * ExceptionStatusService: 自动注入的全局异常处理, 使用ExceptionStateHandler;
 * ExceptionStatusHandler: 用户定义的bean, 用来装换异常到State.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @SpringBootTest(classes = Starter.class)
@@ -286,8 +256,7 @@ public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable,
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @SpringBootTest(classes = [Starter::class])
@@ -324,10 +293,8 @@ open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionS
 }
 ----
 
-[#usage-web]
 === Web (boat-spring-boot-web-starter)
 
-[#usage-web-exception]
 ==== Exception
 
 Web异常提供:
@@ -336,8 +303,7 @@ Web异常提供:
 * WebExceptionService: 自动注入的全局web异常处理服务, 使用WebExceptionHandler;
 * WebExceptionHandler: 用户定义的处理异常的bean, 将异常转成返回值ResponseEntity.
 
-===== Java Examples
-
+.Java Examples
 [source,java]
 ----
 @SpringBootTest(
@@ -423,8 +389,7 @@ public class Starter {
 }
 ----
 
-===== Kotlin Examples
-
+.Kotlin Examples
 [source,kotlin]
 ----
 @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -492,7 +457,6 @@ open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
 open class Starter
 ----
 
-[#usage-web-utils]
 ==== Utilities
 
 一些工具类也在web中提供:
@@ -500,14 +464,12 @@ open class Starter
 * WebExceptions: 提供异常相关的工具方法;
 * WebServlets: 提供Servlet工具, 比如针对ServletRequest, ServletInputStream等的快速构建.
 
-[#contact]
 == 共享和联系方式
 
 * {emaill}
 * {url}
-* QQ群: 1037555759
+* {qq-group}
 
-[#license]
 == License
 
 {license}

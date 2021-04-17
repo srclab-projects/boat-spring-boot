@@ -1,494 +1,484 @@
-# Boat Spring Boot: SrcLab核心基础Spring Boot库
+# <span class="image">![Boat Spring Boot](../logo.svg)</span> Boat Spring Boot: SrcLab核心基础Spring Boot库
 
-![Boat Spring Boot](../logo.svg)
+<span id="author" class="author">Sun Qian</span>  
+<span id="email" class="email"><fredsuvn@163.com></span>  
 
-## 变量
+目录
 
-* author: Sun Qian
-* boat-spring-boot-version: 0.0.0
+-   [目录](#_目录)
+-   [简介](#_简介)
+-   [获取](#_获取)
+-   [使用](#_使用)
+    -   [Core
+        (boat-spring-boot-starter)](#_core_boat_spring_boot_starter)
+        -   [Bean](#_bean)
+        -   [Task](#_task)
+        -   [Schedule](#_schedule)
+        -   [Exception](#_exception)
+    -   [Web
+        (boat-spring-boot-web-starter)](#_web_boat_spring_boot_web_starter)
+        -   [Exception](#_exception_2)
+        -   [Utilities](#_utilities)
+-   [共享和联系方式](#_共享和联系方式)
+-   [License](#_license)
 
-## Toc
+## 目录
 
-* [简介](#introduction)
-* [获取](#getting)
-* [使用](#usage)
-* [共享和联系方式](#contact)
-* [License](#lecense)
+## 简介
 
-## <a id="introduction"/>简介
-
-Boat Spring Boot是一组基于[Boat][boat-url]的spring-boot项目集合. 它在[Boat][boat-url]的基础上, 提供了许多方便快捷的spring-boot接口, 函数和工具.
+Boat Spring
+Boot是一组基于https://github.com/srclab-projects/boat\[Boat\]的spring-boot项目集合.
+它在https://github.com/srclab-projects/boat\[Boat\]的基础上,
+提供了许多方便快捷的spring-boot接口, 函数和工具.
 
 Boat Spring Boot包括:
 
-* *boat-spring-boot-core*: 核心和基础的接口, 功能和工具, 比如spring bean操作;
-* *boat-spring-boot-test*: 测试依赖管理, 用来在测试编译和运行范围下引入测试框架;
-* *boat-spring-boot-bom*: Boat Spring Boot Bom.
+-   **boat-spring-boot-core**: 核心和基础的接口, 功能和工具, 比如spring
+    bean操作;
+
+-   **boat-spring-boot-test**: 测试依赖管理,
+    用来在测试编译和运行范围下引入测试框架;
+
+-   **boat-spring-boot-bom**: Boat Spring Boot Bom.
 
 根据Spring Boot官方推荐, 我们应当使用starter来导入Boat Spring Boot:
 
-* boat-spring-boot-starter
-* boat-spring-boot-starter-test
-* boat-spring-boot-starter-bom
+-   boat-spring-boot-starter
 
-## <a id="getting"/>获取
+-   boat-spring-boot-starter-test
 
-### Gradle
+-   boat-spring-boot-starter-bom
 
-```groovy
-implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boot-version}")
-```
+## 获取
 
-### Maven
+Gradle
 
-```xml
+    implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:0.0.0")
 
-<dependency>
-  <groupId>xyz.srclab.spring.boot</groupId>
-  <artifactId>boat-spring-boot-starter</artifactId>
-  <version>{boat-spring-boot-version}</version>
-</dependency>
-```
+Maven
 
-### Source Code
+    <dependency>
+        <groupId>xyz.srclab.spring.boot</groupId>
+        <artifactId>boat-spring-boot-starter</artifactId>
+        <version>0.0.0</version>
+    </dependency>
 
-https://github.com/srclab-projects/boat-spring-boot
+Source Code
 
-## <a id="usage"/>使用
+<https://github.com/srclab-projects/boat-spring-boot>
 
-* [Core (boat-spring-boot-starter)](#usage-core)
-  * [Bean](#usage-core-bean)
-  * [Task](#usage-core-task)
-  * [Schedule](#usage-core-schedule)
-  * [Exception](#usage-core-exception)
-* [Web (boat-spring-boot-web-starter)](#usage-web)
-  * [Exception](#usage-web-exception)
-  * [Utilities](#usage-web-utils)
+## 使用
 
-### <a id="usage-core"/>Core (boat-spring-boot-starter)
+### Core (boat-spring-boot-starter)
 
-#### <a id="usage-core-bean"/>Bean
+#### Bean
 
 Bean提供:
 
-* BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
-* BeanRegistry: 动态bean注册.
+-   BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
 
-##### Java Examples
+-   BeanRegistry: 动态bean注册.
 
-```java
+Java Examples
 
-@Component
-public class MyBeanRegistry extends BeanRegistry {
+    @Component
+    public class MyBeanRegistry extends BeanRegistry {
 
-  @NotNull
-  @Override
-  protected Map<String, Object> registeredSingletons() {
-    Map<String, Object> result = new HashMap<>();
-    result.put("bean1", "bean1");
-    result.put("bean2", "bean2");
-    return result;
-  }
+        @NotNull
+        @Override
+        protected Map<String, Object> registeredSingletons() {
+            Map<String, Object> result = new HashMap<>();
+            result.put("bean1", "bean1");
+            result.put("bean2", "bean2");
+            return result;
+        }
 
-  @NotNull
-  @Override
-  protected Set<BeanProperties> registeredBeans() {
-    Set<BeanProperties> result = new HashSet<>();
-    BeanProperties beanProperties = new BeanProperties();
-    beanProperties.setName("myBean");
-    beanProperties.setClassName(MyBean.class.getName());
-    result.add(beanProperties);
-    return result;
-  }
-}
-```
-
-##### Kotlin Examples
-
-```kotlin
-@Component
-open class MyBeanRegistry : BeanRegistry() {
-
-  override val registeredSingletons: Map<String, Any>
-    get() {
-      val result: MutableMap<String, Any> = HashMap()
-      result["bean1"] = "bean1"
-      result["bean2"] = "bean2"
-      return result
+        @NotNull
+        @Override
+        protected Set<BeanProperties> registeredBeans() {
+            Set<BeanProperties> result = new HashSet<>();
+            BeanProperties beanProperties = new BeanProperties();
+            beanProperties.setName("myBean");
+            beanProperties.setClassName(MyBean.class.getName());
+            result.add(beanProperties);
+            return result;
+        }
     }
 
-  override val registeredBeans: Set<BeanProperties>
-    get() {
-      val result: MutableSet<BeanProperties> = HashSet()
-      val beanProperties = BeanProperties()
-      beanProperties.name = "myBean"
-      beanProperties.className = MyBean::class.java.name
-      result.add(beanProperties)
-      return result
-    }
-}
-```
+Kotlin Examples
 
-#### <a id="usage-core-task"/>Task
+    @Component
+    open class MyBeanRegistry : BeanRegistry() {
+
+        override val registeredSingletons: Map<String, Any>
+            get() {
+                val result: MutableMap<String, Any> = HashMap()
+                result["bean1"] = "bean1"
+                result["bean2"] = "bean2"
+                return result
+            }
+
+        override val registeredBeans: Set<BeanProperties>
+            get() {
+                val result: MutableSet<BeanProperties> = HashSet()
+                val beanProperties = BeanProperties()
+                beanProperties.name = "myBean"
+                beanProperties.className = MyBean::class.java.name
+                result.add(beanProperties)
+                return result
+            }
+    }
+
+#### Task
 
 Task提供:
 
-* ThreadPoolProperties: 线程池属性;
-* TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties.
+-   ThreadPoolProperties: 线程池属性;
 
-##### Java Examples
+-   TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties.
 
-```java
+Java Examples
 
-@Configuration
-@EnableAsync
-public class MyTaskExecutorConfiguration {
+    @Configuration
+    @EnableAsync
+    public class MyTaskExecutorConfiguration {
 
-  @Bean
-  public TaskExecutor taskExecutor() {
-    ThreadPoolProperties poolProperties = new ThreadPoolProperties();
-    poolProperties.setThreadNamePrefix("6666");
-    return TaskExecutors.newTaskExecutor(poolProperties);
-  }
-}
-```
+        @Bean
+        public TaskExecutor taskExecutor() {
+            ThreadPoolProperties poolProperties = new ThreadPoolProperties();
+            poolProperties.setThreadNamePrefix("6666");
+            return TaskExecutors.newTaskExecutor(poolProperties);
+        }
+    }
 
-##### Kotlin Examples
+Kotlin Examples
 
-```kotlin
-@Configuration
-@EnableAsync
-open class MyTaskExecutorConfigurationKt {
+    @Configuration
+    @EnableAsync
+    open class MyTaskExecutorConfigurationKt {
 
-  @Bean
-  open fun taskExecutor(): TaskExecutor {
-    val poolProperties = ThreadPoolProperties()
-    poolProperties.threadNamePrefix = "6666"
-    return newTaskExecutor(poolProperties)
-  }
-}
-```
+        @Bean
+        open fun taskExecutor(): TaskExecutor {
+            val poolProperties = ThreadPoolProperties()
+            poolProperties.threadNamePrefix = "6666"
+            return newTaskExecutor(poolProperties)
+        }
+    }
 
-#### <a id="usage-core-schedule"/>Schedule
+#### Schedule
 
 Schedule提供:
 
-* ScheduledPoolProperties: 调度线程池属性;
-* TaskSchedulers: 快速创建TaskScheduler, 通常使用ScheduledPoolProperties.
+-   ScheduledPoolProperties: 调度线程池属性;
 
-##### Java Examples
+-   TaskSchedulers: 快速创建TaskScheduler,
+    通常使用ScheduledPoolProperties.
 
-```java
+Java Examples
 
-@Configuration
-@EnableScheduling
-public class MyTaskSchedulerConfiguration {
+    @Configuration
+    @EnableScheduling
+    public class MyTaskSchedulerConfiguration {
 
-  @Bean
-  public TaskScheduler taskScheduler() {
-    ScheduledPoolProperties poolProperties = new ScheduledPoolProperties();
-    poolProperties.setThreadNamePrefix("6666");
-    return TaskSchedulers.newTaskScheduler(poolProperties);
-  }
-}
-```
+        @Bean
+        public TaskScheduler taskScheduler() {
+            ScheduledPoolProperties poolProperties = new ScheduledPoolProperties();
+            poolProperties.setThreadNamePrefix("6666");
+            return TaskSchedulers.newTaskScheduler(poolProperties);
+        }
+    }
 
-##### Kotlin Examples
+Kotlin Examples
 
-```kotlin
-@Configuration
-@EnableScheduling
-open class MyTaskSchedulerConfiguration {
+    @Configuration
+    @EnableScheduling
+    open class MyTaskSchedulerConfiguration {
 
-  @Bean
-  open fun taskScheduler(): TaskScheduler {
-    val poolProperties = ScheduledPoolProperties()
-    poolProperties.threadNamePrefix = "6666"
-    return newTaskScheduler(poolProperties)
-  }
-}
-```
+        @Bean
+        open fun taskScheduler(): TaskScheduler {
+            val poolProperties = ScheduledPoolProperties()
+            poolProperties.threadNamePrefix = "6666"
+            return newTaskScheduler(poolProperties)
+        }
+    }
 
-#### <a id="usage-core-exception"/>Exception
+#### Exception
 
 异常包提供:
 
-* EnableExceptionService: 开启异常服务的注解;
-* ExceptionStatusService: 自动注入的全局异常处理, 使用ExceptionStateHandler;
-* ExceptionStatusHandler: 用户定义的bean, 用来装换异常到State.
+-   EnableExceptionService: 开启异常服务的注解;
 
-##### Java Examples
+-   ExceptionStatusService: 自动注入的全局异常处理,
+    使用ExceptionStateHandler;
 
-```java
+-   ExceptionStatusHandler: 用户定义的bean, 用来装换异常到State.
 
-@SpringBootTest(classes = Starter.class)
-@EnableExceptionService
-public class ExceptionStatusServiceSample extends AbstractTestNGSpringContextTests {
+Java Examples
 
-  @Resource
-  private ExceptionStatusService exceptionStatusService;
+    @SpringBootTest(classes = Starter.class)
+    @EnableExceptionService
+    public class ExceptionStatusServiceSample extends AbstractTestNGSpringContextTests {
 
-  @Test
-  public void testExceptionStateService() {
-    ExceptionStatus runtime = exceptionStatusService.toState(new RuntimeException());
-    Assert.assertEquals(runtime.code(), "102");
-    ExceptionStatus throwable = exceptionStatusService.toState(new Exception());
-    Assert.assertEquals(throwable.code(), "101");
-  }
-}
+        @Resource
+        private ExceptionStatusService exceptionStatusService;
 
-@Component
-public class RuntimeExceptionStatusHandler implements ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
+        @Test
+        public void testExceptionStateService() {
+            ExceptionStatus runtime = exceptionStatusService.toState(new RuntimeException());
+            Assert.assertEquals(runtime.code(), "102");
+            ExceptionStatus throwable = exceptionStatusService.toState(new Exception());
+            Assert.assertEquals(throwable.code(), "101");
+        }
+    }
 
-  @NotNull
-  @Override
-  public Class<RuntimeException> supportedExceptionType() {
-    return RuntimeException.class;
-  }
+    @Component
+    public class RuntimeExceptionStatusHandler implements ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
 
-  @NotNull
-  @Override
-  public ExceptionStatus handle(@NotNull RuntimeException exception) {
-    return ExceptionStatus.of("102");
-  }
-}
+        @NotNull
+        @Override
+        public Class<RuntimeException> supportedExceptionType() {
+            return RuntimeException.class;
+        }
 
-@Component
-public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable, ExceptionStatus> {
+        @NotNull
+        @Override
+        public ExceptionStatus handle(@NotNull RuntimeException exception) {
+            return ExceptionStatus.of("102");
+        }
+    }
 
-  @NotNull
-  @Override
-  public Class<Throwable> supportedExceptionType() {
-    return Throwable.class;
-  }
+    @Component
+    public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable, ExceptionStatus> {
 
-  @NotNull
-  @Override
-  public ExceptionStatus handle(@NotNull Throwable throwable) {
-    return ExceptionStatus.of("101");
-  }
-}
-```
+        @NotNull
+        @Override
+        public Class<Throwable> supportedExceptionType() {
+            return Throwable.class;
+        }
 
-##### Kotlin Examples
+        @NotNull
+        @Override
+        public ExceptionStatus handle(@NotNull Throwable throwable) {
+            return ExceptionStatus.of("101");
+        }
+    }
 
-```kotlin
-@SpringBootTest(classes = [Starter::class])
-@EnableExceptionService
-class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
+Kotlin Examples
 
-  @Resource
-  private lateinit var exceptionStatusService: ExceptionStatusService
+    @SpringBootTest(classes = [Starter::class])
+    @EnableExceptionService
+    class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
 
-  @Test
-  fun testExceptionStateService() {
-    val runtime = exceptionStatusService.toState<ExceptionStatus>(RuntimeException())
-    Assert.assertEquals(runtime.code, "102")
-    val throwable = exceptionStatusService.toState<ExceptionStatus>(Exception())
-    Assert.assertEquals(throwable.code, "101")
-  }
-}
+        @Resource
+        private lateinit var exceptionStatusService: ExceptionStatusService
 
-@Component
-open class RuntimeExceptionStatusHandler :
-  ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
-  override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
-  override fun handle(e: RuntimeException): ExceptionStatus {
-    return ExceptionStatus.of("102")
-  }
-}
+        @Test
+        fun testExceptionStateService() {
+            val runtime = exceptionStatusService.toState<ExceptionStatus>(RuntimeException())
+            Assert.assertEquals(runtime.code, "102")
+            val throwable = exceptionStatusService.toState<ExceptionStatus>(Exception())
+            Assert.assertEquals(throwable.code, "101")
+        }
+    }
 
-@Component
-open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionStatus> {
-  override val supportedExceptionType: Class<Throwable> = Throwable::class.java
-  override fun handle(e: Throwable): ExceptionStatus {
-    return ExceptionStatus.of("101")
-  }
-}
-```
+    @Component
+    open class RuntimeExceptionStatusHandler :
+        ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
+        override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
+        override fun handle(e: RuntimeException): ExceptionStatus {
+            return ExceptionStatus.of("102")
+        }
+    }
 
-### <a id="usage-web"/>Web (boat-spring-boot-web-starter)
+    @Component
+    open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionStatus> {
+        override val supportedExceptionType: Class<Throwable> = Throwable::class.java
+        override fun handle(e: Throwable): ExceptionStatus {
+            return ExceptionStatus.of("101")
+        }
+    }
 
-#### <a id="usage-web-exception"/>Exception
+### Web (boat-spring-boot-web-starter)
+
+#### Exception
 
 Web异常提供:
 
-* EnableWebExceptionService: 开启web异常服务的注解;
-* WebExceptionService: 自动注入的全局web异常处理服务, 使用WebExceptionHandler;
-* WebExceptionHandler: 用户定义的处理异常的bean, 将异常转成返回值ResponseEntity.
+-   EnableWebExceptionService: 开启web异常服务的注解;
 
-##### Java Examples
+-   WebExceptionService: 自动注入的全局web异常处理服务,
+    使用WebExceptionHandler;
 
-```java
+-   WebExceptionHandler: 用户定义的处理异常的bean,
+    将异常转成返回值ResponseEntity.
 
-@SpringBootTest(
-    classes = Starter.class,
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-@EnableWebExceptionService
-public class WebExceptionSample extends AbstractTestNGSpringContextTests {
+Java Examples
 
-  private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
-
-  @LocalServerPort
-  private int port;
-
-  @Resource
-  private TestRestTemplate restTemplate;
-
-  @Test
-  public void testException() {
-    String result = restTemplate.getForObject(
-        "http://localhost:" + port + "/test/exception?body=testException",
-        String.class
-    );
-    logger.info("/test/exception?body=testException: " + result);
-    Assert.assertEquals(result, "testException");
-
-    result = restTemplate.getForObject(
-        "http://localhost:" + port + "/test/exception?body=testException0",
-        String.class
-    );
-    logger.info("/test/exception?body=testException: " + result);
-    Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
-  }
-}
-
-@RequestMapping("test")
-@RestController
-public class TestController {
-
-  @RequestMapping("exception")
-  public String testException(String body) {
-    if ("testException".equals(body)) {
-      return body;
-    }
-    throw new IllegalArgumentException("Must be testException!");
-  }
-}
-
-@Component
-public class RuntimeExceptionHandler implements WebExceptionHandler<RuntimeException> {
-
-  @NotNull
-  @Override
-  public Class<RuntimeException> supportedExceptionType() {
-    return RuntimeException.class;
-  }
-
-  @NotNull
-  @Override
-  public ResponseEntity<ExceptionStatus> handle(@NotNull RuntimeException exception) {
-    return new ResponseEntity<>(ExceptionStatus.of("102"), HttpStatus.OK);
-  }
-}
-
-@Component
-public class ThrowableHandler implements WebExceptionHandler<Throwable> {
-
-  @NotNull
-  @Override
-  public Class<Throwable> supportedExceptionType() {
-    return Throwable.class;
-  }
-
-  @NotNull
-  @Override
-  public ResponseEntity<ExceptionStatus> handle(@NotNull Throwable throwable) {
-    return new ResponseEntity<>(ExceptionStatus.of("101"), HttpStatus.OK);
-  }
-}
-
-@SpringBootApplication
-public class Starter {
-}
-```
-
-##### Kotlin Examples
-
-```kotlin
-@SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableWebExceptionService
-class WebExceptionSample : AbstractTestNGSpringContextTests() {
-
-  @LocalServerPort
-  private val port = 0
-
-  @Resource
-  private val restTemplate: TestRestTemplate? = null
-
-  @Test
-  fun testException() {
-    var result = restTemplate!!.getForObject(
-      "http://localhost:$port/test/exception?body=testException",
-      String::class.java
+    @SpringBootTest(
+            classes = Starter.class,
+            webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
-    Companion.logger.info("/test/exception?body=testException: $result")
-    Assert.assertEquals(result, "testException")
-    result = restTemplate.getForObject(
-      "http://localhost:$port/test/exception?body=testException0",
-      String::class.java
-    )
-    Companion.logger.info("/test/exception?body=testException: $result")
-    Assert.assertEquals(result, ExceptionStatus.of("102").toJsonString())
-  }
+    @EnableWebExceptionService
+    public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 
-  companion object {
-    private val logger = LoggerFactory.getLogger(WebExceptionSample::class.java)
-  }
-}
+        private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
 
-@RequestMapping("test")
-@RestController
-open class TestController {
+        @LocalServerPort
+        private int port;
 
-  @RequestMapping("exception")
-  open fun testException(body: String): String {
-    if (body == "testException") {
-      return body
+        @Resource
+        private TestRestTemplate restTemplate;
+
+        @Test
+        public void testException() {
+            String result = restTemplate.getForObject(
+                    "http://localhost:" + port + "/test/exception?body=testException",
+                    String.class
+            );
+            logger.info("/test/exception?body=testException: " + result);
+            Assert.assertEquals(result, "testException");
+
+            result = restTemplate.getForObject(
+                    "http://localhost:" + port + "/test/exception?body=testException0",
+                    String.class
+            );
+            logger.info("/test/exception?body=testException: " + result);
+            Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
+        }
     }
-    throw IllegalArgumentException("Must be testException!")
-  }
-}
 
-@Component
-open class RuntimeExceptionStatusHandler :
-  WebExceptionHandler<RuntimeException> {
-  override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
-  override fun handle(e: RuntimeException): ResponseEntity<ExceptionStatus> {
-    return ResponseEntity(ExceptionStatus.of("102"), HttpStatus.OK)
-  }
-}
+    @RequestMapping("test")
+    @RestController
+    public class TestController {
 
-@Component
-open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
-  override val supportedExceptionType: Class<Throwable> = Throwable::class.java
-  override fun handle(e: Throwable): ResponseEntity<ExceptionStatus> {
-    return ResponseEntity(ExceptionStatus.of("101"), HttpStatus.OK)
-  }
-}
+        @RequestMapping("exception")
+        public String testException(String body) {
+            if ("testException".equals(body)) {
+                return body;
+            }
+            throw new IllegalArgumentException("Must be testException!");
+        }
+    }
 
-@SpringBootApplication
-open class Starter
-```
+    @Component
+    public class RuntimeExceptionHandler implements WebExceptionHandler<RuntimeException> {
 
-#### <a id="usage-web-utils"/>Utilities
+        @NotNull
+        @Override
+        public Class<RuntimeException> supportedExceptionType() {
+            return RuntimeException.class;
+        }
+
+        @NotNull
+        @Override
+        public ResponseEntity<ExceptionStatus> handle(@NotNull RuntimeException exception) {
+            return new ResponseEntity<>(ExceptionStatus.of("102"), HttpStatus.OK);
+        }
+    }
+
+    @Component
+    public class ThrowableHandler implements WebExceptionHandler<Throwable> {
+
+        @NotNull
+        @Override
+        public Class<Throwable> supportedExceptionType() {
+            return Throwable.class;
+        }
+
+        @NotNull
+        @Override
+        public ResponseEntity<ExceptionStatus> handle(@NotNull Throwable throwable) {
+            return new ResponseEntity<>(ExceptionStatus.of("101"), HttpStatus.OK);
+        }
+    }
+
+    @SpringBootApplication
+    public class Starter {
+    }
+
+Kotlin Examples
+
+    @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    @EnableWebExceptionService
+    class WebExceptionSample : AbstractTestNGSpringContextTests() {
+
+        @LocalServerPort
+        private val port = 0
+
+        @Resource
+        private val restTemplate: TestRestTemplate? = null
+
+        @Test
+        fun testException() {
+            var result = restTemplate!!.getForObject(
+                "http://localhost:$port/test/exception?body=testException",
+                String::class.java
+            )
+            Companion.logger.info("/test/exception?body=testException: $result")
+            Assert.assertEquals(result, "testException")
+            result = restTemplate.getForObject(
+                "http://localhost:$port/test/exception?body=testException0",
+                String::class.java
+            )
+            Companion.logger.info("/test/exception?body=testException: $result")
+            Assert.assertEquals(result, ExceptionStatus.of("102").toJsonString())
+        }
+
+        companion object {
+            private val logger = LoggerFactory.getLogger(WebExceptionSample::class.java)
+        }
+    }
+
+    @RequestMapping("test")
+    @RestController
+    open class TestController {
+
+        @RequestMapping("exception")
+        open fun testException(body: String): String {
+            if (body == "testException") {
+                return body
+            }
+            throw IllegalArgumentException("Must be testException!")
+        }
+    }
+
+    @Component
+    open class RuntimeExceptionStatusHandler :
+        WebExceptionHandler<RuntimeException> {
+        override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
+        override fun handle(e: RuntimeException): ResponseEntity<ExceptionStatus> {
+            return ResponseEntity(ExceptionStatus.of("102"), HttpStatus.OK)
+        }
+    }
+
+    @Component
+    open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
+        override val supportedExceptionType: Class<Throwable> = Throwable::class.java
+        override fun handle(e: Throwable): ResponseEntity<ExceptionStatus> {
+            return ResponseEntity(ExceptionStatus.of("101"), HttpStatus.OK)
+        }
+    }
+
+    @SpringBootApplication
+    open class Starter
+
+#### Utilities
 
 一些工具类也在web中提供:
 
-* WebExceptions: 提供异常相关的工具方法;
-* WebServlets: 提供Servlet工具, 比如针对ServletRequest, ServletInputStream等的快速构建.
+-   WebExceptions: 提供异常相关的工具方法;
 
-## <a id="contact"/>贡献和联系方式
+-   WebServlets: 提供Servlet工具, 比如针对ServletRequest,
+    ServletInputStream等的快速构建.
 
-* fredsuvn@163.com
-* https://github.com/srclab-projects/boat-spring-boot
-* QQ群: 1037555759
+## 共享和联系方式
 
-## <a id="license"/>License
+-   <fredsuvn@163.com>
 
-[Apache 2.0 license][license]
+-   <https://github.com/srclab-projects/boat-spring-boot>
 
-[license]: https://www.apache.org/licenses/LICENSE-2.0.html
+-   QQ group: 1037555759
 
-[boat-url]: https://github.com/srclab-projects/boat
+## License
+
+[Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html)
