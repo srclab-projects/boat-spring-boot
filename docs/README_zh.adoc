@@ -13,8 +13,6 @@ Sun Qian <fredsuvn@163.com>
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.0
 
-== 目录
-
 == 简介
 
 Boat Spring Boot是一组基于{boat-url}[Boat]的spring-boot项目集合.
