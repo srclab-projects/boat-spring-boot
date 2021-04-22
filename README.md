@@ -17,7 +17,7 @@ More see [docs/](docs/)
 ## _Contact_
 
 * fredsuvn@163.com
-* https://github.com/srclab-projects/boat
+* https://github.com/srclab-projects/boat-spring-boot
 * QQ group: 1037555759
 
 ## _License_
