@@ -6,9 +6,9 @@ package xyz.srclab.spring.boot.web.servlet
 import org.springframework.http.ResponseEntity
 import xyz.srclab.common.base.toCharSet
 import xyz.srclab.common.collect.MutableListMap
+import xyz.srclab.common.collect.MutableListMap.Companion.toMutableListMap
 import xyz.srclab.common.collect.map
 import xyz.srclab.common.collect.toEnumeration
-import xyz.srclab.common.collect.toMutableListMap
 import xyz.srclab.common.serialize.json.toJsonStream
 import java.io.BufferedReader
 import java.io.InputStream
