@@ -1,6 +1,6 @@
 boat:
-  core:
-    spring-version: 666
+  #  core:
+  #    spring-version: 666
   test:
     bean1: "123"
     bean2: "456"

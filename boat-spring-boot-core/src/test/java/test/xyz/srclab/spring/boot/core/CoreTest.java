@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 import test.xyz.srclab.spring.boot.schedule.Starter;
 import xyz.srclab.spring.boot.core.CoreProperties;
 
@@ -20,9 +18,9 @@ public class CoreTest extends AbstractTestNGSpringContextTests {
     @Resource
     private CoreProperties coreProperties;
 
-    @Test
-    public void testAutoConfigure() {
-        logger.info("Core spring version: {}", coreProperties.getSpringVersion());
-        Assert.assertEquals(coreProperties.getSpringVersion(), "666");
-    }
+    //@Test
+    //public void testAutoConfigure() {
+    //    logger.info("Core spring version: {}", coreProperties.getSpringVersion());
+    //    Assert.assertEquals(coreProperties.getSpringVersion(), "666");
+    //}
 }
