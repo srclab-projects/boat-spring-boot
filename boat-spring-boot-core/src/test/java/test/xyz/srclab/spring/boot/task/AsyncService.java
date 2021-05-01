@@ -14,7 +14,10 @@ public class AsyncService {
 
     @Async
     public void testAsync() {
-        logger.info("Thread: {}", Current.thread().getName());
+        logger.info(
+                "Thread: {}",
+                Current.thread().getName()
+        );
         Assert.assertTrue(Current.thread().getName().startsWith("6666"));
     }
 }
