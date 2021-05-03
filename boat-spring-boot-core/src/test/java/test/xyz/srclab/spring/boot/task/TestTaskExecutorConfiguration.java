@@ -2,13 +2,14 @@ package test.xyz.srclab.spring.boot.task;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import xyz.srclab.spring.boot.task.TaskDelegate;
 import xyz.srclab.spring.boot.task.TaskExecutors;
-import xyz.srclab.spring.boot.task.ThreadPoolProperties;
+import xyz.srclab.spring.boot.task.TaskPoolProperties;
 
 @Configuration
 @EnableAsync
@@ -18,11 +19,12 @@ public class TestTaskExecutorConfiguration {
 
     @Bean
     public TaskExecutor taskExecutor() {
-        ThreadPoolProperties poolProperties = new ThreadPoolProperties();
+        TaskPoolProperties poolProperties = new TaskPoolProperties();
         poolProperties.setThreadNamePrefix("6666");
         return TaskExecutors.newTaskExecutor(poolProperties, (TaskDelegate) (executor, task) -> {
             long l1 = Thread.currentThread().getId();
-            executor.execute(() -> {
+            MDC.put("123", "123");
+            TaskExecutors.attachMdc(executor, () -> {
                 long l2 = Thread.currentThread().getId();
                 logger.info("thread l1: {}, thread l2: {}", l1, l2);
                 task.run();

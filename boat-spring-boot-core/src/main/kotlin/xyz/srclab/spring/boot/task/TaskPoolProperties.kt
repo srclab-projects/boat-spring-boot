@@ -1,6 +1,6 @@
 package xyz.srclab.spring.boot.task
 
-open class ThreadPoolProperties {
+open class TaskPoolProperties {
     var corePoolSize: Int = 1
     var maxPoolSize: Int = Int.MAX_VALUE
     var keepAliveSeconds: Int = 60

@@ -59,6 +59,7 @@ https://github.com/srclab-projects/boat-spring-boot
 
 Bean提供:
 
+* BeanProperties: bean属性;
 * BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
 * BeanRegistry: 动态bean注册.
 
@@ -120,8 +121,9 @@ open class MyBeanRegistry : BeanRegistry() {
 
 Task提供:
 
-* ThreadPoolProperties: 线程池属性;
-* TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties.
+* TaskPoolProperties: Task线程池属性;
+* TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties;
+* TaskDelegate: Task调度委托.
 
 .Java Examples
 [source,java]
@@ -132,7 +134,7 @@ public class MyTaskExecutorConfiguration {
 
     @Bean
     public TaskExecutor taskExecutor() {
-        ThreadPoolProperties poolProperties = new ThreadPoolProperties();
+        TaskPoolProperties poolProperties = new TaskPoolProperties();
         poolProperties.setThreadNamePrefix("6666");
         return TaskExecutors.newTaskExecutor(poolProperties);
     }
@@ -150,7 +152,7 @@ open class MyTaskExecutorConfigurationKt {
     open fun taskExecutor(): TaskExecutor {
         val poolProperties = ThreadPoolProperties()
         poolProperties.threadNamePrefix = "6666"
-        return newTaskExecutor(poolProperties)
+        return poolProperties.toTaskExecutor()
     }
 }
 ----
@@ -189,7 +191,7 @@ open class MyTaskSchedulerConfiguration {
     open fun taskScheduler(): TaskScheduler {
         val poolProperties = ScheduledPoolProperties()
         poolProperties.threadNamePrefix = "6666"
-        return newTaskScheduler(poolProperties)
+        return poolProperties.toTaskScheduler()
     }
 }
 ----

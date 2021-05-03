@@ -554,6 +554,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
+<p>BeanProperties: bean属性;</p>
+</li>
+<li>
 <p>BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;</p>
 </li>
 <li>
@@ -624,10 +627,13 @@ open class MyBeanRegistry : BeanRegistry() {
 <div class="ulist">
 <ul>
 <li>
-<p>ThreadPoolProperties: 线程池属性;</p>
+<p>TaskPoolProperties: Task线程池属性;</p>
 </li>
 <li>
-<p>TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties.</p>
+<p>TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties;</p>
+</li>
+<li>
+<p>TaskDelegate: Task调度委托.</p>
 </li>
 </ul>
 </div>
@@ -640,7 +646,7 @@ public class MyTaskExecutorConfiguration {
 
     @Bean
     public TaskExecutor taskExecutor() {
-        ThreadPoolProperties poolProperties = new ThreadPoolProperties();
+        TaskPoolProperties poolProperties = new TaskPoolProperties();
         poolProperties.setThreadNamePrefix("6666");
         return TaskExecutors.newTaskExecutor(poolProperties);
     }
@@ -658,7 +664,7 @@ open class MyTaskExecutorConfigurationKt {
     open fun taskExecutor(): TaskExecutor {
         val poolProperties = ThreadPoolProperties()
         poolProperties.threadNamePrefix = "6666"
-        return newTaskExecutor(poolProperties)
+        return poolProperties.toTaskExecutor()
     }
 }</code></pre>
 </div>
@@ -706,7 +712,7 @@ open class MyTaskSchedulerConfiguration {
     open fun taskScheduler(): TaskScheduler {
         val poolProperties = ScheduledPoolProperties()
         poolProperties.threadNamePrefix = "6666"
-        return newTaskScheduler(poolProperties)
+        return poolProperties.toTaskScheduler()
     }
 }</code></pre>
 </div>

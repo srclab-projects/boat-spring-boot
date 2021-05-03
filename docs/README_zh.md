@@ -72,6 +72,8 @@ Source Code
 
 Bean提供:
 
+-   BeanProperties: bean属性;
+
 -   BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
 
 -   BeanRegistry: 动态bean注册.
@@ -130,9 +132,11 @@ Kotlin Examples
 
 Task提供:
 
--   ThreadPoolProperties: 线程池属性;
+-   TaskPoolProperties: Task线程池属性;
 
--   TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties.
+-   TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties;
+
+-   TaskDelegate: Task调度委托.
 
 Java Examples
 
@@ -142,7 +146,7 @@ Java Examples
 
         @Bean
         public TaskExecutor taskExecutor() {
-            ThreadPoolProperties poolProperties = new ThreadPoolProperties();
+            TaskPoolProperties poolProperties = new TaskPoolProperties();
             poolProperties.setThreadNamePrefix("6666");
             return TaskExecutors.newTaskExecutor(poolProperties);
         }
@@ -158,7 +162,7 @@ Kotlin Examples
         open fun taskExecutor(): TaskExecutor {
             val poolProperties = ThreadPoolProperties()
             poolProperties.threadNamePrefix = "6666"
-            return newTaskExecutor(poolProperties)
+            return poolProperties.toTaskExecutor()
         }
     }
 
@@ -195,7 +199,7 @@ Kotlin Examples
         open fun taskScheduler(): TaskScheduler {
             val poolProperties = ScheduledPoolProperties()
             poolProperties.threadNamePrefix = "6666"
-            return newTaskScheduler(poolProperties)
+            return poolProperties.toTaskScheduler()
         }
     }
 
