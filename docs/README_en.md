@@ -73,6 +73,8 @@ Source Code
 
 Bean provides:
 
+-   BeanProperties: Properties for bean;
+
 -   BeanLifecyclePostProcessor: Spring Bean lifecycle post processor;
 
 -   BeanRegistry: Dynamic bean registry.
@@ -131,10 +133,12 @@ Kotlin Examples
 
 Task provides:
 
--   ThreadPoolProperties: Properties for thread pool;
+-   TaskPoolProperties: Properties for task thread pool;
 
 -   TaskExecutors: Help fast create TaskExecutor with
-    ThreadPoolProperties.
+    ThreadPoolProperties;
+
+-   TaskDelegate: Task execution delegate.
 
 Java Examples
 
@@ -144,7 +148,7 @@ Java Examples
 
         @Bean
         public TaskExecutor taskExecutor() {
-            ThreadPoolProperties poolProperties = new ThreadPoolProperties();
+            TaskPoolProperties poolProperties = new TaskPoolProperties();
             poolProperties.setThreadNamePrefix("6666");
             return TaskExecutors.newTaskExecutor(poolProperties);
         }
@@ -160,7 +164,7 @@ Kotlin Examples
         open fun taskExecutor(): TaskExecutor {
             val poolProperties = ThreadPoolProperties()
             poolProperties.threadNamePrefix = "6666"
-            return newTaskExecutor(poolProperties)
+            return poolProperties.toTaskExecutor()
         }
     }
 
@@ -197,7 +201,7 @@ Kotlin Examples
         open fun taskScheduler(): TaskScheduler {
             val poolProperties = ScheduledPoolProperties()
             poolProperties.threadNamePrefix = "6666"
-            return newTaskScheduler(poolProperties)
+            return poolProperties.toTaskScheduler()
         }
     }
 

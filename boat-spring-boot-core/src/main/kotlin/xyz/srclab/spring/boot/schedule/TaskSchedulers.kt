@@ -9,39 +9,41 @@ import org.springframework.util.ErrorHandler
 import java.util.concurrent.RejectedExecutionHandler
 import java.util.concurrent.ThreadFactory
 
-fun newTaskScheduler(poolProperties: ScheduledPoolProperties): TaskScheduler {
-    return newTaskScheduler(poolProperties, null, null, null)
+@JvmName("newTaskScheduler")
+fun ScheduledPoolProperties.toTaskScheduler(): TaskScheduler {
+    return toTaskScheduler(null, null, null)
 }
 
-fun newTaskScheduler(
-    poolProperties: ScheduledPoolProperties,
-    rejectedExecutionHandler: RejectedExecutionHandler
+@JvmName("newTaskScheduler")
+fun ScheduledPoolProperties.toTaskScheduler(
+        rejectedExecutionHandler: RejectedExecutionHandler
 ): TaskScheduler {
-    return newTaskScheduler(poolProperties, rejectedExecutionHandler, null, null)
+    return toTaskScheduler(rejectedExecutionHandler, null, null)
 }
 
-fun newTaskScheduler(poolProperties: ScheduledPoolProperties, errorHandler: ErrorHandler): TaskScheduler {
-    return newTaskScheduler(poolProperties, null, errorHandler, null)
+@JvmName("newTaskScheduler")
+fun ScheduledPoolProperties.toTaskScheduler(errorHandler: ErrorHandler): TaskScheduler {
+    return toTaskScheduler(null, errorHandler, null)
 }
 
-fun newTaskScheduler(
-    poolProperties: ScheduledPoolProperties,
-    rejectedExecutionHandler: RejectedExecutionHandler,
-    errorHandler: ErrorHandler
+@JvmName("newTaskScheduler")
+fun ScheduledPoolProperties.toTaskScheduler(
+        rejectedExecutionHandler: RejectedExecutionHandler,
+        errorHandler: ErrorHandler
 ): TaskScheduler {
-    return newTaskScheduler(poolProperties, rejectedExecutionHandler, errorHandler, null)
+    return toTaskScheduler(rejectedExecutionHandler, errorHandler, null)
 }
 
-fun newTaskScheduler(
-    poolProperties: ScheduledPoolProperties,
-    rejectedExecutionHandler: RejectedExecutionHandler? = null,
-    errorHandler: ErrorHandler? = null,
-    threadFactory: ThreadFactory? = null,
+@JvmName("newTaskScheduler")
+fun ScheduledPoolProperties.toTaskScheduler(
+        rejectedExecutionHandler: RejectedExecutionHandler? = null,
+        errorHandler: ErrorHandler? = null,
+        threadFactory: ThreadFactory? = null,
 ): TaskScheduler {
     val threadPoolTaskScheduler = ThreadPoolTaskScheduler()
-    threadPoolTaskScheduler.poolSize = poolProperties.poolSize
-    threadPoolTaskScheduler.isRemoveOnCancelPolicy = poolProperties.removeOnCancel
-    val threadNamePrefix = poolProperties.threadNamePrefix
+    threadPoolTaskScheduler.poolSize = this.poolSize
+    threadPoolTaskScheduler.isRemoveOnCancelPolicy = this.removeOnCancel
+    val threadNamePrefix = this.threadNamePrefix
     if (threadNamePrefix !== null) {
         threadPoolTaskScheduler.threadNamePrefix = threadNamePrefix
     }

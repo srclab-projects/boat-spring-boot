@@ -3,57 +3,83 @@
 
 package xyz.srclab.spring.boot.task
 
+import org.slf4j.MDC
 import org.springframework.core.task.TaskDecorator
 import org.springframework.core.task.TaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import java.util.concurrent.Executor
 import java.util.concurrent.RejectedExecutionHandler
 import java.util.concurrent.ThreadFactory
 
-fun newTaskExecutor(
-    poolProperties: ThreadPoolProperties,
-): TaskExecutor {
-    return newTaskExecutor(poolProperties, null, null)
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(): TaskExecutor {
+    return toTaskExecutor(null, null, null, null)
 }
 
-fun newTaskExecutor(
-    poolProperties: ThreadPoolProperties,
-    rejectedExecutionHandler: RejectedExecutionHandler,
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(
+        rejectedExecutionHandler: RejectedExecutionHandler,
 ): TaskExecutor {
-    return newTaskExecutor(poolProperties, rejectedExecutionHandler, null)
+    return toTaskExecutor(rejectedExecutionHandler, null, null, null)
 }
 
-fun newTaskExecutor(
-    poolProperties: ThreadPoolProperties,
-    taskDecorator: TaskDecorator,
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(
+        taskDelegate: TaskDelegate,
 ): TaskExecutor {
-    return newTaskExecutor(poolProperties, null, taskDecorator)
+    return toTaskExecutor(null, taskDelegate, null, null)
 }
 
-fun newTaskExecutor(
-    poolProperties: ThreadPoolProperties,
-    rejectedExecutionHandler: RejectedExecutionHandler,
-    taskDecorator: TaskDecorator
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(
+        taskDecorator: TaskDecorator,
 ): TaskExecutor {
-    return newTaskExecutor(poolProperties, rejectedExecutionHandler, taskDecorator)
+    return toTaskExecutor(null, null, taskDecorator, null)
 }
 
-fun newTaskExecutor(
-    poolProperties: ThreadPoolProperties,
-    rejectedExecutionHandler: RejectedExecutionHandler? = null,
-    taskDecorator: TaskDecorator? = null,
-    threadFactory: ThreadFactory? = null,
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(
+        rejectedExecutionHandler: RejectedExecutionHandler,
+        taskDelegate: TaskDelegate
+): TaskExecutor {
+    return toTaskExecutor(rejectedExecutionHandler, taskDelegate, null, null)
+}
+
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(
+        rejectedExecutionHandler: RejectedExecutionHandler,
+        taskDecorator: TaskDecorator
+): TaskExecutor {
+    return toTaskExecutor(rejectedExecutionHandler, null, taskDecorator, null)
+}
+
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(
+        rejectedExecutionHandler: RejectedExecutionHandler,
+        taskDelegate: TaskDelegate,
+        taskDecorator: TaskDecorator
+): TaskExecutor {
+    return toTaskExecutor(rejectedExecutionHandler, taskDelegate, taskDecorator, null)
+}
+
+@JvmName("newTaskExecutor")
+fun TaskPoolProperties.toTaskExecutor(
+        rejectedExecutionHandler: RejectedExecutionHandler? = null,
+        taskDelegate: TaskDelegate? = null,
+        taskDecorator: TaskDecorator? = null,
+        threadFactory: ThreadFactory? = null,
 ): TaskExecutor {
     val threadPoolTaskExecutor = ThreadPoolTaskExecutor()
-    threadPoolTaskExecutor.corePoolSize = poolProperties.corePoolSize
-    threadPoolTaskExecutor.maxPoolSize = poolProperties.maxPoolSize
-    threadPoolTaskExecutor.keepAliveSeconds = poolProperties.keepAliveSeconds
-    threadPoolTaskExecutor.setQueueCapacity(poolProperties.queueCapacity)
-    threadPoolTaskExecutor.setAllowCoreThreadTimeOut(poolProperties.allowCoreThreadTimeOut)
-    val threadNamePrefix = poolProperties.threadNamePrefix
+    threadPoolTaskExecutor.corePoolSize = this.corePoolSize
+    threadPoolTaskExecutor.maxPoolSize = this.maxPoolSize
+    threadPoolTaskExecutor.keepAliveSeconds = this.keepAliveSeconds
+    threadPoolTaskExecutor.setQueueCapacity(this.queueCapacity)
+    threadPoolTaskExecutor.setAllowCoreThreadTimeOut(this.allowCoreThreadTimeOut)
+    val threadNamePrefix = this.threadNamePrefix
     if (threadNamePrefix !== null) {
         threadPoolTaskExecutor.threadNamePrefix = threadNamePrefix
     }
-    if (poolProperties.runWithCurrentThreadIfReject) {
+    if (this.runWithCurrentThreadIfReject) {
         threadPoolTaskExecutor.setRejectedExecutionHandler { r, _ -> r.run() }
     } else if (rejectedExecutionHandler !== null) {
         threadPoolTaskExecutor.setRejectedExecutionHandler(rejectedExecutionHandler)
@@ -65,5 +91,41 @@ fun newTaskExecutor(
         threadPoolTaskExecutor.setThreadFactory(threadFactory)
     }
     threadPoolTaskExecutor.afterPropertiesSet()
-    return threadPoolTaskExecutor
+    return if (taskDelegate === null)
+        threadPoolTaskExecutor
+    else DelegatedTaskExecutor(
+            threadPoolTaskExecutor,
+            taskDelegate
+    )
+}
+
+@JvmOverloads
+fun attachMdc(
+        executor: Executor,
+        task: Runnable,
+        recoverAction: (
+                currentContext: Map<String, String>,
+                executorContext: Map<String, String>
+        ) -> Unit = { _, executorContext ->
+            MDC.clear()
+            MDC.setContextMap(executorContext)
+        }
+) {
+    val currentContext = MDC.getCopyOfContextMap() ?: emptyMap()
+    executor.execute {
+        val executorContext = MDC.getCopyOfContextMap() ?: emptyMap()
+        MDC.setContextMap(currentContext)
+        task.run()
+        recoverAction(currentContext, executorContext)
+    }
+}
+
+private class DelegatedTaskExecutor(
+        private val executor: Executor,
+        private val taskDelegate: TaskDelegate,
+) : TaskExecutor {
+
+    override fun execute(task: Runnable) {
+        taskDelegate.execute(executor, task)
+    }
 }
