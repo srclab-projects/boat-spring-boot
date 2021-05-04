@@ -24,7 +24,7 @@ public class TestTaskExecutorConfiguration {
         return TaskExecutors.newTaskExecutor(poolProperties, (TaskDelegate) (executor, task) -> {
             long l1 = Thread.currentThread().getId();
             MDC.put("123", "123");
-            TaskExecutors.attachMdc(executor, () -> {
+            TaskExecutors.executeWithMdc(executor, () -> {
                 long l2 = Thread.currentThread().getId();
                 logger.info("thread l1: {}, thread l2: {}", l1, l2);
                 task.run();

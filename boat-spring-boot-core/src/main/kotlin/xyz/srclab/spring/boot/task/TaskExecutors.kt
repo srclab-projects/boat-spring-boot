@@ -7,9 +7,7 @@ import org.slf4j.MDC
 import org.springframework.core.task.TaskDecorator
 import org.springframework.core.task.TaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
-import java.util.concurrent.Executor
-import java.util.concurrent.RejectedExecutionHandler
-import java.util.concurrent.ThreadFactory
+import java.util.concurrent.*
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(): TaskExecutor {
@@ -100,7 +98,7 @@ fun TaskPoolProperties.toTaskExecutor(
 }
 
 @JvmOverloads
-fun attachMdc(
+fun executeWithMdc(
         executor: Executor,
         task: Runnable,
         recoverAction: (
@@ -118,6 +116,29 @@ fun attachMdc(
         task.run()
         recoverAction(currentContext, executorContext)
     }
+}
+
+@JvmOverloads
+fun <T> executeWithMdc(
+        executor: ExecutorService,
+        task: Callable<T>,
+        recoverAction: (
+                currentContext: Map<String, String>,
+                executorContext: Map<String, String>
+        ) -> Unit = { _, executorContext ->
+            MDC.clear()
+            MDC.setContextMap(executorContext)
+        }
+): Future<T> {
+    val currentContext = MDC.getCopyOfContextMap() ?: emptyMap()
+    val delegateTask: Callable<T> = Callable {
+        val executorContext = MDC.getCopyOfContextMap() ?: emptyMap()
+        MDC.setContextMap(currentContext)
+        val result = task.call()
+        recoverAction(currentContext, executorContext)
+        result
+    }
+    return executor.submit(delegateTask)
 }
 
 private class DelegatedTaskExecutor(
