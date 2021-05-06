@@ -16,56 +16,56 @@ fun TaskPoolProperties.toTaskExecutor(): TaskExecutor {
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(
-        rejectedExecutionHandler: RejectedExecutionHandler,
+    rejectedExecutionHandler: RejectedExecutionHandler,
 ): TaskExecutor {
     return toTaskExecutor(rejectedExecutionHandler, null, null, null)
 }
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(
-        taskDelegate: TaskDelegate,
+    taskDelegate: TaskDelegate,
 ): TaskExecutor {
     return toTaskExecutor(null, taskDelegate, null, null)
 }
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(
-        taskDecorator: TaskDecorator,
+    taskDecorator: TaskDecorator,
 ): TaskExecutor {
     return toTaskExecutor(null, null, taskDecorator, null)
 }
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(
-        rejectedExecutionHandler: RejectedExecutionHandler,
-        taskDelegate: TaskDelegate
+    rejectedExecutionHandler: RejectedExecutionHandler,
+    taskDelegate: TaskDelegate
 ): TaskExecutor {
     return toTaskExecutor(rejectedExecutionHandler, taskDelegate, null, null)
 }
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(
-        rejectedExecutionHandler: RejectedExecutionHandler,
-        taskDecorator: TaskDecorator
+    rejectedExecutionHandler: RejectedExecutionHandler,
+    taskDecorator: TaskDecorator
 ): TaskExecutor {
     return toTaskExecutor(rejectedExecutionHandler, null, taskDecorator, null)
 }
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(
-        rejectedExecutionHandler: RejectedExecutionHandler,
-        taskDelegate: TaskDelegate,
-        taskDecorator: TaskDecorator
+    rejectedExecutionHandler: RejectedExecutionHandler,
+    taskDelegate: TaskDelegate,
+    taskDecorator: TaskDecorator
 ): TaskExecutor {
     return toTaskExecutor(rejectedExecutionHandler, taskDelegate, taskDecorator, null)
 }
 
 @JvmName("newTaskExecutor")
 fun TaskPoolProperties.toTaskExecutor(
-        rejectedExecutionHandler: RejectedExecutionHandler? = null,
-        taskDelegate: TaskDelegate? = null,
-        taskDecorator: TaskDecorator? = null,
-        threadFactory: ThreadFactory? = null,
+    rejectedExecutionHandler: RejectedExecutionHandler? = null,
+    taskDelegate: TaskDelegate? = null,
+    taskDecorator: TaskDecorator? = null,
+    threadFactory: ThreadFactory? = null,
 ): TaskExecutor {
     val threadPoolTaskExecutor = ThreadPoolTaskExecutor()
     threadPoolTaskExecutor.corePoolSize = this.corePoolSize
@@ -92,22 +92,22 @@ fun TaskPoolProperties.toTaskExecutor(
     return if (taskDelegate === null)
         threadPoolTaskExecutor
     else DelegatedTaskExecutor(
-            threadPoolTaskExecutor,
-            taskDelegate
+        threadPoolTaskExecutor,
+        taskDelegate
     )
 }
 
 @JvmOverloads
 fun executeWithMdc(
-        executor: Executor,
-        task: Runnable,
-        recoverAction: (
-                currentContext: Map<String, String>,
-                executorContext: Map<String, String>
-        ) -> Unit = { _, executorContext ->
-            MDC.clear()
-            MDC.setContextMap(executorContext)
-        }
+    executor: Executor,
+    task: Runnable,
+    recoverAction: (
+        currentContext: Map<String, String>,
+        executorContext: Map<String, String>
+    ) -> Unit = { _, executorContext ->
+        MDC.clear()
+        MDC.setContextMap(executorContext)
+    }
 ) {
     val currentContext = MDC.getCopyOfContextMap() ?: emptyMap()
     executor.execute {
@@ -120,15 +120,15 @@ fun executeWithMdc(
 
 @JvmOverloads
 fun <T> executeWithMdc(
-        executor: ExecutorService,
-        task: Callable<T>,
-        recoverAction: (
-                currentContext: Map<String, String>,
-                executorContext: Map<String, String>
-        ) -> Unit = { _, executorContext ->
-            MDC.clear()
-            MDC.setContextMap(executorContext)
-        }
+    executor: ExecutorService,
+    task: Callable<T>,
+    recoverAction: (
+        currentContext: Map<String, String>,
+        executorContext: Map<String, String>
+    ) -> Unit = { _, executorContext ->
+        MDC.clear()
+        MDC.setContextMap(executorContext)
+    }
 ): Future<T> {
     val currentContext = MDC.getCopyOfContextMap() ?: emptyMap()
     val delegateTask: Callable<T> = Callable {
@@ -142,8 +142,8 @@ fun <T> executeWithMdc(
 }
 
 private class DelegatedTaskExecutor(
-        private val executor: Executor,
-        private val taskDelegate: TaskDelegate,
+    private val executor: Executor,
+    private val taskDelegate: TaskDelegate,
 ) : TaskExecutor {
 
     override fun execute(task: Runnable) {

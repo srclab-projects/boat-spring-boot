@@ -15,8 +15,8 @@ import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
 import javax.annotation.Resource;
 
 @SpringBootTest(
-        classes = Starter.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    classes = Starter.class,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @EnableWebExceptionService
 public class WebExceptionTest extends AbstractTestNGSpringContextTests {
@@ -32,15 +32,15 @@ public class WebExceptionTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testException() {
         String result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException",
-                String.class
+            "http://localhost:" + port + "/test/exception?body=testException",
+            String.class
         );
         logger.info("/test/exception?body=testException: " + result);
         Assert.assertEquals(result, "testException");
 
         result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException0",
-                String.class
+            "http://localhost:" + port + "/test/exception?body=testException0",
+            String.class
         );
         logger.info("/test/exception?body=testException: " + result);
         Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
