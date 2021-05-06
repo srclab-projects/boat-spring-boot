@@ -12,8 +12,8 @@ import org.testng.annotations.Test;
 import javax.annotation.Resource;
 
 @SpringBootTest(
-        classes = Starter.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    classes = Starter.class,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class ServletTest extends AbstractTestNGSpringContextTests {
 
@@ -28,17 +28,17 @@ public class ServletTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testServlet() {
         String result = restTemplate.postForObject(
-                "http://localhost:" + port + "/test/servlet",
-                "ppp1",
-                String.class
+            "http://localhost:" + port + "/test/servlet",
+            "ppp1",
+            String.class
         );
         logger.info("/test/servlet: " + result);
         Assert.assertEquals(result, "ppp1");
 
         result = restTemplate.postForObject(
-                "http://localhost:" + port + "/test/index",
-                "ppp2",
-                String.class
+            "http://localhost:" + port + "/test/index",
+            "ppp2",
+            String.class
         );
         logger.info("/test/index: " + result);
         Assert.assertEquals(result, "encode: ppp2");

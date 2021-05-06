@@ -31,16 +31,16 @@ public class BeanTest extends AbstractTestNGSpringContextTests {
     public void testBeanPostProcessor() {
         logger.info("Bean processing sequence: {}", testBeanPostProcessor.getSequence());
         Assert.assertEquals(
-                testBeanPostProcessor.getSequence(),
-                Arrays.asList(
-                        "postProcessBeanDefinitionRegistry",
-                        "postProcessBeanFactory",
-                        "postProcessBeforeInstantiation",
-                        "postProcessAfterInstantiation",
-                        "postProcessProperties",
-                        "postProcessBeforeInitialization",
-                        "postProcessAfterInitialization"
-                )
+            testBeanPostProcessor.getSequence(),
+            Arrays.asList(
+                "postProcessBeanDefinitionRegistry",
+                "postProcessBeanFactory",
+                "postProcessBeforeInstantiation",
+                "postProcessAfterInstantiation",
+                "postProcessProperties",
+                "postProcessBeforeInitialization",
+                "postProcessAfterInitialization"
+            )
         );
     }
 

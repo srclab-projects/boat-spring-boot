@@ -3,7 +3,6 @@ package sample.kotlin.xyz.srclab.spring.boot.bean
 import org.springframework.stereotype.Component
 import xyz.srclab.spring.boot.bean.BeanProperties
 import xyz.srclab.spring.boot.bean.BeanRegistry
-import java.util.*
 
 @Component
 open class MyBeanRegistry : BeanRegistry() {

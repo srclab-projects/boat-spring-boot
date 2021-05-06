@@ -16,7 +16,7 @@ fun ScheduledPoolProperties.toTaskScheduler(): TaskScheduler {
 
 @JvmName("newTaskScheduler")
 fun ScheduledPoolProperties.toTaskScheduler(
-        rejectedExecutionHandler: RejectedExecutionHandler
+    rejectedExecutionHandler: RejectedExecutionHandler
 ): TaskScheduler {
     return toTaskScheduler(rejectedExecutionHandler, null, null)
 }
@@ -28,17 +28,17 @@ fun ScheduledPoolProperties.toTaskScheduler(errorHandler: ErrorHandler): TaskSch
 
 @JvmName("newTaskScheduler")
 fun ScheduledPoolProperties.toTaskScheduler(
-        rejectedExecutionHandler: RejectedExecutionHandler,
-        errorHandler: ErrorHandler
+    rejectedExecutionHandler: RejectedExecutionHandler,
+    errorHandler: ErrorHandler
 ): TaskScheduler {
     return toTaskScheduler(rejectedExecutionHandler, errorHandler, null)
 }
 
 @JvmName("newTaskScheduler")
 fun ScheduledPoolProperties.toTaskScheduler(
-        rejectedExecutionHandler: RejectedExecutionHandler? = null,
-        errorHandler: ErrorHandler? = null,
-        threadFactory: ThreadFactory? = null,
+    rejectedExecutionHandler: RejectedExecutionHandler? = null,
+    errorHandler: ErrorHandler? = null,
+    threadFactory: ThreadFactory? = null,
 ): TaskScheduler {
     val threadPoolTaskScheduler = ThreadPoolTaskScheduler()
     threadPoolTaskScheduler.poolSize = this.poolSize
