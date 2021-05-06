@@ -80,6 +80,18 @@ Bean提供:
 
 Java Examples
 
+    package sample.java.xyz.srclab.spring.boot.bean;
+
+    import org.jetbrains.annotations.NotNull;
+    import org.springframework.stereotype.Component;
+    import xyz.srclab.spring.boot.bean.BeanProperties;
+    import xyz.srclab.spring.boot.bean.BeanRegistry;
+
+    import java.util.HashMap;
+    import java.util.HashSet;
+    import java.util.Map;
+    import java.util.Set;
+
     @Component
     public class MyBeanRegistry extends BeanRegistry {
 
@@ -104,7 +116,105 @@ Java Examples
         }
     }
 
+    package sample.java.xyz.srclab.spring.boot.bean;
+
+    import org.jetbrains.annotations.NotNull;
+    import org.springframework.beans.BeansException;
+    import org.springframework.beans.PropertyValues;
+    import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+    import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+    import org.springframework.stereotype.Component;
+    import xyz.srclab.spring.boot.bean.BeanLifecyclePostProcessor;
+
+    import java.util.LinkedList;
+    import java.util.List;
+
+    @Component
+    public class MyBeanLifecyclePostProcessor implements BeanLifecyclePostProcessor {
+
+        private final List<String> sequence = new LinkedList<>();
+
+        private boolean isPostProcessBeanDefinitionRegistry = false;
+        private boolean isPostProcessBeanFactory = false;
+        private boolean isPostProcessBeforeInstantiation = false;
+        private boolean isPostProcessAfterInstantiation = false;
+        private boolean isPostProcessBeforeInitialization = false;
+        private boolean isPostProcessAfterInitialization = false;
+        private boolean isPostProcessProperties = false;
+
+        @Override
+        public void postProcessBeanDefinitionRegistry(@NotNull BeanDefinitionRegistry registry) {
+            if (!isPostProcessBeanDefinitionRegistry) {
+                sequence.add("postProcessBeanDefinitionRegistry");
+                isPostProcessBeanDefinitionRegistry = true;
+            }
+        }
+
+        @Override
+        public void postProcessBeanFactory(@NotNull ConfigurableListableBeanFactory beanFactory) {
+            if (!isPostProcessBeanFactory) {
+                sequence.add("postProcessBeanFactory");
+                isPostProcessBeanFactory = true;
+            }
+        }
+
+        @Override
+        public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+            if (!isPostProcessBeforeInstantiation) {
+                sequence.add("postProcessBeforeInstantiation");
+                isPostProcessBeforeInstantiation = true;
+            }
+            return null;
+        }
+
+        @Override
+        public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+            if (!isPostProcessAfterInstantiation) {
+                sequence.add("postProcessAfterInstantiation");
+                isPostProcessAfterInstantiation = true;
+            }
+            return true;
+        }
+
+        @Override
+        public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+            if (!isPostProcessBeforeInitialization) {
+                sequence.add("postProcessBeforeInitialization");
+                isPostProcessBeforeInitialization = true;
+            }
+            return bean;
+        }
+
+        @Override
+        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+            if (!isPostProcessAfterInitialization) {
+                sequence.add("postProcessAfterInitialization");
+                isPostProcessAfterInitialization = true;
+            }
+            return null;
+        }
+
+        @Override
+        public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+            if (!isPostProcessProperties) {
+                sequence.add("postProcessProperties");
+                isPostProcessProperties = true;
+            }
+            return null;
+        }
+
+        public List<String> getSequence() {
+            return sequence;
+        }
+    }
+
 Kotlin Examples
+
+    package sample.kotlin.xyz.srclab.spring.boot.bean
+
+    import org.springframework.stereotype.Component
+    import xyz.srclab.spring.boot.bean.BeanProperties
+    import xyz.srclab.spring.boot.bean.BeanRegistry
 
     @Component
     open class MyBeanRegistry : BeanRegistry() {
@@ -128,6 +238,86 @@ Kotlin Examples
             }
     }
 
+    package sample.kotlin.xyz.srclab.spring.boot.bean
+
+    import org.springframework.beans.PropertyValues
+    import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
+    import org.springframework.beans.factory.support.BeanDefinitionRegistry
+    import org.springframework.stereotype.Component
+    import xyz.srclab.spring.boot.bean.BeanLifecyclePostProcessor
+    import java.util.*
+
+    @Component
+    open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
+
+        private val sequence: MutableList<String> = LinkedList()
+        private var isPostProcessBeanDefinitionRegistry = false
+        private var isPostProcessBeanFactory = false
+        private var isPostProcessBeforeInstantiation = false
+        private var isPostProcessAfterInstantiation = false
+        private var isPostProcessBeforeInitialization = false
+        private var isPostProcessAfterInitialization = false
+        private var isPostProcessProperties = false
+
+        override fun postProcessBeanDefinitionRegistry(registry: BeanDefinitionRegistry) {
+            if (!isPostProcessBeanDefinitionRegistry) {
+                sequence.add("postProcessBeanDefinitionRegistry")
+                isPostProcessBeanDefinitionRegistry = true
+            }
+        }
+
+        override fun postProcessBeanFactory(beanFactory: ConfigurableListableBeanFactory) {
+            if (!isPostProcessBeanFactory) {
+                sequence.add("postProcessBeanFactory")
+                isPostProcessBeanFactory = true
+            }
+        }
+
+        override fun postProcessBeforeInstantiation(beanClass: Class<*>, beanName: String): Any? {
+            if (!isPostProcessBeforeInstantiation) {
+                sequence.add("postProcessBeforeInstantiation")
+                isPostProcessBeforeInstantiation = true
+            }
+            return null
+        }
+
+        override fun postProcessAfterInstantiation(bean: Any, beanName: String): Boolean {
+            if (!isPostProcessAfterInstantiation) {
+                sequence.add("postProcessAfterInstantiation")
+                isPostProcessAfterInstantiation = true
+            }
+            return true
+        }
+
+        override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any? {
+            if (!isPostProcessBeforeInitialization) {
+                sequence.add("postProcessBeforeInitialization")
+                isPostProcessBeforeInitialization = true
+            }
+            return bean
+        }
+
+        override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
+            if (!isPostProcessAfterInitialization) {
+                sequence.add("postProcessAfterInitialization")
+                isPostProcessAfterInitialization = true
+            }
+            return null
+        }
+
+        override fun postProcessProperties(pvs: PropertyValues, bean: Any, beanName: String): PropertyValues? {
+            if (!isPostProcessProperties) {
+                sequence.add("postProcessProperties")
+                isPostProcessProperties = true
+            }
+            return null
+        }
+
+        fun getSequence(): List<String> {
+            return sequence
+        }
+    }
+
 #### Task
 
 Task提供:
@@ -139,6 +329,15 @@ Task提供:
 -   TaskDelegate: Task调度委托.
 
 Java Examples
+
+    package sample.java.xyz.srclab.spring.boot.task;
+
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.core.task.TaskExecutor;
+    import org.springframework.scheduling.annotation.EnableAsync;
+    import xyz.srclab.spring.boot.task.TaskExecutors;
+    import xyz.srclab.spring.boot.task.TaskPoolProperties;
 
     @Configuration
     @EnableAsync
@@ -154,13 +353,22 @@ Java Examples
 
 Kotlin Examples
 
+    package sample.kotlin.xyz.srclab.spring.boot.task
+
+    import org.springframework.context.annotation.Bean
+    import org.springframework.context.annotation.Configuration
+    import org.springframework.core.task.TaskExecutor
+    import org.springframework.scheduling.annotation.EnableAsync
+    import xyz.srclab.spring.boot.task.TaskPoolProperties
+    import xyz.srclab.spring.boot.task.toTaskExecutor
+
     @Configuration
     @EnableAsync
     open class MyTaskExecutorConfigurationKt {
 
         @Bean
         open fun taskExecutor(): TaskExecutor {
-            val poolProperties = ThreadPoolProperties()
+            val poolProperties = TaskPoolProperties()
             poolProperties.threadNamePrefix = "6666"
             return poolProperties.toTaskExecutor()
         }
@@ -177,6 +385,15 @@ Schedule提供:
 
 Java Examples
 
+    package sample.java.xyz.srclab.spring.boot.schedule;
+
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.scheduling.TaskScheduler;
+    import org.springframework.scheduling.annotation.EnableScheduling;
+    import xyz.srclab.spring.boot.schedule.ScheduledPoolProperties;
+    import xyz.srclab.spring.boot.schedule.TaskSchedulers;
+
     @Configuration
     @EnableScheduling
     public class MyTaskSchedulerConfiguration {
@@ -190,6 +407,15 @@ Java Examples
     }
 
 Kotlin Examples
+
+    package sample.kotlin.xyz.srclab.spring.boot.schedule
+
+    import org.springframework.context.annotation.Bean
+    import org.springframework.context.annotation.Configuration
+    import org.springframework.scheduling.TaskScheduler
+    import org.springframework.scheduling.annotation.EnableScheduling
+    import xyz.srclab.spring.boot.schedule.ScheduledPoolProperties
+    import xyz.srclab.spring.boot.schedule.toTaskScheduler
 
     @Configuration
     @EnableScheduling
@@ -216,9 +442,21 @@ Kotlin Examples
 
 Java Examples
 
+    package sample.java.xyz.srclab.spring.boot.exception;
+
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+    import org.testng.Assert;
+    import org.testng.annotations.Test;
+    import xyz.srclab.common.exception.ExceptionStatus;
+    import xyz.srclab.spring.boot.exception.EnableExceptionService;
+    import xyz.srclab.spring.boot.exception.ExceptionStatusService;
+
+    import javax.annotation.Resource;
+
     @SpringBootTest(classes = Starter.class)
     @EnableExceptionService
-    public class ExceptionStatusServiceSample extends AbstractTestNGSpringContextTests {
+    public class ExceptionServiceSample extends AbstractTestNGSpringContextTests {
 
         @Resource
         private ExceptionStatusService exceptionStatusService;
@@ -231,6 +469,13 @@ Java Examples
             Assert.assertEquals(throwable.code(), "101");
         }
     }
+
+    package sample.java.xyz.srclab.spring.boot.exception;
+
+    import org.jetbrains.annotations.NotNull;
+    import org.springframework.stereotype.Component;
+    import xyz.srclab.common.exception.ExceptionStatus;
+    import xyz.srclab.spring.boot.exception.ExceptionStatusHandler;
 
     @Component
     public class RuntimeExceptionStatusHandler implements ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
@@ -247,6 +492,13 @@ Java Examples
             return ExceptionStatus.of("102");
         }
     }
+
+    package sample.java.xyz.srclab.spring.boot.exception;
+
+    import org.jetbrains.annotations.NotNull;
+    import org.springframework.stereotype.Component;
+    import xyz.srclab.common.exception.ExceptionStatus;
+    import xyz.srclab.spring.boot.exception.ExceptionStatusHandler;
 
     @Component
     public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable, ExceptionStatus> {
@@ -266,9 +518,23 @@ Java Examples
 
 Kotlin Examples
 
+    package sample.kotlin.xyz.srclab.spring.boot.exception
+
+    import org.springframework.boot.autoconfigure.SpringBootApplication
+    import org.springframework.boot.test.context.SpringBootTest
+    import org.springframework.stereotype.Component
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+    import org.testng.Assert
+    import org.testng.annotations.Test
+    import xyz.srclab.common.exception.ExceptionStatus
+    import xyz.srclab.spring.boot.exception.EnableExceptionService
+    import xyz.srclab.spring.boot.exception.ExceptionStatusHandler
+    import xyz.srclab.spring.boot.exception.ExceptionStatusService
+    import javax.annotation.Resource
+
     @SpringBootTest(classes = [Starter::class])
     @EnableExceptionService
-    class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
+    class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
 
         @Resource
         private lateinit var exceptionStatusService: ExceptionStatusService
@@ -299,6 +565,9 @@ Kotlin Examples
         }
     }
 
+    @SpringBootApplication
+    open class Starter
+
 ### Web (boat-spring-boot-web-starter)
 
 #### Exception
@@ -315,9 +584,25 @@ Web异常提供:
 
 Java Examples
 
+    package sample.java.xyz.srclab.spring.boot.web.exception;
+
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.boot.test.web.client.TestRestTemplate;
+    import org.springframework.boot.web.server.LocalServerPort;
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+    import org.testng.Assert;
+    import org.testng.annotations.Test;
+    import xyz.srclab.common.exception.ExceptionStatus;
+    import xyz.srclab.common.serialize.json.JsonSerials;
+    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
+
+    import javax.annotation.Resource;
+
     @SpringBootTest(
-            classes = Starter.class,
-            webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+        classes = Starter.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
     @EnableWebExceptionService
     public class WebExceptionSample extends AbstractTestNGSpringContextTests {
@@ -333,20 +618,25 @@ Java Examples
         @Test
         public void testException() {
             String result = restTemplate.getForObject(
-                    "http://localhost:" + port + "/test/exception?body=testException",
-                    String.class
+                "http://localhost:" + port + "/test/exception?body=testException",
+                String.class
             );
             logger.info("/test/exception?body=testException: " + result);
             Assert.assertEquals(result, "testException");
 
             result = restTemplate.getForObject(
-                    "http://localhost:" + port + "/test/exception?body=testException0",
-                    String.class
+                "http://localhost:" + port + "/test/exception?body=testException0",
+                String.class
             );
             logger.info("/test/exception?body=testException: " + result);
             Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
         }
     }
+
+    package sample.java.xyz.srclab.spring.boot.web.exception;
+
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
 
     @RequestMapping("test")
     @RestController
@@ -360,6 +650,15 @@ Java Examples
             throw new IllegalArgumentException("Must be testException!");
         }
     }
+
+    package sample.java.xyz.srclab.spring.boot.web.exception;
+
+    import org.jetbrains.annotations.NotNull;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.stereotype.Component;
+    import xyz.srclab.common.exception.ExceptionStatus;
+    import xyz.srclab.spring.boot.web.exception.WebExceptionHandler;
 
     @Component
     public class RuntimeExceptionHandler implements WebExceptionHandler<RuntimeException> {
@@ -377,6 +676,15 @@ Java Examples
         }
     }
 
+    package sample.java.xyz.srclab.spring.boot.web.exception;
+
+    import org.jetbrains.annotations.NotNull;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.stereotype.Component;
+    import xyz.srclab.common.exception.ExceptionStatus;
+    import xyz.srclab.spring.boot.web.exception.WebExceptionHandler;
+
     @Component
     public class ThrowableHandler implements WebExceptionHandler<Throwable> {
 
@@ -393,11 +701,28 @@ Java Examples
         }
     }
 
-    @SpringBootApplication
-    public class Starter {
-    }
-
 Kotlin Examples
+
+    package sample.kotlin.xyz.srclab.spring.boot.web.exception
+
+    import org.slf4j.LoggerFactory
+    import org.springframework.boot.autoconfigure.SpringBootApplication
+    import org.springframework.boot.test.context.SpringBootTest
+    import org.springframework.boot.test.web.client.TestRestTemplate
+    import org.springframework.boot.web.server.LocalServerPort
+    import org.springframework.http.HttpStatus
+    import org.springframework.http.ResponseEntity
+    import org.springframework.stereotype.Component
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+    import org.springframework.web.bind.annotation.RequestMapping
+    import org.springframework.web.bind.annotation.RestController
+    import org.testng.Assert
+    import org.testng.annotations.Test
+    import xyz.srclab.common.exception.ExceptionStatus
+    import xyz.srclab.common.serialize.json.toJsonString
+    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService
+    import xyz.srclab.spring.boot.web.exception.WebExceptionHandler
+    import javax.annotation.Resource
 
     @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
     @EnableWebExceptionService

@@ -65,55 +65,23 @@ Bean provides:
 .Java Examples
 [source,java]
 ----
-@Component
-public class MyBeanRegistry extends BeanRegistry {
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBeanRegistry.java[]
+----
 
-    @NotNull
-    @Override
-    protected Map<String, Object> registeredSingletons() {
-        Map<String, Object> result = new HashMap<>();
-        result.put("bean1", "bean1");
-        result.put("bean2", "bean2");
-        return result;
-    }
-
-    @NotNull
-    @Override
-    protected Set<BeanProperties> registeredBeans() {
-        Set<BeanProperties> result = new HashSet<>();
-        BeanProperties beanProperties = new BeanProperties();
-        beanProperties.setName("myBean");
-        beanProperties.setClassName(MyBean.class.getName());
-        result.add(beanProperties);
-        return result;
-    }
-}
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBeanLifecyclePostProcessor.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-@Component
-open class MyBeanRegistry : BeanRegistry() {
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/bean/MyBeanRegistry.kt[]
+----
 
-    override val registeredSingletons: Map<String, Any>
-        get() {
-            val result: MutableMap<String, Any> = HashMap()
-            result["bean1"] = "bean1"
-            result["bean2"] = "bean2"
-            return result
-        }
-
-    override val registeredBeans: Set<BeanProperties>
-        get() {
-            val result: MutableSet<BeanProperties> = HashSet()
-            val beanProperties = BeanProperties()
-            beanProperties.name = "myBean"
-            beanProperties.className = MyBean::class.java.name
-            result.add(beanProperties)
-            return result
-        }
-}
+[source,kotlin]
+----
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/bean/MyBeanLifecyclePostProcessor.kt[]
 ----
 
 ==== Task
@@ -127,33 +95,13 @@ Task provides:
 .Java Examples
 [source,java]
 ----
-@Configuration
-@EnableAsync
-public class MyTaskExecutorConfiguration {
-
-    @Bean
-    public TaskExecutor taskExecutor() {
-        TaskPoolProperties poolProperties = new TaskPoolProperties();
-        poolProperties.setThreadNamePrefix("6666");
-        return TaskExecutors.newTaskExecutor(poolProperties);
-    }
-}
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/MyTaskExecutorConfiguration.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-@Configuration
-@EnableAsync
-open class MyTaskExecutorConfigurationKt {
-
-    @Bean
-    open fun taskExecutor(): TaskExecutor {
-        val poolProperties = ThreadPoolProperties()
-        poolProperties.threadNamePrefix = "6666"
-        return poolProperties.toTaskExecutor()
-    }
-}
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/task/MyTaskExecutorConfigurationKt.kt[]
 ----
 
 ==== Schedule
@@ -166,33 +114,13 @@ Schedule provides:
 .Java Examples
 [source,java]
 ----
-@Configuration
-@EnableScheduling
-public class MyTaskSchedulerConfiguration {
-
-    @Bean
-    public TaskScheduler taskScheduler() {
-        ScheduledPoolProperties poolProperties = new ScheduledPoolProperties();
-        poolProperties.setThreadNamePrefix("6666");
-        return TaskSchedulers.newTaskScheduler(poolProperties);
-    }
-}
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/MyTaskSchedulerConfiguration.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-@Configuration
-@EnableScheduling
-open class MyTaskSchedulerConfiguration {
-
-    @Bean
-    open fun taskScheduler(): TaskScheduler {
-        val poolProperties = ScheduledPoolProperties()
-        poolProperties.threadNamePrefix = "6666"
-        return poolProperties.toTaskScheduler()
-    }
-}
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/schedule/MyTaskSchedulerConfiguration.kt[]
 ----
 
 ==== Exception
@@ -206,90 +134,23 @@ Exception provides:
 .Java Examples
 [source,java]
 ----
-@SpringBootTest(classes = Starter.class)
-@EnableExceptionService
-public class ExceptionStatusServiceSample extends AbstractTestNGSpringContextTests {
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ExceptionServiceSample.java[]
+----
 
-    @Resource
-    private ExceptionStatusService exceptionStatusService;
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionStatusHandler.java[]
+----
 
-    @Test
-    public void testExceptionStateService() {
-        ExceptionStatus runtime = exceptionStatusService.toState(new RuntimeException());
-        Assert.assertEquals(runtime.code(), "102");
-        ExceptionStatus throwable = exceptionStatusService.toState(new Exception());
-        Assert.assertEquals(throwable.code(), "101");
-    }
-}
-
-@Component
-public class RuntimeExceptionStatusHandler implements ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
-
-    @NotNull
-    @Override
-    public Class<RuntimeException> supportedExceptionType() {
-        return RuntimeException.class;
-    }
-
-    @NotNull
-    @Override
-    public ExceptionStatus handle(@NotNull RuntimeException exception) {
-        return ExceptionStatus.of("102");
-    }
-}
-
-@Component
-public class ThrowableStatusHandler implements ExceptionStatusHandler<Throwable, ExceptionStatus> {
-
-    @NotNull
-    @Override
-    public Class<Throwable> supportedExceptionType() {
-        return Throwable.class;
-    }
-
-    @NotNull
-    @Override
-    public ExceptionStatus handle(@NotNull Throwable throwable) {
-        return ExceptionStatus.of("101");
-    }
-}
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableStatusHandler.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-@SpringBootTest(classes = [Starter::class])
-@EnableExceptionService
-class ExceptionStatusServiceSample : AbstractTestNGSpringContextTests() {
-
-    @Resource
-    private lateinit var exceptionStatusService: ExceptionStatusService
-
-    @Test
-    fun testExceptionStateService() {
-        val runtime = exceptionStatusService.toState<ExceptionStatus>(RuntimeException())
-        Assert.assertEquals(runtime.code, "102")
-        val throwable = exceptionStatusService.toState<ExceptionStatus>(Exception())
-        Assert.assertEquals(throwable.code, "101")
-    }
-}
-
-@Component
-open class RuntimeExceptionStatusHandler :
-    ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
-    override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
-    override fun handle(e: RuntimeException): ExceptionStatus {
-        return ExceptionStatus.of("102")
-    }
-}
-
-@Component
-open class ThrowableStatusHandler : ExceptionStatusHandler<Throwable, ExceptionStatus> {
-    override val supportedExceptionType: Class<Throwable> = Throwable::class.java
-    override fun handle(e: Throwable): ExceptionStatus {
-        return ExceptionStatus.of("101")
-    }
-}
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/exception/ExceptionServiceSample.kt[]
 ----
 
 === Web (boat-spring-boot-web-starter)
@@ -305,155 +166,28 @@ Web exception provides:
 .Java Examples
 [source,java]
 ----
-@SpringBootTest(
-        classes = Starter.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-@EnableWebExceptionService
-public class WebExceptionSample extends AbstractTestNGSpringContextTests {
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebExceptionSample.java[]
+----
 
-    private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/TestController.java[]
+----
 
-    @LocalServerPort
-    private int port;
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/RuntimeExceptionHandler.java[]
+----
 
-    @Resource
-    private TestRestTemplate restTemplate;
-
-    @Test
-    public void testException() {
-        String result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException",
-                String.class
-        );
-        logger.info("/test/exception?body=testException: " + result);
-        Assert.assertEquals(result, "testException");
-
-        result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException0",
-                String.class
-        );
-        logger.info("/test/exception?body=testException: " + result);
-        Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
-    }
-}
-
-@RequestMapping("test")
-@RestController
-public class TestController {
-
-    @RequestMapping("exception")
-    public String testException(String body) {
-        if ("testException".equals(body)) {
-            return body;
-        }
-        throw new IllegalArgumentException("Must be testException!");
-    }
-}
-
-@Component
-public class RuntimeExceptionHandler implements WebExceptionHandler<RuntimeException> {
-
-    @NotNull
-    @Override
-    public Class<RuntimeException> supportedExceptionType() {
-        return RuntimeException.class;
-    }
-
-    @NotNull
-    @Override
-    public ResponseEntity<ExceptionStatus> handle(@NotNull RuntimeException exception) {
-        return new ResponseEntity<>(ExceptionStatus.of("102"), HttpStatus.OK);
-    }
-}
-
-@Component
-public class ThrowableHandler implements WebExceptionHandler<Throwable> {
-
-    @NotNull
-    @Override
-    public Class<Throwable> supportedExceptionType() {
-        return Throwable.class;
-    }
-
-    @NotNull
-    @Override
-    public ResponseEntity<ExceptionStatus> handle(@NotNull Throwable throwable) {
-        return new ResponseEntity<>(ExceptionStatus.of("101"), HttpStatus.OK);
-    }
-}
-
-@SpringBootApplication
-public class Starter {
-}
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/ThrowableHandler.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-@SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableWebExceptionService
-class WebExceptionSample : AbstractTestNGSpringContextTests() {
-
-    @LocalServerPort
-    private val port = 0
-
-    @Resource
-    private val restTemplate: TestRestTemplate? = null
-
-    @Test
-    fun testException() {
-        var result = restTemplate!!.getForObject(
-            "http://localhost:$port/test/exception?body=testException",
-            String::class.java
-        )
-        Companion.logger.info("/test/exception?body=testException: $result")
-        Assert.assertEquals(result, "testException")
-        result = restTemplate.getForObject(
-            "http://localhost:$port/test/exception?body=testException0",
-            String::class.java
-        )
-        Companion.logger.info("/test/exception?body=testException: $result")
-        Assert.assertEquals(result, ExceptionStatus.of("102").toJsonString())
-    }
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(WebExceptionSample::class.java)
-    }
-}
-
-@RequestMapping("test")
-@RestController
-open class TestController {
-
-    @RequestMapping("exception")
-    open fun testException(body: String): String {
-        if (body == "testException") {
-            return body
-        }
-        throw IllegalArgumentException("Must be testException!")
-    }
-}
-
-@Component
-open class RuntimeExceptionStatusHandler :
-    WebExceptionHandler<RuntimeException> {
-    override val supportedExceptionType: Class<RuntimeException> = RuntimeException::class.java
-    override fun handle(e: RuntimeException): ResponseEntity<ExceptionStatus> {
-        return ResponseEntity(ExceptionStatus.of("102"), HttpStatus.OK)
-    }
-}
-
-@Component
-open class ThrowableStatusHandler : WebExceptionHandler<Throwable> {
-    override val supportedExceptionType: Class<Throwable> = Throwable::class.java
-    override fun handle(e: Throwable): ResponseEntity<ExceptionStatus> {
-        return ResponseEntity(ExceptionStatus.of("101"), HttpStatus.OK)
-    }
-}
-
-@SpringBootApplication
-open class Starter
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/exception/WebExceptionSample.kt[]
 ----
 
 ==== Utilities
