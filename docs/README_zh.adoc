@@ -49,7 +49,7 @@ implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boo
 ----
 
 .Source Code
-https://github.com/srclab-projects/boat-spring-boot
+{url}
 
 == 使用
 
