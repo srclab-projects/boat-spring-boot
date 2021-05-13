@@ -2,7 +2,7 @@ plugins {
   id 'build.jar'
 }
 
-description = "Boat Spring Boot Starters for Test"
+description = "Boat Spring Boot Starter for Test"
 
 java {
   registerFeature('optionalSupport') {

@@ -2,7 +2,7 @@ plugins {
   id 'build.platform'
 }
 
-description = "Boat Spring Boot Starters for BOM"
+description = "Boat Spring Boot Starter for BOM"
 
 javaPlatform {
   allowDependencies()
