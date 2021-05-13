@@ -1,7 +1,7 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-  id 'build.kotlin-publish-platform'
+  id 'build.platform'
 }
 
 description = "Boat Spring Boot Dependencies Management"

@@ -1,5 +1,5 @@
 plugins {
-  id 'build.kotlin-sample'
+  id 'build.sample'
 }
 
 description = "Boat Spring Boot Samples"
@@ -15,9 +15,4 @@ dependencies {
   implementation project(":boat-spring-boot-starters:boat-spring-boot-starter-web")
 
   testCompile project(":boat-spring-boot-starters:boat-spring-boot-starter-test")
-}
-
-test {
-  useTestNG()
-  include("**/*Sample.class", "**/*SampleKt.class")
 }
