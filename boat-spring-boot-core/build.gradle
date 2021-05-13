@@ -1,5 +1,5 @@
 plugins {
-  id 'build.kotlin-publish-jar'
+  id 'build.jar'
 }
 
 description = "Boat Spring Boot Core: Core and basic interfaces, functions and utilities for Spring Boot."
@@ -26,8 +26,3 @@ dependencies {
 }
 
 compileJava.inputs.files(processResources)
-
-test {
-  useTestNG()
-  include("**/*Test.class", "**/*TestKt.class")
-}

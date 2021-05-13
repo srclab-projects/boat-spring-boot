@@ -1,5 +1,5 @@
 plugins {
-  id 'build.kotlin-publish-jar'
+  id 'build.jar'
 }
 
 description = "Boat Spring Boot Starters for Test"

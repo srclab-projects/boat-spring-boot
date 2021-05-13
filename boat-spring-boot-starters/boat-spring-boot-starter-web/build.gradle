@@ -1,5 +1,5 @@
 plugins {
-  id 'build.kotlin-publish-jar'
+  id 'build.jar'
 }
 
 description = "Boat Spring Boot Starters for Core: Core and basic interfaces, functions and utilities for Spring Boot."
