@@ -3,7 +3,7 @@ package test.xyz.srclab.spring.boot.task;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
-import xyz.srclab.common.base.Current;
+import xyz.srclab.common.lang.Current;
 
 import javax.annotation.Resource;
 

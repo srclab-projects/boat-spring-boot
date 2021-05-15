@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import xyz.srclab.common.base.asAny
 import xyz.srclab.common.convert.FastConvertHandler
 import xyz.srclab.common.convert.FastConverter
+import xyz.srclab.common.lang.asAny
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.annotation.Resource

@@ -4,15 +4,15 @@ import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.testng.Assert
-import xyz.srclab.common.base.Current.thread
+import xyz.srclab.common.lang.Current
 
 @Service
 open class AsyncService {
 
     @Async
     open fun testAsync() {
-        logger.info("Thread: {}", thread.name)
-        Assert.assertTrue(thread.name.startsWith("666"))
+        logger.info("Thread: {}", Current.thread.name)
+        Assert.assertTrue(Current.thread.name.startsWith("666"))
     }
 
     companion object {

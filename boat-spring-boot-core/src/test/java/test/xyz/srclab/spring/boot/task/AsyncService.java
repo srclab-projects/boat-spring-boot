@@ -6,7 +6,7 @@ import org.slf4j.MDC;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.testng.Assert;
-import xyz.srclab.common.base.Current;
+import xyz.srclab.common.lang.Current;
 
 @Service
 public class AsyncService {

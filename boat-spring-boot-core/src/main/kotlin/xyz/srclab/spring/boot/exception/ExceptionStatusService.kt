@@ -1,9 +1,9 @@
 package xyz.srclab.spring.boot.exception
 
 import org.springframework.context.ApplicationContext
-import xyz.srclab.common.base.asAny
 import xyz.srclab.common.convert.FastConvertHandler
 import xyz.srclab.common.convert.FastConverter
+import xyz.srclab.common.lang.asAny
 import xyz.srclab.common.state.State
 import java.util.*
 import javax.annotation.PostConstruct

@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.testng.Assert;
-import xyz.srclab.common.base.Current;
+import xyz.srclab.common.lang.Current;
 
 @Service
 @EnableScheduling
