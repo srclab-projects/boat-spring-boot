@@ -48,12 +48,14 @@
       Boat
     </text>
     <text id="element-spring"
-          x="46" y="57" text-anchor="end" font-size="7" writing-mode="tb"
+          x="44" y="57" text-anchor="end" font-size="7"
+          transform="rotate(90, 44, 57)"
           fill="SkyBlue">
       Spring
     </text>
     <text id="element-boot"
-          x="52" y="55" text-anchor="end" font-size="7" writing-mode="tb"
+          x="50" y="57" text-anchor="end" font-size="7"
+          transform="rotate(90, 50, 57)"
           fill="SkyBlue">
       Boot
     </text>
