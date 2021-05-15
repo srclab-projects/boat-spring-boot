@@ -11,7 +11,7 @@ Sun Qian <fredsuvn@163.com>
 
 :qq-group: QQ group: 1037555759
 :boat-url: https://github.com/srclab-projects/boat
-:boat-spring-boot-version: 0.0.0
+:boat-spring-boot-version: 0.0.1
 
 == 简介
 
