@@ -1,8 +1,8 @@
 package xyz.srclab.spring.boot.bean
 
 import org.springframework.context.ConfigurableApplicationContext
-import xyz.srclab.common.base.INAPPLICABLE_JVM_NAME
-import xyz.srclab.common.base.loadClass
+import xyz.srclab.common.lang.INAPPLICABLE_JVM_NAME
+import xyz.srclab.common.lang.loadClass
 import javax.annotation.PostConstruct
 import javax.annotation.Resource
 
