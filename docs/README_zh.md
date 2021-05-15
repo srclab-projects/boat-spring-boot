@@ -50,14 +50,14 @@ Boat Spring Boot包括:
 
 Gradle
 
-    implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:0.0.0")
+    implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:0.0.1")
 
 Maven
 
     <dependency>
         <groupId>xyz.srclab.spring.boot</groupId>
         <artifactId>boat-spring-boot-starter</artifactId>
-        <version>0.0.0</version>
+        <version>0.0.1</version>
     </dependency>
 
 Source Code
