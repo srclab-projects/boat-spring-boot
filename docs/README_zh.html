@@ -455,6 +455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_core_boat_spring_boot_starter">Core (boat-spring-boot-starter)</a>
 <ul class="sectlevel3">
+<li><a href="#_lang">Lang</a></li>
 <li><a href="#_bean">Bean</a></li>
 <li><a href="#_task">Task</a></li>
 <li><a href="#_schedule">Schedule</a></li>
@@ -547,9 +548,94 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_core_boat_spring_boot_starter">Core (boat-spring-boot-starter)</h3>
 <div class="sect3">
+<h4 id="_lang">Lang</h4>
+<div class="paragraph">
+<p>Lang包为spring-boot提供扩展的基础功能:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>EncodeString: 代表一个可能经过编码和加密的属性字段.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Java Examples</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package sample.java.xyz.srclab.spring.boot.lang;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import xyz.srclab.common.codec.aes.AesKeys;
+import xyz.srclab.spring.boot.lang.EncodeString;
+
+import javax.crypto.SecretKey;
+
+@SpringBootTest(classes = Starter.class)
+//@ContextConfiguration(classes = {TestStarter.class})
+public class LangSample extends AbstractTestNGSpringContextTests {
+
+    private static final Logger logger = LoggerFactory.getLogger(LangSample.class);
+
+    @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+    private EncodeString encodeString;
+
+    @Test
+    public void testEncodeString() {
+        logger.info("encodeString: {}", encodeString);
+        SecretKey key = AesKeys.newKey("123");
+        Assert.assertEquals(encodeString.decodeString(key), "some password");
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Kotlin Examples</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">package sample.kotlin.xyz.srclab.spring.boot.lang
+
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+import org.testng.Assert
+import org.testng.annotations.Test
+import xyz.srclab.common.codec.aes.toAesKey
+import xyz.srclab.spring.boot.lang.EncodeString
+
+@SpringBootTest(classes = [Starter::class])
+open class LangSample : AbstractTestNGSpringContextTests() {
+
+    @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+    private lateinit var encodeString: EncodeString
+
+    @Test
+    fun testEncodeString() {
+        log.info("encodeString: {}", encodeString)
+        val key = "123".toAesKey()
+        Assert.assertEquals(encodeString.decodeString(key), "some password")
+    }
+
+    companion object {
+        private val log = LoggerFactory.getLogger(LangSample::class.java)
+    }
+}
+
+@SpringBootApplication
+open class Starter</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_bean">Bean</h4>
 <div class="paragraph">
-<p>Bean提供:</p>
+<p>Bean包提供:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -818,7 +904,7 @@ open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
 <div class="sect3">
 <h4 id="_task">Task</h4>
 <div class="paragraph">
-<p>Task提供:</p>
+<p>Task包提供:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -887,7 +973,7 @@ open class MyTaskExecutorConfigurationKt {
 <div class="sect3">
 <h4 id="_schedule">Schedule</h4>
 <div class="paragraph">
-<p>Schedule提供:</p>
+<p>Schedule包提供:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1113,7 +1199,7 @@ open class Starter</code></pre>
 <div class="sect3">
 <h4 id="_exception_2">Exception</h4>
 <div class="paragraph">
-<p>Web异常提供:</p>
+<p>Web异常包提供:</p>
 </div>
 <div class="ulist">
 <ul>

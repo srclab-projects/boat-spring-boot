@@ -10,6 +10,7 @@
 -   [使用](#_使用)
     -   [Core
         (boat-spring-boot-starter)](#_core_boat_spring_boot_starter)
+        -   [Lang](#_lang)
         -   [Bean](#_bean)
         -   [Task](#_task)
         -   [Schedule](#_schedule)
@@ -68,9 +69,83 @@ Source Code
 
 ### Core (boat-spring-boot-starter)
 
+#### Lang
+
+Lang包为spring-boot提供扩展的基础功能:
+
+-   EncodeString: 代表一个可能经过编码和加密的属性字段.
+
+Java Examples
+
+    package sample.java.xyz.srclab.spring.boot.lang;
+
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.beans.factory.annotation.Value;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+    import org.testng.Assert;
+    import org.testng.annotations.Test;
+    import xyz.srclab.common.codec.aes.AesKeys;
+    import xyz.srclab.spring.boot.lang.EncodeString;
+
+    import javax.crypto.SecretKey;
+
+    @SpringBootTest(classes = Starter.class)
+    //@ContextConfiguration(classes = {TestStarter.class})
+    public class LangSample extends AbstractTestNGSpringContextTests {
+
+        private static final Logger logger = LoggerFactory.getLogger(LangSample.class);
+
+        @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+        private EncodeString encodeString;
+
+        @Test
+        public void testEncodeString() {
+            logger.info("encodeString: {}", encodeString);
+            SecretKey key = AesKeys.newKey("123");
+            Assert.assertEquals(encodeString.decodeString(key), "some password");
+        }
+    }
+
+Kotlin Examples
+
+    package sample.kotlin.xyz.srclab.spring.boot.lang
+
+    import org.slf4j.LoggerFactory
+    import org.springframework.beans.factory.annotation.Value
+    import org.springframework.boot.autoconfigure.SpringBootApplication
+    import org.springframework.boot.test.context.SpringBootTest
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+    import org.testng.Assert
+    import org.testng.annotations.Test
+    import xyz.srclab.common.codec.aes.toAesKey
+    import xyz.srclab.spring.boot.lang.EncodeString
+
+    @SpringBootTest(classes = [Starter::class])
+    open class LangSample : AbstractTestNGSpringContextTests() {
+
+        @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+        private lateinit var encodeString: EncodeString
+
+        @Test
+        fun testEncodeString() {
+            log.info("encodeString: {}", encodeString)
+            val key = "123".toAesKey()
+            Assert.assertEquals(encodeString.decodeString(key), "some password")
+        }
+
+        companion object {
+            private val log = LoggerFactory.getLogger(LangSample::class.java)
+        }
+    }
+
+    @SpringBootApplication
+    open class Starter
+
 #### Bean
 
-Bean提供:
+Bean包提供:
 
 -   BeanProperties: bean属性;
 
@@ -320,7 +395,7 @@ Kotlin Examples
 
 #### Task
 
-Task提供:
+Task包提供:
 
 -   TaskPoolProperties: Task线程池属性;
 
@@ -376,7 +451,7 @@ Kotlin Examples
 
 #### Schedule
 
-Schedule提供:
+Schedule包提供:
 
 -   ScheduledPoolProperties: 调度线程池属性;
 
@@ -572,7 +647,7 @@ Kotlin Examples
 
 #### Exception
 
-Web异常提供:
+Web异常包提供:
 
 -   EnableWebExceptionService: 开启web异常服务的注解;
 

@@ -55,9 +55,27 @@ implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boo
 
 === Core (boat-spring-boot-starter)
 
+==== Lang
+
+Lang包为spring-boot提供扩展的基础功能:
+
+* EncodeString: 代表一个可能经过编码和加密的属性字段.
+
+.Java Examples
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/lang/LangSample.java[]
+----
+
+.Kotlin Examples
+[source,kotlin]
+----
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/lang/LangSample.kt[]
+----
+
 ==== Bean
 
-Bean提供:
+Bean包提供:
 
 * BeanProperties: bean属性;
 * BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
@@ -87,7 +105,7 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 
 ==== Task
 
-Task提供:
+Task包提供:
 
 * TaskPoolProperties: Task线程池属性;
 * TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties;
@@ -107,7 +125,7 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 
 ==== Schedule
 
-Schedule提供:
+Schedule包提供:
 
 * ScheduledPoolProperties: 调度线程池属性;
 * TaskSchedulers: 快速创建TaskScheduler, 通常使用ScheduledPoolProperties.
@@ -158,7 +176,7 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 
 ==== Exception
 
-Web异常提供:
+Web异常包提供:
 
 * EnableWebExceptionService: 开启web异常服务的注解;
 * WebExceptionService: 自动注入的全局web异常处理服务, 使用WebExceptionHandler;
