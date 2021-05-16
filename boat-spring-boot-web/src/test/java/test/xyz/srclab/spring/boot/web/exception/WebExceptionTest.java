@@ -36,7 +36,7 @@ public class WebExceptionTest extends AbstractTestNGSpringContextTests {
             String.class
         );
         logger.info("/test/exception?body=testException: " + result);
-        Assert.assertEquals(result, "testException");
+        Assert.assertEquals(result, JsonSerials.toJsonString(new TestController.ResponseMessage()));
 
         result = restTemplate.getForObject(
             "http://localhost:" + port + "/test/exception?body=testException0",
