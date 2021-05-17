@@ -102,6 +102,13 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/bean/MyBeanLifecyclePostProcessor.kt[]
 ----
 
+==== Message
+
+Message package provides:
+
+* ReqMessage: Convenient request message definition;
+* RespMessage: Convenient response message definition.
+
 ==== Task
 
 Task package provides:
@@ -206,6 +213,32 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 [source,kotlin]
 ----
 include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/exception/WebExceptionSample.kt[]
+----
+
+==== Message
+
+Web message package provides:
+
+* HttpReqMessage, HttpRespMessage: Convenient http message definition;
+* HttpReqMessageResolver: Handler method arguments resolver for HttpReqMessage;
+* MessageProperties: Properties for http messages;
+* EnableHttpReqMessageResolving: Enable to resolve parameter of HttpReqMessage type, see its javadoc for more detail.
+
+.Java Examples
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/message/MessageController.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/message/WebMessageSample.java[]
+----
+
+.Kotlin Examples
+[source,kotlin]
+----
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/message/WebMessageSample.kt[]
 ----
 
 ==== Utilities
