@@ -455,7 +455,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_core_boat_spring_boot_starter">Core (boat-spring-boot-starter)</a>
 <ul class="sectlevel3">
+<li><a href="#_lang">Lang</a></li>
 <li><a href="#_bean">Bean</a></li>
+<li><a href="#_message">Message</a></li>
 <li><a href="#_task">Task</a></li>
 <li><a href="#_schedule">Schedule</a></li>
 <li><a href="#_exception">Exception</a></li>
@@ -464,6 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_web_boat_spring_boot_web_starter">Web (boat-spring-boot-web-starter)</a>
 <ul class="sectlevel3">
 <li><a href="#_exception_2">Exception</a></li>
+<li><a href="#_message_2">Message</a></li>
 <li><a href="#_utilities">Utilities</a></li>
 </ul>
 </li>
@@ -547,9 +550,94 @@ It provides many fast and convenient interfaces, functions and utilities adapted
 <div class="sect2">
 <h3 id="_core_boat_spring_boot_starter">Core (boat-spring-boot-starter)</h3>
 <div class="sect3">
+<h4 id="_lang">Lang</h4>
+<div class="paragraph">
+<p>Lang package provides base interfaces, functions and utilities for spring-boot:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>EncodeString: Represents encode string may be encoded and encrypted as configure property.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Java Examples</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package sample.java.xyz.srclab.spring.boot.lang;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import xyz.srclab.common.codec.aes.AesKeys;
+import xyz.srclab.spring.boot.lang.EncodeString;
+
+import javax.crypto.SecretKey;
+
+@SpringBootTest(classes = Starter.class)
+//@ContextConfiguration(classes = {TestStarter.class})
+public class LangSample extends AbstractTestNGSpringContextTests {
+
+    private static final Logger logger = LoggerFactory.getLogger(LangSample.class);
+
+    @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+    private EncodeString encodeString;
+
+    @Test
+    public void testEncodeString() {
+        logger.info("encodeString: {}", encodeString);
+        SecretKey key = AesKeys.newKey("123");
+        Assert.assertEquals(encodeString.decodeString(key), "some password");
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Kotlin Examples</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">package sample.kotlin.xyz.srclab.spring.boot.lang
+
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+import org.testng.Assert
+import org.testng.annotations.Test
+import xyz.srclab.common.codec.aes.toAesKey
+import xyz.srclab.spring.boot.lang.EncodeString
+
+@SpringBootTest(classes = [Starter::class])
+open class LangSample : AbstractTestNGSpringContextTests() {
+
+    @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+    private lateinit var encodeString: EncodeString
+
+    @Test
+    fun testEncodeString() {
+        log.info("encodeString: {}", encodeString)
+        val key = "123".toAesKey()
+        Assert.assertEquals(encodeString.decodeString(key), "some password")
+    }
+
+    companion object {
+        private val log = LoggerFactory.getLogger(LangSample::class.java)
+    }
+}
+
+@SpringBootApplication
+open class Starter</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_bean">Bean</h4>
 <div class="paragraph">
-<p>Bean provides:</p>
+<p>Bean package provides:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -816,9 +904,25 @@ open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
 </div>
 </div>
 <div class="sect3">
+<h4 id="_message">Message</h4>
+<div class="paragraph">
+<p>Message package provides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ReqMessage: Convenient request message definition;</p>
+</li>
+<li>
+<p>RespMessage: Convenient response message definition.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_task">Task</h4>
 <div class="paragraph">
-<p>Task provides:</p>
+<p>Task package provides:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -887,7 +991,7 @@ open class MyTaskExecutorConfigurationKt {
 <div class="sect3">
 <h4 id="_schedule">Schedule</h4>
 <div class="paragraph">
-<p>Schedule provides:</p>
+<p>Schedule package provides:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -953,7 +1057,7 @@ open class MyTaskSchedulerConfiguration {
 <div class="sect3">
 <h4 id="_exception">Exception</h4>
 <div class="paragraph">
-<p>Exception provides:</p>
+<p>Exception package provides:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1113,7 +1217,7 @@ open class Starter</code></pre>
 <div class="sect3">
 <h4 id="_exception_2">Exception</h4>
 <div class="paragraph">
-<p>Web exception provides:</p>
+<p>Web exception package provides:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1349,9 +1453,202 @@ open class Starter</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="_message_2">Message</h4>
+<div class="paragraph">
+<p>Web message package provides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>HttpReqMessage, HttpRespMessage: Convenient http message definition;</p>
+</li>
+<li>
+<p>HttpReqMessageResolver: Handler method arguments resolver for HttpReqMessage;</p>
+</li>
+<li>
+<p>MessageProperties: Properties for http messages;</p>
+</li>
+<li>
+<p>EnableHttpReqMessageResolving: Enable to resolve parameter of HttpReqMessage type, see its javadoc for more detail.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Java Examples</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package sample.java.xyz.srclab.spring.boot.web.message;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import xyz.srclab.spring.boot.web.message.HttpReqMessage;
+import xyz.srclab.spring.boot.web.servlet.WebServlets;
+
+import javax.servlet.http.HttpServletRequest;
+
+@RequestMapping("test")
+@RestController
+public class MessageController {
+
+    @RequestMapping("internal/message")
+    public RespBody testMessage(HttpReqMessage&lt;ReqBody&gt; httpReqMessage) {
+        RespBody respBody = new RespBody();
+        respBody.setResp1(httpReqMessage.getBody().getReq1());
+        respBody.setResp2(httpReqMessage.getBody().getReq2());
+        return respBody;
+    }
+
+    @RequestMapping("message")
+    public ModelAndView testMessage(ReqBody reqBody, HttpServletRequest servletRequest) {
+        HttpReqMessage&lt;ReqBody&gt; httpReqMessage = HttpReqMessage.newHttpReqMessage();
+        httpReqMessage.setMetadata(WebServlets.toHttpHeaders(servletRequest));
+        httpReqMessage.setBody(reqBody);
+        servletRequest.setAttribute("httpReqMessage", httpReqMessage);
+        return new ModelAndView("internal/message");
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package sample.java.xyz.srclab.spring.boot.web.message;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import xyz.srclab.common.serialize.json.JsonSerials;
+import xyz.srclab.spring.boot.web.message.EnableHttpReqMessageResolving;
+
+import javax.annotation.Resource;
+
+@SpringBootTest(
+    classes = Starter.class,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+@EnableHttpReqMessageResolving
+public class WebMessageSample extends AbstractTestNGSpringContextTests {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebMessageSample.class);
+
+    @LocalServerPort
+    private int port;
+
+    @Resource
+    private TestRestTemplate restTemplate;
+
+    @Test
+    public void testMessage() {
+        String result = restTemplate.getForObject(
+            "http://localhost:" + port + "/test/message?req1=req1&amp;req2=req2",
+            String.class
+        );
+        logger.info("/test/exception?req1=req1&amp;req2=req2: " + result);
+        RespBody respBody = new RespBody();
+        respBody.setResp1("req1");
+        respBody.setResp2("req2");
+        Assert.assertEquals(result, JsonSerials.toJsonString(respBody));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Kotlin Examples</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">package sample.kotlin.xyz.srclab.spring.boot.web.message
+
+import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.ModelAndView
+import org.testng.Assert
+import org.testng.annotations.Test
+import xyz.srclab.common.serialize.json.toJsonString
+import xyz.srclab.spring.boot.web.message.EnableHttpReqMessageResolving
+import xyz.srclab.spring.boot.web.message.HttpReqMessage
+import xyz.srclab.spring.boot.web.message.HttpReqMessage.Companion.newHttpReqMessage
+import xyz.srclab.spring.boot.web.servlet.toHttpHeaders
+import javax.annotation.Resource
+import javax.servlet.http.HttpServletRequest
+
+@SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableHttpReqMessageResolving
+open class WebMessageSample : AbstractTestNGSpringContextTests() {
+
+    @LocalServerPort
+    private val port = 0
+
+    @Resource
+    private val restTemplate: TestRestTemplate? = null
+
+    @Test
+    fun testMessage() {
+        val result = restTemplate!!.getForObject(
+            "http://localhost:$port/test/message?req1=req1&amp;req2=req2",
+            String::class.java
+        )
+        Companion.logger.info("/test/exception?req1=req1&amp;req2=req2: $result")
+        val respBody = RespBody()
+        respBody.resp1 = "req1"
+        respBody.resp2 = "req2"
+        Assert.assertEquals(result, respBody.toJsonString())
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(WebMessageSample::class.java)
+    }
+}
+
+@RequestMapping("test")
+@RestController
+open class MessageController {
+
+    @RequestMapping("internal/message")
+    fun testMessage(httpReqMessage: HttpReqMessage&lt;ReqBody&gt;): RespBody {
+        val respBody = RespBody()
+        respBody.resp1 = httpReqMessage.body!!.req1
+        respBody.resp2 = httpReqMessage.body!!.req2
+        return respBody
+    }
+
+    @RequestMapping("message")
+    fun testMessage(reqBody: ReqBody?, servletRequest: HttpServletRequest): ModelAndView {
+        val httpReqMessage = newHttpReqMessage&lt;ReqBody&gt;()
+        httpReqMessage.metadata = servletRequest.toHttpHeaders()
+        httpReqMessage.body = reqBody
+        servletRequest.setAttribute("httpReqMessage", httpReqMessage)
+        return ModelAndView("internal/message")
+    }
+}
+
+open class ReqBody {
+    var req1: String? = null
+    var req2: String? = null
+}
+
+open class RespBody {
+    var resp1: String? = null
+    var resp2: String? = null
+}
+
+@SpringBootApplication
+open class Starter</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_utilities">Utilities</h4>
 <div class="paragraph">
-<p>Some utilities provided by web module:</p>
+<p>Web module provides some utilities:</p>
 </div>
 <div class="ulist">
 <ul>

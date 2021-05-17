@@ -18,9 +18,9 @@ public class TestController {
 
     @RequestMapping("index")
     public ModelAndView testIndex(String p1) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("pm", p1);
-        return new ModelAndView("encode", data);
+        Map<String, Object> model = new HashMap<>();
+        model.put("pm", p1);
+        return new ModelAndView("encode", model);
     }
 
     @RequestMapping("encode")

@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import xyz.srclab.spring.boot.core.CoreProperties
 import xyz.srclab.spring.boot.core.GreetingBean
+import xyz.srclab.spring.boot.lang.LangBeanFactoryPostProcessor
 
 @Configuration
-open class CoreAutoConfiguration {
+open class BoatAutoConfiguration {
 
     @ConfigurationProperties(prefix = "boat.core")
     @ConditionalOnMissingBean
@@ -21,5 +22,10 @@ open class CoreAutoConfiguration {
     @Bean("xyz.srclab.spring.boot.core.GreetingBean")
     open fun greetingBean(): GreetingBean {
         return GreetingBean()
+    }
+
+    @Bean("xyz.srclab.spring.boot.lang.LangBeanFactoryPostProcessor")
+    open fun langBeanFactoryPostProcessor(): LangBeanFactoryPostProcessor {
+        return LangBeanFactoryPostProcessor()
     }
 }

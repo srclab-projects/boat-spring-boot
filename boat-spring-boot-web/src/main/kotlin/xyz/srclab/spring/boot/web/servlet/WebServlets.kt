@@ -3,6 +3,7 @@
 
 package xyz.srclab.spring.boot.web.servlet
 
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import xyz.srclab.common.collect.MutableListMap
 import xyz.srclab.common.collect.MutableListMap.Companion.toMutableListMap
@@ -18,6 +19,16 @@ import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
 import javax.servlet.http.HttpServletResponse
+
+fun HttpServletRequest.toHttpHeaders(): HttpHeaders {
+    val headers = HttpHeaders()
+    for (headerName in this.headerNames) {
+        for (header in this.getHeaders(headerName)) {
+            headers.add(headerName, header)
+        }
+    }
+    return headers
+}
 
 @JvmName("newPreparedHttpServletRequest")
 @JvmOverloads
@@ -36,28 +47,28 @@ fun ServletInputStream.toPreparedServletInputStream(
     return PreparedServletInputStream(this, inputStream)
 }
 
-fun Map<String, *>.putRequest(request: HttpServletRequest) {
-    for (entry in this) {
-        request.setAttribute(entry.key, entry.value)
+fun HttpServletRequest.setAttributes(attributes: Map<String, *>) {
+    for (attribute in attributes) {
+        this.setAttribute(attribute.key, attribute.value)
     }
 }
 
 @JvmOverloads
-fun ResponseEntity<*>.putResponse(
-    response: HttpServletResponse,
+fun HttpServletResponse.writeResponseEntity(
+    responseEntity: ResponseEntity<*>,
     bodyTransform: (Any?, HttpServletResponse) -> InputStream? = { obj, _ ->
         if (obj === null) null else obj.toJsonStream()
     }
 ) {
-    response.status = this.statusCodeValue
-    for (header in this.headers) {
+    this.status = responseEntity.statusCodeValue
+    for (header in responseEntity.headers) {
         for (value in header.value) {
-            response.setHeader(header.key, value)
+            this.setHeader(header.key, value)
         }
     }
-    val input = bodyTransform(this.body, response)
+    val input = bodyTransform(responseEntity.body, this)
     if (input !== null) {
-        input.copyTo(response.outputStream)
+        input.copyTo(this.outputStream)
     }
 }
 

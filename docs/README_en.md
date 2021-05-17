@@ -10,13 +10,16 @@ Table of Contents
 -   [Usage](#_usage)
     -   [Core
         (boat-spring-boot-starter)](#_core_boat_spring_boot_starter)
+        -   [Lang](#_lang)
         -   [Bean](#_bean)
+        -   [Message](#_message)
         -   [Task](#_task)
         -   [Schedule](#_schedule)
         -   [Exception](#_exception)
     -   [Web
         (boat-spring-boot-web-starter)](#_web_boat_spring_boot_web_starter)
         -   [Exception](#_exception_2)
+        -   [Message](#_message_2)
         -   [Utilities](#_utilities)
 -   [Contribution and Contact](#_contribution_and_contact)
 -   [License](#_license)
@@ -69,9 +72,85 @@ Source Code
 
 ### Core (boat-spring-boot-starter)
 
+#### Lang
+
+Lang package provides base interfaces, functions and utilities for
+spring-boot:
+
+-   EncodeString: Represents encode string may be encoded and encrypted
+    as configure property.
+
+Java Examples
+
+    package sample.java.xyz.srclab.spring.boot.lang;
+
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.beans.factory.annotation.Value;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+    import org.testng.Assert;
+    import org.testng.annotations.Test;
+    import xyz.srclab.common.codec.aes.AesKeys;
+    import xyz.srclab.spring.boot.lang.EncodeString;
+
+    import javax.crypto.SecretKey;
+
+    @SpringBootTest(classes = Starter.class)
+    //@ContextConfiguration(classes = {TestStarter.class})
+    public class LangSample extends AbstractTestNGSpringContextTests {
+
+        private static final Logger logger = LoggerFactory.getLogger(LangSample.class);
+
+        @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+        private EncodeString encodeString;
+
+        @Test
+        public void testEncodeString() {
+            logger.info("encodeString: {}", encodeString);
+            SecretKey key = AesKeys.newKey("123");
+            Assert.assertEquals(encodeString.decodeString(key), "some password");
+        }
+    }
+
+Kotlin Examples
+
+    package sample.kotlin.xyz.srclab.spring.boot.lang
+
+    import org.slf4j.LoggerFactory
+    import org.springframework.beans.factory.annotation.Value
+    import org.springframework.boot.autoconfigure.SpringBootApplication
+    import org.springframework.boot.test.context.SpringBootTest
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+    import org.testng.Assert
+    import org.testng.annotations.Test
+    import xyz.srclab.common.codec.aes.toAesKey
+    import xyz.srclab.spring.boot.lang.EncodeString
+
+    @SpringBootTest(classes = [Starter::class])
+    open class LangSample : AbstractTestNGSpringContextTests() {
+
+        @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
+        private lateinit var encodeString: EncodeString
+
+        @Test
+        fun testEncodeString() {
+            log.info("encodeString: {}", encodeString)
+            val key = "123".toAesKey()
+            Assert.assertEquals(encodeString.decodeString(key), "some password")
+        }
+
+        companion object {
+            private val log = LoggerFactory.getLogger(LangSample::class.java)
+        }
+    }
+
+    @SpringBootApplication
+    open class Starter
+
 #### Bean
 
-Bean provides:
+Bean package provides:
 
 -   BeanProperties: Properties for bean;
 
@@ -319,9 +398,17 @@ Kotlin Examples
         }
     }
 
+#### Message
+
+Message package provides:
+
+-   ReqMessage: Convenient request message definition;
+
+-   RespMessage: Convenient response message definition.
+
 #### Task
 
-Task provides:
+Task package provides:
 
 -   TaskPoolProperties: Properties for task thread pool;
 
@@ -378,7 +465,7 @@ Kotlin Examples
 
 #### Schedule
 
-Schedule provides:
+Schedule package provides:
 
 -   ScheduledPoolProperties: Properties for scheduled thread pool;
 
@@ -433,7 +520,7 @@ Kotlin Examples
 
 #### Exception
 
-Exception provides:
+Exception package provides:
 
 -   EnableExceptionService: Annotation to enable exception service;
 
@@ -575,7 +662,7 @@ Kotlin Examples
 
 #### Exception
 
-Web exception provides:
+Web exception package provides:
 
 -   EnableWebExceptionService: Annotation to enable web exception
     service;
@@ -792,9 +879,187 @@ Kotlin Examples
     @SpringBootApplication
     open class Starter
 
+#### Message
+
+Web message package provides:
+
+-   HttpReqMessage, HttpRespMessage: Convenient http message definition;
+
+-   HttpReqMessageResolver: Handler method arguments resolver for
+    HttpReqMessage;
+
+-   MessageProperties: Properties for http messages;
+
+-   EnableHttpReqMessageResolving: Enable to resolve parameter of
+    HttpReqMessage type, see its javadoc for more detail.
+
+Java Examples
+
+    package sample.java.xyz.srclab.spring.boot.web.message;
+
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
+    import org.springframework.web.servlet.ModelAndView;
+    import xyz.srclab.spring.boot.web.message.HttpReqMessage;
+    import xyz.srclab.spring.boot.web.servlet.WebServlets;
+
+    import javax.servlet.http.HttpServletRequest;
+
+    @RequestMapping("test")
+    @RestController
+    public class MessageController {
+
+        @RequestMapping("internal/message")
+        public RespBody testMessage(HttpReqMessage<ReqBody> httpReqMessage) {
+            RespBody respBody = new RespBody();
+            respBody.setResp1(httpReqMessage.getBody().getReq1());
+            respBody.setResp2(httpReqMessage.getBody().getReq2());
+            return respBody;
+        }
+
+        @RequestMapping("message")
+        public ModelAndView testMessage(ReqBody reqBody, HttpServletRequest servletRequest) {
+            HttpReqMessage<ReqBody> httpReqMessage = HttpReqMessage.newHttpReqMessage();
+            httpReqMessage.setMetadata(WebServlets.toHttpHeaders(servletRequest));
+            httpReqMessage.setBody(reqBody);
+            servletRequest.setAttribute("httpReqMessage", httpReqMessage);
+            return new ModelAndView("internal/message");
+        }
+    }
+
+    package sample.java.xyz.srclab.spring.boot.web.message;
+
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import org.springframework.boot.test.web.client.TestRestTemplate;
+    import org.springframework.boot.web.server.LocalServerPort;
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+    import org.testng.Assert;
+    import org.testng.annotations.Test;
+    import xyz.srclab.common.serialize.json.JsonSerials;
+    import xyz.srclab.spring.boot.web.message.EnableHttpReqMessageResolving;
+
+    import javax.annotation.Resource;
+
+    @SpringBootTest(
+        classes = Starter.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    )
+    @EnableHttpReqMessageResolving
+    public class WebMessageSample extends AbstractTestNGSpringContextTests {
+
+        private static final Logger logger = LoggerFactory.getLogger(WebMessageSample.class);
+
+        @LocalServerPort
+        private int port;
+
+        @Resource
+        private TestRestTemplate restTemplate;
+
+        @Test
+        public void testMessage() {
+            String result = restTemplate.getForObject(
+                "http://localhost:" + port + "/test/message?req1=req1&req2=req2",
+                String.class
+            );
+            logger.info("/test/exception?req1=req1&req2=req2: " + result);
+            RespBody respBody = new RespBody();
+            respBody.setResp1("req1");
+            respBody.setResp2("req2");
+            Assert.assertEquals(result, JsonSerials.toJsonString(respBody));
+        }
+    }
+
+Kotlin Examples
+
+    package sample.kotlin.xyz.srclab.spring.boot.web.message
+
+    import org.slf4j.LoggerFactory
+    import org.springframework.boot.autoconfigure.SpringBootApplication
+    import org.springframework.boot.test.context.SpringBootTest
+    import org.springframework.boot.test.web.client.TestRestTemplate
+    import org.springframework.boot.web.server.LocalServerPort
+    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
+    import org.springframework.web.bind.annotation.RequestMapping
+    import org.springframework.web.bind.annotation.RestController
+    import org.springframework.web.servlet.ModelAndView
+    import org.testng.Assert
+    import org.testng.annotations.Test
+    import xyz.srclab.common.serialize.json.toJsonString
+    import xyz.srclab.spring.boot.web.message.EnableHttpReqMessageResolving
+    import xyz.srclab.spring.boot.web.message.HttpReqMessage
+    import xyz.srclab.spring.boot.web.message.HttpReqMessage.Companion.newHttpReqMessage
+    import xyz.srclab.spring.boot.web.servlet.toHttpHeaders
+    import javax.annotation.Resource
+    import javax.servlet.http.HttpServletRequest
+
+    @SpringBootTest(classes = [Starter::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    @EnableHttpReqMessageResolving
+    open class WebMessageSample : AbstractTestNGSpringContextTests() {
+
+        @LocalServerPort
+        private val port = 0
+
+        @Resource
+        private val restTemplate: TestRestTemplate? = null
+
+        @Test
+        fun testMessage() {
+            val result = restTemplate!!.getForObject(
+                "http://localhost:$port/test/message?req1=req1&req2=req2",
+                String::class.java
+            )
+            Companion.logger.info("/test/exception?req1=req1&req2=req2: $result")
+            val respBody = RespBody()
+            respBody.resp1 = "req1"
+            respBody.resp2 = "req2"
+            Assert.assertEquals(result, respBody.toJsonString())
+        }
+
+        companion object {
+            private val logger = LoggerFactory.getLogger(WebMessageSample::class.java)
+        }
+    }
+
+    @RequestMapping("test")
+    @RestController
+    open class MessageController {
+
+        @RequestMapping("internal/message")
+        fun testMessage(httpReqMessage: HttpReqMessage<ReqBody>): RespBody {
+            val respBody = RespBody()
+            respBody.resp1 = httpReqMessage.body!!.req1
+            respBody.resp2 = httpReqMessage.body!!.req2
+            return respBody
+        }
+
+        @RequestMapping("message")
+        fun testMessage(reqBody: ReqBody?, servletRequest: HttpServletRequest): ModelAndView {
+            val httpReqMessage = newHttpReqMessage<ReqBody>()
+            httpReqMessage.metadata = servletRequest.toHttpHeaders()
+            httpReqMessage.body = reqBody
+            servletRequest.setAttribute("httpReqMessage", httpReqMessage)
+            return ModelAndView("internal/message")
+        }
+    }
+
+    open class ReqBody {
+        var req1: String? = null
+        var req2: String? = null
+    }
+
+    open class RespBody {
+        var resp1: String? = null
+        var resp2: String? = null
+    }
+
+    @SpringBootApplication
+    open class Starter
+
 #### Utilities
 
-Some utilities provided by web module:
+Web module provides some utilities:
 
 -   WebExceptions: Provides exception tools for web;
 
