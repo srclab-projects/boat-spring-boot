@@ -1,8 +1,9 @@
 package xyz.srclab.spring.boot.web.message
 
+import org.springframework.http.HttpHeaders
 import xyz.srclab.spring.boot.message.ReqMessage
 
-interface HttpReqMessage<T> : ReqMessage<String, T> {
+interface HttpReqMessage<T> : ReqMessage<HttpHeaders, T> {
 
     companion object {
 
@@ -14,7 +15,7 @@ interface HttpReqMessage<T> : ReqMessage<String, T> {
         private class HttpReqMessageImpl<T> : HttpReqMessage<T> {
             override var id: String? = null
             override var token: String? = null
-            override var metadata: String? = null
+            override var metadata: HttpHeaders? = null
             override var body: T? = null
         }
     }

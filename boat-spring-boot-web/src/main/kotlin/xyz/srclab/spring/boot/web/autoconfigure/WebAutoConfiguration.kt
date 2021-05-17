@@ -1,14 +1,16 @@
 package xyz.srclab.spring.boot.web.autoconfigure
 
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.method.support.HandlerMethodArgumentResolver
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import xyz.srclab.spring.boot.web.message.ReqMessageHandlerMethodArgumentResolver
+import xyz.srclab.spring.boot.web.message.MessageProperties
 
 @Configuration
-open class WebAutoConfiguration : WebMvcConfigurer {
+open class WebAutoConfiguration {
 
-    override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
-        resolvers.add(ReqMessageHandlerMethodArgumentResolver())
+    @ConfigurationProperties(prefix = "boat.message")
+    @Bean("xyz.srclab.spring.boot.web.message.MessageProperties")
+    open fun messageProperties(): MessageProperties {
+        return MessageProperties()
     }
 }

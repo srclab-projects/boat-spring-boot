@@ -1,5 +1,8 @@
 package xyz.srclab.spring.boot.message
 
+/**
+ * Response message.
+ */
 interface RespMessage<M, T> {
 
     var id: String?

@@ -39,7 +39,7 @@ public class TestFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(newRequest, response);
         } catch (Throwable e) {
-            WebServlets.putResponse(webExceptionService.toResponseEntity(e), response);
+            WebServlets.writeResponseEntity(response, webExceptionService.toResponseEntity(e));
         }
     }
 }

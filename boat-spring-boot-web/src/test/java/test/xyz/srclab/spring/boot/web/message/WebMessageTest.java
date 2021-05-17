@@ -9,6 +9,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.srclab.common.serialize.json.JsonSerials;
+import xyz.srclab.spring.boot.web.message.EnableHttpReqMessageResolving;
 
 import javax.annotation.Resource;
 
@@ -16,9 +17,10 @@ import javax.annotation.Resource;
     classes = Starter.class,
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-public class WebExceptionTest extends AbstractTestNGSpringContextTests {
+@EnableHttpReqMessageResolving
+public class WebMessageTest extends AbstractTestNGSpringContextTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebExceptionTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebMessageTest.class);
 
     @LocalServerPort
     private int port;
