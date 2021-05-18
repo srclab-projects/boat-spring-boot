@@ -5,14 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import xyz.srclab.common.exception.ExceptionStatus;
-import xyz.srclab.spring.boot.web.exception.WebExceptionHandler;
+import xyz.srclab.spring.boot.web.exception.WebExceptionResponseHandler;
 
 @Component
-public class ThrowableHandler implements WebExceptionHandler<Throwable> {
+public class ThrowableHandler implements WebExceptionResponseHandler<Throwable> {
 
     @NotNull
-    @Override
-    public Class<Throwable> supportedExceptionType() {
+    public Class<Throwable> supportedType() {
         return Throwable.class;
     }
 

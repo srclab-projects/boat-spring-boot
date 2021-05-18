@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -35,14 +37,22 @@ public class WebExceptionSample extends AbstractTestNGSpringContextTests {
             "http://localhost:" + port + "/test/exception?body=testException",
             String.class
         );
-        logger.info("/test/exception?body=testException: " + result);
-        Assert.assertEquals(result, "testException");
+        logger.info("/test/exception?body=testException: {}", result);
+        Assert.assertEquals(result, JsonSerials.toJsonString(new TestController.ResponseMessage()));
 
         result = restTemplate.getForObject(
             "http://localhost:" + port + "/test/exception?body=testException0",
             String.class
         );
-        logger.info("/test/exception?body=testException: " + result);
+        logger.info("/test/exception?body=testException0: {}", result);
         Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
+
+        ResponseEntity<String> entity = restTemplate.getForEntity(
+            "http://localhost:" + port + "/test/webException?body=testWebException0",
+            String.class
+        );
+        logger.info("/test/webException?body=testWebException0: {}", result);
+        Assert.assertEquals(entity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        Assert.assertEquals(entity.getBody(), JsonSerials.toJsonString(ExceptionStatus.of("103")));
     }
 }

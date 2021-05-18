@@ -2,6 +2,7 @@ package test.xyz.srclab.spring.boot.web.exception;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.srclab.spring.boot.web.exception.WebStatusException;
 
 @RequestMapping("test")
 @RestController
@@ -13,6 +14,14 @@ public class TestController {
             return new ResponseMessage();
         }
         throw new IllegalArgumentException("Must be testException!");
+    }
+
+    @RequestMapping("webException")
+    public ResponseMessage testWebException(String body) {
+        if ("testWebException".equals(body)) {
+            return new ResponseMessage();
+        }
+        throw new WebStatusException("Must be testWebException!");
     }
 
     public static class ResponseMessage {

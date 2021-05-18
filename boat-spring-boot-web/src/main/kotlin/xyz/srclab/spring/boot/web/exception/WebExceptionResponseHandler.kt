@@ -6,11 +6,11 @@ import xyz.srclab.common.lang.INAPPLICABLE_JVM_NAME
 /**
  * Handler to convert throwable object [E] to [ResponseEntity].
  */
-interface WebExceptionHandler<E : Throwable> {
+interface WebExceptionResponseHandler<E : Throwable> {
 
     @Suppress(INAPPLICABLE_JVM_NAME)
-    val supportedExceptionType: Class<out Throwable>
-        @JvmName("supportedExceptionType") get
+    val supportedType: Class<out Throwable>
+        @JvmName("supportedType") get
 
     fun handle(e: E): ResponseEntity<*>
 }

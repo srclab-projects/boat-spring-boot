@@ -152,9 +152,9 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 
 Exception package provides:
 
-* EnableExceptionService: Annotation to enable exception service;
-* ExceptionStatusService: Auto-created global exception processing, use ExceptionStateHandler;
-* ExceptionStatusHandler: Handler bean defined by user, to convert exception to State.
+* EnableExceptionHandlingService: Annotation to enable exception handling service;
+* ExceptionHandlingService: Autowired global exception handling service, see its javadoc for more detail;
+* ExceptionHandler: Interface to handle exception for ExceptionHandlingService.
 
 .Java Examples
 [source,java]
@@ -164,12 +164,12 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionStatusHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableStatusHandler.java[]
 ----
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableStatusHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionStatusHandler.java[]
 ----
 
 .Kotlin Examples
@@ -185,8 +185,9 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 Web exception package provides:
 
 * EnableWebExceptionService: Annotation to enable web exception service;
-* WebExceptionService: Auto-created global web exception processing, use WebExceptionHandler;
-* WebExceptionHandler: Handler bean defined by user, to convert exception to ResponseEntity.
+* WebExceptionService: Autowired global web exception service, see its javadoc for more detail;
+* WebExceptionResponseHandler: Interface used to convert exception to ResponseEntity, work for WebExceptionService;
+* WebStatusException: Convenient exception for web.
 
 .Java Examples
 [source,java]
@@ -201,12 +202,17 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 
 [source,java]
 ----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/ThrowableHandler.java[]
+----
+
+[source,java]
+----
 include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/RuntimeExceptionHandler.java[]
 ----
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/ThrowableHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebStatusExceptionHandler.java[]
 ----
 
 .Kotlin Examples
