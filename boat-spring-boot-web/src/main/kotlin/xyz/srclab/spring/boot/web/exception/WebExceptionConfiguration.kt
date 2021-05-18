@@ -3,8 +3,7 @@ package xyz.srclab.spring.boot.web.exception
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 
-//@Configuration
-open class WebExceptionServiceConfiguration {
+open class WebExceptionConfiguration {
 
     @ConditionalOnMissingBean
     @Bean("xyz.srclab.spring.boot.web.exception.WebExceptionService")

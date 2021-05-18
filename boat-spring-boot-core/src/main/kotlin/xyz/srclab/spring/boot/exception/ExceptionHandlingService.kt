@@ -4,7 +4,6 @@ import org.springframework.context.ApplicationContext
 import xyz.srclab.common.convert.FastConvertHandler
 import xyz.srclab.common.convert.FastConverter
 import xyz.srclab.common.lang.asAny
-import xyz.srclab.common.state.State
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.annotation.Resource
@@ -12,28 +11,28 @@ import javax.annotation.Resource
 /**
  * Provides global exception service.
  *
- * @see EnableExceptionService
- * @see ExceptionStatusHandler
+ * @see EnableExceptionHandlingService
+ * @see ExceptionHandler
  */
-open class ExceptionStatusService {
+open class ExceptionHandlingService {
 
     @Resource
     private lateinit var applicationContext: ApplicationContext
 
-    private lateinit var exceptionStateConverter: FastConverter<State<*, *, *>>
+    private lateinit var exceptionStateConverter: FastConverter<Any?>
 
     @PostConstruct
     private fun init() {
-        val handlers = LinkedList<ExceptionStatusHandler<Throwable, *>>()
-        for (entry in applicationContext.getBeansOfType(ExceptionStatusHandler::class.java)) {
+        val handlers = LinkedList<ExceptionHandler<Throwable, *>>()
+        for (entry in applicationContext.getBeansOfType(ExceptionHandler::class.java)) {
             handlers.add(entry.value.asAny())
         }
         exceptionStateConverter = FastConverter.newFastConverter(handlers.map {
-            object : FastConvertHandler<State<*, *, *>> {
+            object : FastConvertHandler<Any?> {
 
-                override val supportedType: Class<*> = it.supportedExceptionType
+                override val supportedType: Class<*> = it.supportedType
 
-                override fun convert(from: Any): State<*, *, *> {
+                override fun convert(from: Any): Any? {
                     if (from !is Throwable) {
                         throw IllegalArgumentException("Not a Throwable object: ${from.javaClass}")
                     }
@@ -44,9 +43,9 @@ open class ExceptionStatusService {
     }
 
     /**
-     * Convert given exception to a State object.
+     * Convert given exception to object.
      */
-    open fun <T : State<*, *, *>> toState(e: Throwable): T {
+    open fun <T> toState(e: Throwable): T {
         return exceptionStateConverter.convert(e).asAny()
     }
 }

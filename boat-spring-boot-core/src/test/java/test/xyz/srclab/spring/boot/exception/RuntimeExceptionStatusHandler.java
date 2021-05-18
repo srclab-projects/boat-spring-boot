@@ -3,14 +3,13 @@ package test.xyz.srclab.spring.boot.exception;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import xyz.srclab.common.exception.ExceptionStatus;
-import xyz.srclab.spring.boot.exception.ExceptionStatusHandler;
+import xyz.srclab.spring.boot.exception.ExceptionHandler;
 
 @Component
-public class RuntimeExceptionStatusHandler implements ExceptionStatusHandler<RuntimeException, ExceptionStatus> {
+public class RuntimeExceptionStatusHandler implements ExceptionHandler<RuntimeException, ExceptionStatus> {
 
     @NotNull
-    @Override
-    public Class<RuntimeException> supportedExceptionType() {
+    public Class<RuntimeException> supportedType() {
         return RuntimeException.class;
     }
 

@@ -7,15 +7,13 @@ import org.springframework.http.ResponseEntity
  * Enable web exception service, includes:
  *
  * * [WebExceptionService]: global web exception processing service, autowired bean to convert exception to
- * [ResponseEntity] by [WebExceptionHandler].
- *
- * @author sunqian
+ * [ResponseEntity] by [WebExceptionResponseHandler].
  *
  * @see WebExceptionService
- * @see WebExceptionHandler
+ * @see WebExceptionResponseHandler
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE, AnnotationTarget.TYPEALIAS)
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
-@Import(WebExceptionServiceConfiguration::class)
+@Import(WebExceptionConfiguration::class)
 annotation class EnableWebExceptionService
