@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import xyz.srclab.spring.boot.core.CoreProperties
 import xyz.srclab.spring.boot.core.ReadyBoatSpringBootBean
-import xyz.srclab.spring.boot.core.StartedBoatSpringBootBean
 import xyz.srclab.spring.boot.lang.LangBeanFactoryPostProcessor
 
 @Configuration
@@ -19,13 +18,6 @@ open class BoatAutoConfiguration {
         return CoreProperties()
     }
 
-    @ConditionalOnMissingBean
-    @Bean("xyz.srclab.spring.boot.core.StartingBoatSpringBootBean")
-    open fun startingBoatSpringBootBean(): StartedBoatSpringBootBean {
-        return StartedBoatSpringBootBean()
-    }
-
-    @ConditionalOnMissingBean
     @Bean("xyz.srclab.spring.boot.core.ReadyBoatSpringBootBean")
     open fun readyBoatSpringBootBean(): ReadyBoatSpringBootBean {
         return ReadyBoatSpringBootBean()

@@ -6,16 +6,14 @@ import xyz.srclab.spring.boot.BoatSpringBoot
 open class CoreProperties {
 
     /**
-     * Started message.
+     * Whether greeting when started, default is true.
      */
-    var startedMessage: String? = "${SgrChars.foregroundGreen("Start")} " +
-        "${SgrChars.foregroundYellow(BoatSpringBoot.about.name)} " +
-        "${SgrChars.foregroundRed("v" + BoatSpringBoot.version)}..."
+    var greeting: Boolean = true
 
     /**
-     * Ready message.
+     * Greeting message.
      */
-    var readyMessage: String? = "${SgrChars.foregroundGreen("Start")} " +
+    var greetingMessage: String? = "${SgrChars.foregroundGreen("Start")} " +
         "${SgrChars.foregroundYellow(BoatSpringBoot.about.name)} " +
         "${SgrChars.foregroundRed("v" + BoatSpringBoot.version)} " +
         "${SgrChars.foregroundMagenta("successful")}!"
