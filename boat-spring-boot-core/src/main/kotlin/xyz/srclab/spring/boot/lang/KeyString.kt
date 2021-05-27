@@ -1,17 +1,18 @@
 package xyz.srclab.spring.boot.lang
 
-import xyz.srclab.common.codec.Codec
-import xyz.srclab.common.lang.Default
+import xyz.srclab.common.codec.Codecing.Companion.startCodec
+import xyz.srclab.common.lang.Defaults
 import xyz.srclab.common.lang.asAny
 import xyz.srclab.common.lang.toChars
-import xyz.srclab.spring.boot.lang.EncodeString.Companion.parseEncodeString
+import xyz.srclab.spring.boot.lang.KeyString.Companion.parseKeyString
+import java.beans.PropertyEditor
 import java.beans.PropertyEditorSupport
 import java.nio.charset.Charset
 
 /**
- * Represents encode string may be encoded and encrypted as configure property.
+ * Represents a key string which is encrypted by [encode] algorithm, then encoded by [encode] algorithm.
  */
-open class EncodeString {
+open class KeyString {
 
     /**
      * Encrypt algorithm.
@@ -35,23 +36,23 @@ open class EncodeString {
         }
         val encrypt = this.encrypt
         val encode = this.encode
-        val codec = Codec.forData(value)
+        val codec = value.startCodec()
         if (!encode.isNullOrEmpty()) {
             codec.decode(encode)
         }
         if (!encrypt.isNullOrEmpty()) {
-            codec.decrypt(key, encrypt)
+            codec.decrypt(encrypt, key)
         }
         return codec.doFinal()
     }
 
     @JvmOverloads
-    fun decodeString(key: Any, charset: Charset? = null): String {
-        return decode(key).toChars(charset ?: Default.charset)
+    fun decodeString(key: Any, charset: Charset = Defaults.charset): String {
+        return decode(key).toChars(charset)
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other !is EncodeString) {
+        if (other !is KeyString) {
             return false
         }
         return encrypt == other.encrypt
@@ -64,7 +65,7 @@ open class EncodeString {
     }
 
     override fun toString(): String {
-        return "$encrypt,$encode,$value"
+        return "$encrypt,$encode:$value"
     }
 
     companion object {
@@ -82,31 +83,34 @@ open class EncodeString {
          */
         @JvmName("parse")
         @JvmStatic
-        fun CharSequence.parseEncodeString(): EncodeString {
-            val encodeString = EncodeString()
+        fun CharSequence.parseKeyString(): KeyString {
+            val keyString = KeyString()
             val colonIndex = this.indexOf(":")
             if (colonIndex < 0) {
-                return encodeString
+                return keyString
             }
-            encodeString.value = this.substring(colonIndex + 1)
+            keyString.value = this.substring(colonIndex + 1)
             val commaSpit = this.subSequence(0, colonIndex).split(",")
             if (commaSpit.size != 2) {
                 throw IllegalArgumentException(
                     "Wrong EncodeString format, right format is encrypt,encode:value but now is: $this"
                 )
             }
-            encodeString.encrypt = commaSpit[0].trim().ifEmpty { null }
-            encodeString.encode = commaSpit[1].trim().ifEmpty { null }
-            return encodeString
+            keyString.encrypt = commaSpit[0].trim().ifEmpty { null }
+            keyString.encode = commaSpit[1].trim().ifEmpty { null }
+            return keyString
         }
     }
 }
 
-open class EncodeStringEditor : PropertyEditorSupport() {
+/**
+ * [PropertyEditor] for [KeyString].
+ */
+open class KeyStringEditor : PropertyEditorSupport() {
 
     override fun getAsText(): String {
-        val encodeString = value.asAny<EncodeString>()
-        return encodeString.toString()
+        val keyString = value.asAny<KeyString>()
+        return keyString.toString()
     }
 
     override fun setAsText(text: String?) {
@@ -114,6 +118,6 @@ open class EncodeStringEditor : PropertyEditorSupport() {
             value = null
             return
         }
-        value = text.parseEncodeString()
+        value = text.parseKeyString()
     }
 }

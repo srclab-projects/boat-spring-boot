@@ -6,6 +6,6 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 open class LangBeanFactoryPostProcessor : BeanFactoryPostProcessor {
 
     override fun postProcessBeanFactory(beanFactory: ConfigurableListableBeanFactory) {
-        beanFactory.registerCustomEditor(EncodeString::class.java, EncodeStringEditor::class.java)
+        beanFactory.registerCustomEditor(KeyString::class.java, KeyStringEditor::class.java)
     }
 }

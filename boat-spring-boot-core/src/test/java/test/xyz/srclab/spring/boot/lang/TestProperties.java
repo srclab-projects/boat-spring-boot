@@ -2,19 +2,19 @@ package test.xyz.srclab.spring.boot.lang;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import xyz.srclab.spring.boot.lang.EncodeString;
+import xyz.srclab.spring.boot.lang.KeyString;
 
 @ConfigurationProperties(prefix = "properties")
 @Component
 public class TestProperties {
 
-    private EncodeString encodeString;
+    private KeyString keyString;
 
-    public EncodeString getEncodeString() {
-        return encodeString;
+    public KeyString getEncodeString() {
+        return keyString;
     }
 
-    public void setEncodeString(EncodeString encodeString) {
-        this.encodeString = encodeString;
+    public void setEncodeString(KeyString keyString) {
+        this.keyString = keyString;
     }
 }

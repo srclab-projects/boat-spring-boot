@@ -8,19 +8,19 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.testng.Assert
 import org.testng.annotations.Test
 import xyz.srclab.common.codec.aes.toAesKey
-import xyz.srclab.spring.boot.lang.EncodeString
+import xyz.srclab.spring.boot.lang.KeyString
 
 @SpringBootTest(classes = [Starter::class])
 open class LangSample : AbstractTestNGSpringContextTests() {
 
     @Value("AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==")
-    private lateinit var encodeString: EncodeString
+    private lateinit var keyString: KeyString
 
     @Test
     fun testEncodeString() {
-        log.info("encodeString: {}", encodeString)
+        log.info("encodeString: {}", keyString)
         val key = "123".toAesKey()
-        Assert.assertEquals(encodeString.decodeString(key), "some password")
+        Assert.assertEquals(keyString.decodeString(key), "some password")
     }
 
     companion object {
