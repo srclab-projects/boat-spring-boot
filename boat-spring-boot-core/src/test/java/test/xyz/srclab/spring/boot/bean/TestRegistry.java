@@ -1,7 +1,6 @@
 package test.xyz.srclab.spring.boot.bean;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
 import xyz.srclab.spring.boot.bean.BeanProperties;
 import xyz.srclab.spring.boot.bean.BeanRegistry;
 
@@ -11,7 +10,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Component
 public class TestRegistry extends BeanRegistry {
 
     @Resource

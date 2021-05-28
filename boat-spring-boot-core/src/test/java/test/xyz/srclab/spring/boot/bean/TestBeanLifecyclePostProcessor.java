@@ -5,13 +5,11 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.stereotype.Component;
 import xyz.srclab.spring.boot.bean.BeanLifecyclePostProcessor;
 
 import java.util.LinkedList;
 import java.util.List;
 
-@Component
 public class TestBeanLifecyclePostProcessor implements BeanLifecyclePostProcessor {
 
     private final List<String> sequence = new LinkedList<>();

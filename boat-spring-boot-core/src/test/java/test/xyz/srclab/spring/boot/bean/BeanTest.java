@@ -3,7 +3,6 @@ package test.xyz.srclab.spring.boot.bean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -11,9 +10,12 @@ import org.testng.annotations.Test;
 import javax.annotation.Resource;
 import java.util.Arrays;
 
-@SpringBootTest(classes = Starter.class)
-@DependsOn("testRegistry")
-//@ContextConfiguration(classes = {TestStarter.class})
+@SpringBootTest(classes = {
+    TestBean.class,
+    TestBeanLifecyclePostProcessor.class,
+    TestRegistry.class,
+    TestProperties.class,
+})
 public class BeanTest extends AbstractTestNGSpringContextTests {
 
     private static final Logger logger = LoggerFactory.getLogger(BeanTest.class);
