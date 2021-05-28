@@ -2,21 +2,19 @@ package xyz.srclab.spring.boot.core
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.boot.context.event.ApplicationReadyEvent
-import org.springframework.context.ApplicationListener
 import javax.annotation.Resource
 
 /**
- * Print greeting message when application started.
+ * Default Greeting action of [StartGreeting].
  *
  * @author sunqian
  */
-open class ReadyBoatSpringBootBean : ApplicationListener<ApplicationReadyEvent> {
+open class DefaultStartGreeting : StartGreeting {
 
     @Resource
     private lateinit var coreProperties: CoreProperties
 
-    override fun onApplicationEvent(event: ApplicationReadyEvent) {
+    override fun doGreeting() {
         if (!coreProperties.greeting) {
             return
         }
@@ -28,6 +26,6 @@ open class ReadyBoatSpringBootBean : ApplicationListener<ApplicationReadyEvent> 
 
     companion object {
 
-        private val logger: Logger = LoggerFactory.getLogger(ReadyBoatSpringBootBean::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(DefaultStartGreeting::class.java)
     }
 }
