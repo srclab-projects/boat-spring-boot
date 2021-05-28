@@ -11,14 +11,11 @@ import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
     BoatAutoConfiguration.class,
     TestGreetingBean.class
 })
-//@ContextConfiguration(classes = {TestStarter.class})
 public class GreetingTest extends AbstractTestNGSpringContextTests {
 
     private static final Logger logger = LoggerFactory.getLogger(GreetingTest.class);
 
     @Test
     public void testAutoConfigure() {
-        //logger.info("Core spring version: {}", coreProperties.getSpringVersion());
-        //Assert.assertEquals(coreProperties.getSpringVersion(), "666");
     }
 }

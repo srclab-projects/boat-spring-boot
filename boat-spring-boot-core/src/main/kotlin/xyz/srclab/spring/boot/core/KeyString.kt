@@ -1,10 +1,10 @@
-package xyz.srclab.spring.boot.lang
+package xyz.srclab.spring.boot.core
 
 import xyz.srclab.common.codec.Codecing.Companion.startCodec
 import xyz.srclab.common.lang.Defaults
 import xyz.srclab.common.lang.asAny
 import xyz.srclab.common.lang.toChars
-import xyz.srclab.spring.boot.lang.KeyString.Companion.parseKeyString
+import xyz.srclab.spring.boot.core.KeyString.Companion.parseKeyString
 import java.beans.PropertyEditor
 import java.beans.PropertyEditorSupport
 import java.nio.charset.Charset

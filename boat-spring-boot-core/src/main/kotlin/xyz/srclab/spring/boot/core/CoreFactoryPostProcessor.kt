@@ -1,9 +1,12 @@
-package xyz.srclab.spring.boot.lang
+package xyz.srclab.spring.boot.core
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 
-open class LangBeanFactoryPostProcessor : BeanFactoryPostProcessor {
+/**
+ * [BeanFactoryPostProcessor] for core package.
+ */
+open class CoreFactoryPostProcessor : BeanFactoryPostProcessor {
 
     override fun postProcessBeanFactory(beanFactory: ConfigurableListableBeanFactory) {
         beanFactory.registerCustomEditor(KeyString::class.java, KeyStringEditor::class.java)

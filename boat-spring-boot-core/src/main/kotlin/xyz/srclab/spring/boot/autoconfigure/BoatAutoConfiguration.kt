@@ -4,11 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import xyz.srclab.spring.boot.core.BoatSpringBootStartedBean
-import xyz.srclab.spring.boot.core.CoreProperties
-import xyz.srclab.spring.boot.core.DefaultStartGreeting
-import xyz.srclab.spring.boot.core.StartGreeting
-import xyz.srclab.spring.boot.lang.LangBeanFactoryPostProcessor
+import xyz.srclab.spring.boot.core.*
 
 @Configuration
 open class BoatAutoConfiguration {
@@ -31,8 +27,8 @@ open class BoatAutoConfiguration {
         return BoatSpringBootStartedBean()
     }
 
-    @Bean("xyz.srclab.spring.boot.lang.LangBeanFactoryPostProcessor")
-    open fun langBeanFactoryPostProcessor(): LangBeanFactoryPostProcessor {
-        return LangBeanFactoryPostProcessor()
+    @Bean("xyz.srclab.spring.boot.core.CoreFactoryPostProcessor")
+    open fun coreFactoryPostProcessor(): CoreFactoryPostProcessor {
+        return CoreFactoryPostProcessor()
     }
 }
