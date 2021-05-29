@@ -58,15 +58,15 @@ open class ExceptionHandlingService {
             })
     }
 
-    fun <T : Any> handle(e: Throwable, type: Class<T>): T {
+    open fun <T : Any> handle(e: Throwable, type: Class<T>): T {
         return exceptionConverter.convert(e, type)
     }
 
-    fun <T : Any> handle(e: Throwable, type: Type): T {
+    open fun <T : Any> handle(e: Throwable, type: Type): T {
         return exceptionConverter.convert(e, type)
     }
 
-    fun <T : Any> handle(e: Throwable, type: TypeRef<T>): T {
+    open fun <T : Any> handle(e: Throwable, type: TypeRef<T>): T {
         return exceptionConverter.convert(e, type)
     }
 }
