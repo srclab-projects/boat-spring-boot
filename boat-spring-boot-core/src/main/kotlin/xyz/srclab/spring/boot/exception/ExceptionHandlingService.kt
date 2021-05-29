@@ -4,6 +4,11 @@ import org.springframework.context.ApplicationContext
 import xyz.srclab.common.convert.FastConvertHandler
 import xyz.srclab.common.convert.FastConverter
 import xyz.srclab.common.lang.asAny
+import xyz.srclab.common.reflect.TypeRef
+import xyz.srclab.common.reflect.rawClass
+import xyz.srclab.common.reflect.toTypeSignature
+import java.lang.reflect.Method
+import java.lang.reflect.Type
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.annotation.Resource
@@ -19,7 +24,7 @@ open class ExceptionHandlingService {
     @Resource
     private lateinit var applicationContext: ApplicationContext
 
-    private lateinit var exceptionStateConverter: FastConverter<Any?>
+    private lateinit var exceptionConverter: FastConverter
 
     @PostConstruct
     private fun init() {
@@ -27,25 +32,41 @@ open class ExceptionHandlingService {
         for (entry in applicationContext.getBeansOfType(ExceptionHandler::class.java)) {
             handlers.add(entry.value.asAny())
         }
-        exceptionStateConverter = FastConverter.newFastConverter(handlers.map {
-            object : FastConvertHandler<Any?> {
 
-                override val supportedType: Class<*> = it.supportedType
+        fun Class<*>.getHandleMethod(): Method {
+            val type = this.toTypeSignature(ExceptionHandler::class.java)
+            val parameterType = type.actualTypeArguments[0].rawClass
+            return this.getMethod("handle", parameterType)
+        }
 
-                override fun convert(from: Any): Any? {
-                    if (from !is Throwable) {
-                        throw IllegalArgumentException("Not a Throwable object: ${from.javaClass}")
-                    }
+        exceptionConverter = FastConverter.newFastConverter(handlers.map {
+            object : FastConvertHandler<Throwable, Any> {
+                private val handleMethod: Method = it.javaClass.getHandleMethod()
+                override val fromType: Class<*> = handleMethod.parameterTypes[0]
+                override val toType: Class<*> = handleMethod.returnType
+                override fun convert(from: Throwable): Any {
                     return it.handle(from)
                 }
             }
-        })
+        },
+            object : FastConvertHandler<Throwable, Nothing> {
+                override val fromType: Class<*> = Throwable::class.java
+                override val toType: Class<*> = Nothing::class.java
+                override fun convert(from: Throwable): Nothing {
+                    throw IllegalArgumentException("Cannot handle exception $from")
+                }
+            })
     }
 
-    /**
-     * Convert given exception to object.
-     */
-    open fun <T> toState(e: Throwable): T {
-        return exceptionStateConverter.convert(e).asAny()
+    fun <T : Any> handle(e: Throwable, type: Class<T>): T {
+        return exceptionConverter.convert(e, type)
+    }
+
+    fun <T : Any> handle(e: Throwable, type: Type): T {
+        return exceptionConverter.convert(e, type)
+    }
+
+    fun <T : Any> handle(e: Throwable, type: TypeRef<T>): T {
+        return exceptionConverter.convert(e, type)
     }
 }
