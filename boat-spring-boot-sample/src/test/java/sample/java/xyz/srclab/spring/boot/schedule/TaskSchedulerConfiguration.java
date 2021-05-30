@@ -9,7 +9,7 @@ import xyz.srclab.spring.boot.schedule.TaskSchedulers;
 
 @Configuration
 @EnableScheduling
-public class TestTaskSchedulerConfiguration {
+public class TaskSchedulerConfiguration {
 
     @Bean
     public TaskScheduler taskScheduler() {

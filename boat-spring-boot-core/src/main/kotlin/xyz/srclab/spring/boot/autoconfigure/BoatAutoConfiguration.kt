@@ -9,11 +9,11 @@ import xyz.srclab.spring.boot.core.*
 @Configuration
 open class BoatAutoConfiguration {
 
-    @ConfigurationProperties(prefix = "boat.core")
+    @ConfigurationProperties(prefix = "boat.greeting")
     @ConditionalOnMissingBean
-    @Bean("xyz.srclab.spring.boot.core.CoreProperties")
-    open fun coreProperties(): CoreProperties {
-        return CoreProperties()
+    @Bean("xyz.srclab.spring.boot.core.GreetingProperties")
+    open fun greetingProperties(): GreetingProperties {
+        return GreetingProperties()
     }
 
     @ConditionalOnMissingBean

@@ -23,7 +23,7 @@ import javax.annotation.Resource
 
 @SpringBootTest(
     classes = [
-        BoatAutoConfiguration::class, TestTaskExecutorConfiguration::class, AsyncService::class]
+        BoatAutoConfiguration::class, TaskExecutorConfiguration::class, AsyncService::class]
 )
 open class TaskSample : AbstractTestNGSpringContextTests() {
     @Resource
@@ -54,7 +54,7 @@ open class AsyncService {
 
 @Configuration
 @EnableAsync
-open class TestTaskExecutorConfiguration {
+open class TaskExecutorConfiguration {
     @Bean
     open fun taskExecutor(): TaskExecutor {
         val poolProperties = TaskPoolProperties()
@@ -73,6 +73,6 @@ open class TestTaskExecutorConfiguration {
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(TestTaskExecutorConfiguration::class.java)
+        private val logger = LoggerFactory.getLogger(TaskExecutorConfiguration::class.java)
     }
 }

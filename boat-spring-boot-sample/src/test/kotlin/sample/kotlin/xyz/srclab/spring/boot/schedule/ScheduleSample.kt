@@ -18,7 +18,7 @@ import xyz.srclab.spring.boot.schedule.toTaskScheduler
 
 @SpringBootTest(
     classes = [
-        BoatAutoConfiguration::class, TestTaskSchedulerConfiguration::class, ScheduleService::class]
+        BoatAutoConfiguration::class, TaskSchedulerConfiguration::class, ScheduleService::class]
 )
 open class ScheduleSample : AbstractTestNGSpringContextTests() {
     @Test
@@ -41,7 +41,7 @@ open class ScheduleService {
 
 @Configuration
 @EnableScheduling
-open class TestTaskSchedulerConfiguration {
+open class TaskSchedulerConfiguration {
     @Bean
     open fun taskScheduler(): TaskScheduler {
         val poolProperties = ScheduledPoolProperties()

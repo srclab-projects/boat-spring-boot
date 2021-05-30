@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 
 @SpringBootTest(classes = {
     BoatAutoConfiguration.class,
-    TestTaskExecutorConfiguration.class,
+    TaskExecutorConfiguration.class,
     AsyncService.class,
 })
 public class TaskSample extends AbstractTestNGSpringContextTests {

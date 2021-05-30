@@ -8,7 +8,7 @@ import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
 
 @SpringBootTest(classes = {
     BoatAutoConfiguration.class,
-    TestTaskSchedulerConfiguration.class,
+    TaskSchedulerConfiguration.class,
     ScheduleService.class,
 })
 public class ScheduleSample extends AbstractTestNGSpringContextTests {

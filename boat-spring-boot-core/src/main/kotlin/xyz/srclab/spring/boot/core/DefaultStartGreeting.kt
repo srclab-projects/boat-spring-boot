@@ -12,13 +12,13 @@ import javax.annotation.Resource
 open class DefaultStartGreeting : StartGreeting {
 
     @Resource
-    private lateinit var coreProperties: CoreProperties
+    private lateinit var greetingProperties: GreetingProperties
 
     override fun doGreeting() {
-        if (!coreProperties.greeting) {
+        if (!greetingProperties.enable) {
             return
         }
-        val greetingMessage = coreProperties.greetingMessage
+        val greetingMessage = greetingProperties.message
         if (greetingMessage !== null) {
             logger.info(greetingMessage)
         }

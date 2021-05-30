@@ -10,9 +10,9 @@ import xyz.srclab.spring.boot.core.StartGreeting;
 /**
  * @author sunqian
  */
-public class TestGreetingBean implements StartGreeting, ApplicationRunner {
+public class TestStartGreeting implements StartGreeting, ApplicationRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestGreetingBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestStartGreeting.class);
 
     public String greeting = "old greeting";
 

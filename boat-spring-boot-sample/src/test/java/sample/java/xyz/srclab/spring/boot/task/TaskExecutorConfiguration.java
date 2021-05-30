@@ -13,9 +13,9 @@ import xyz.srclab.spring.boot.task.TaskPoolProperties;
 
 @Configuration
 @EnableAsync
-public class TestTaskExecutorConfiguration {
+public class TaskExecutorConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestTaskExecutorConfiguration.class);
+    private static final Logger logger = LoggerFactory.getLogger(TaskExecutorConfiguration.class);
 
     @Bean
     public TaskExecutor taskExecutor() {
