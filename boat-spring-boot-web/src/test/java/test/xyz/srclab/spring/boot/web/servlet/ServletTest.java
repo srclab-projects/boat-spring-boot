@@ -2,6 +2,7 @@ package test.xyz.srclab.spring.boot.web.servlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -12,9 +13,13 @@ import org.testng.annotations.Test;
 import javax.annotation.Resource;
 
 @SpringBootTest(
-    classes = Starter.class,
+    classes = {
+        TestController.class,
+        TestFilter.class,
+    },
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+@EnableAutoConfiguration
 public class ServletTest extends AbstractTestNGSpringContextTests {
 
     private static final Logger logger = LoggerFactory.getLogger(ServletTest.class);
