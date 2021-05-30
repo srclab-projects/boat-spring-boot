@@ -15,8 +15,8 @@ import javax.annotation.Resource;
 
 @SpringBootTest(classes = {
     BoatAutoConfiguration.class,
-    RuntimeExceptionStatusHandler.class,
-    ThrowableStatusHandler.class,
+    RuntimeExceptionHandler.class,
+    ThrowableHandler.class,
 })
 @EnableExceptionHandlingService
 public class ExceptionServiceTest extends AbstractTestNGSpringContextTests {

@@ -4,11 +4,11 @@ import org.jetbrains.annotations.NotNull;
 import xyz.srclab.common.exception.ExceptionStatus;
 import xyz.srclab.spring.boot.exception.ExceptionHandler;
 
-public class ThrowableStatusHandler implements ExceptionHandler<Throwable, ExceptionStatus> {
+public class RuntimeExceptionHandler implements ExceptionHandler<RuntimeException, ExceptionStatus> {
 
     @NotNull
     @Override
-    public ExceptionStatus handle(@NotNull Throwable throwable) {
-        return ExceptionStatus.of("101");
+    public ExceptionStatus handle(@NotNull RuntimeException exception) {
+        return ExceptionStatus.of("102");
     }
 }

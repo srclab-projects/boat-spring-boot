@@ -1,10 +1,10 @@
-package test.xyz.srclab.spring.boot.exception;
+package sample.java.xyz.srclab.spring.boot.exception;
 
 import org.jetbrains.annotations.NotNull;
 import xyz.srclab.common.exception.ExceptionStatus;
 import xyz.srclab.spring.boot.exception.ExceptionHandler;
 
-public class RuntimeExceptionStatusHandler implements ExceptionHandler<RuntimeException, ExceptionStatus> {
+public class RuntimeExceptionHandler implements ExceptionHandler<RuntimeException, ExceptionStatus> {
 
     @NotNull
     @Override
