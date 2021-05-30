@@ -4,8 +4,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 import xyz.srclab.common.lang.Current;
+import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
 
-@SpringBootTest(classes = Starter.class)
+@SpringBootTest(classes = {
+    BoatAutoConfiguration.class,
+    TaskSchedulerConfiguration.class,
+    ScheduleService.class,
+})
 public class ScheduleSample extends AbstractTestNGSpringContextTests {
 
     @Test

@@ -1,16 +1,15 @@
 package sample.kotlin.xyz.srclab.spring.boot.bean
 
+import org.springframework.beans.BeansException
 import org.springframework.beans.PropertyValues
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
-import org.springframework.stereotype.Component
 import xyz.srclab.spring.boot.bean.BeanLifecyclePostProcessor
 import java.util.*
 
-@Component
 open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
 
-    private val sequence: MutableList<String> = LinkedList()
+    val sequence: MutableList<String> = LinkedList()
     private var isPostProcessBeanDefinitionRegistry = false
     private var isPostProcessBeanFactory = false
     private var isPostProcessBeforeInstantiation = false
@@ -33,6 +32,7 @@ open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
         }
     }
 
+    @Throws(BeansException::class)
     override fun postProcessBeforeInstantiation(beanClass: Class<*>, beanName: String): Any? {
         if (!isPostProcessBeforeInstantiation) {
             sequence.add("postProcessBeforeInstantiation")
@@ -41,6 +41,7 @@ open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
         return null
     }
 
+    @Throws(BeansException::class)
     override fun postProcessAfterInstantiation(bean: Any, beanName: String): Boolean {
         if (!isPostProcessAfterInstantiation) {
             sequence.add("postProcessAfterInstantiation")
@@ -49,6 +50,7 @@ open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
         return true
     }
 
+    @Throws(BeansException::class)
     override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any? {
         if (!isPostProcessBeforeInitialization) {
             sequence.add("postProcessBeforeInitialization")
@@ -57,6 +59,7 @@ open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
         return bean
     }
 
+    @Throws(BeansException::class)
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
         if (!isPostProcessAfterInitialization) {
             sequence.add("postProcessAfterInitialization")
@@ -65,15 +68,12 @@ open class MyBeanLifecyclePostProcessor : BeanLifecyclePostProcessor {
         return null
     }
 
+    @Throws(BeansException::class)
     override fun postProcessProperties(pvs: PropertyValues, bean: Any, beanName: String): PropertyValues? {
         if (!isPostProcessProperties) {
             sequence.add("postProcessProperties")
             isPostProcessProperties = true
         }
         return null
-    }
-
-    fun getSequence(): List<String> {
-        return sequence
     }
 }

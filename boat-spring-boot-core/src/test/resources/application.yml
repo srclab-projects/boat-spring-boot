@@ -1,9 +1,0 @@
-boat:
-  core:
-    greeting-message: Hello, Boat!
-  test:
-    bean1: "123"
-    bean2: "456"
-
-properties:
-  encode-string: AES,BASE64:rliqBhMdiKQDcH8lqNZdIg==

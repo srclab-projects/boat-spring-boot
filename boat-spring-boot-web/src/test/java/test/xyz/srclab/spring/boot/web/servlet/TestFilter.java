@@ -1,7 +1,6 @@
 package test.xyz.srclab.spring.boot.web.servlet;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
 import xyz.srclab.spring.boot.web.exception.WebExceptionService;
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 @EnableWebExceptionService
 public class TestFilter extends OncePerRequestFilter {
 

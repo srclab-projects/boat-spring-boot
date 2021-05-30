@@ -1,7 +1,10 @@
 package sample.java.xyz.srclab.spring.boot.bean;
 
+import org.springframework.context.annotation.DependsOn;
+
 import javax.annotation.Resource;
 
+@DependsOn("myBeanRegistry")
 public class MyBean {
 
     @Resource

@@ -10,7 +10,7 @@ import xyz.srclab.common.collect.MutableListMap.Companion.toMutableListMap
 import xyz.srclab.common.collect.map
 import xyz.srclab.common.collect.toEnumeration
 import xyz.srclab.common.lang.toCharSet
-import xyz.srclab.common.serialize.json.toJsonStream
+import xyz.srclab.common.serialize.json.toJson
 import java.io.BufferedReader
 import java.io.InputStream
 import java.util.*
@@ -57,7 +57,7 @@ fun HttpServletRequest.setAttributes(attributes: Map<String, *>) {
 fun HttpServletResponse.writeResponseEntity(
     responseEntity: ResponseEntity<*>,
     bodyTransform: (Any?, HttpServletResponse) -> InputStream? = { obj, _ ->
-        if (obj === null) null else obj.toJsonStream()
+        if (obj === null) null else obj.toJson().toInputStream()
     }
 ) {
     this.status = responseEntity.statusCodeValue

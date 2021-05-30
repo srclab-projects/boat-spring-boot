@@ -1,6 +1,7 @@
 package xyz.srclab.spring.boot.bean
 
 import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.context.annotation.DependsOn
 import xyz.srclab.common.lang.INAPPLICABLE_JVM_NAME
 import xyz.srclab.common.lang.loadClass
 import javax.annotation.PostConstruct
@@ -13,7 +14,7 @@ import javax.annotation.Resource
  * * [registeredSingletons] to register singletons without autowire;
  * * [registeredBeans] to register bean with autowire.
  *
- * Note use @DependOn to make sure dynamic beans are registered before autowired.
+ * Note use [DependsOn] to make sure dynamic beans are registered before autowired.
  *
  * @see BeanProperties
  */

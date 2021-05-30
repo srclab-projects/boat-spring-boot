@@ -1,13 +1,13 @@
 package test.xyz.srclab.spring.boot.bean;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
-@ConfigurationProperties(prefix = "boat.test")
-@Component
 public class TestProperties {
 
+    @Value("123")
     private String bean1;
+
+    @Value("456")
     private String bean2;
 
     public String getBean1() {

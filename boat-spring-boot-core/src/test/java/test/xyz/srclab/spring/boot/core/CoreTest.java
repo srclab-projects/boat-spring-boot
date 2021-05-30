@@ -5,19 +5,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
-import test.xyz.srclab.spring.boot.schedule.Starter;
-import xyz.srclab.spring.boot.core.CoreProperties;
+import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
+import xyz.srclab.spring.boot.core.GreetingProperties;
 
 import javax.annotation.Resource;
 
-@SpringBootTest(classes = Starter.class)
+@SpringBootTest(classes = {
+    BoatAutoConfiguration.class,
+})
 //@ContextConfiguration(classes = {TestStarter.class})
 public class CoreTest extends AbstractTestNGSpringContextTests {
 
     private static final Logger logger = LoggerFactory.getLogger(CoreTest.class);
 
     @Resource
-    private CoreProperties coreProperties;
+    private GreetingProperties greetingProperties;
 
     @Test
     public void testAutoConfigure() {

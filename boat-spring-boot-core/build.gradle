@@ -26,3 +26,5 @@ dependencies {
 }
 
 compileJava.inputs.files(processResources)
+
+utils.writeBuildInfos(project, "src/main/resources/META-INF/build.properties")
