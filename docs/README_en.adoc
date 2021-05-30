@@ -1,4 +1,4 @@
-= image:../logo.svg[Boat Spring Boot] Boat Spring Boot: SrcLab Core Libraries for Spring Boot
+= image:../logo.svg[Boat Spring Boot] Boat Spring Boot: SrcLab Core Libraries for Spring Boot and {boat-url}[Boat]
 :toc:
 :toclevels: 3
 :last-update-label!:
@@ -6,28 +6,27 @@ Sun Qian <fredsuvn@163.com>
 :encoding: UTF-8
 :emaill: fredsuvn@163.com
 :url: https://github.com/srclab-projects/boat-spring-boot
-:license: https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license]
-
-:qq-group: QQ group: 1037555759
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.1
 
 == Introduction
 
-Boat Spring Boot is a set of spring-boot projects with {boat-url}[Boat].
-It provides many fast and convenient interfaces, functions and utilities adapted to spring-boot with {boat-url}[Boat].
+Boat Spring Boot is spring-boot framework supporting with {boat-url}[Boat].
+It provides many fast and convenient interfaces and utilities adapted for spring-boot framework.
 
 Boat Spring Boot includes:
 
-* *boat-spring-boot-core*: Core and basic interfaces, functions and utilities, such as spring bean operation;
-* *boat-spring-boot-test*: Test dependencies management, to import common test libraries in test scope;
-* *boat-spring-boot-bom*: Boat Spring Boot Bom.
+* <<Core (boat-spring-boot-core)>>: Core and basic interfaces and utilities;
+* <<Web (boat-spring-boot-web)>>: Web interfaces and utilities;
+* `boat-spring-boot-test`: Testing libs dependencies management project;
+* `boat-spring-boot-bom`: BOM (gradle platform) project;
 
-Following the official recommendation of Spring Boot, we should use starter to import Boat Spring Boot:
+To import those modules, use their `starters`:
 
-* boat-spring-boot-starter
-* boat-spring-boot-starter-test
-* boat-spring-boot-starter-bom
+* `boat-spring-boot-starter`
+* `boat-spring-boot-web-starter`
+* `boat-spring-boot-starter-test`
+* `boat-spring-boot-starter-bom`
 
 == Getting
 
@@ -52,35 +51,67 @@ implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boo
 
 == Usage
 
-=== Core (boat-spring-boot-starter)
+=== Core (boat-spring-boot-core)
 
-==== Lang
+==== Core
 
-Lang package provides base interfaces, functions and utilities for spring-boot:
+Core package provides core interfaces and utilities:
 
-* EncodeString: Represents encode string may be encoded and encrypted as configure property.
+* `KeyString`: Represents a key string may be encoded and encrypted, mainly used for non-plain text configure;
+* `StartGreeting`: Interface to define whether and how to show the greeting message when started;
+* `GreetingProperties`: Properties for `StartGreeting`;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/lang/LangSample.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/core/KeyStringSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/core/TestKeyString.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/core/GreetingSample.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/lang/LangSample.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/core/KeyStringSample.kt[]
+----
+
+[source,kotlin]
+----
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/core/GreetingSample.kt[]
 ----
 
 ==== Bean
 
 Bean package provides:
 
-* BeanProperties: Properties for bean;
-* BeanLifecyclePostProcessor: Spring Bean lifecycle post processor;
-* BeanRegistry: Dynamic bean registry.
+* `BeanProperties`: Properties for bean configure;
+* `BeanLifecyclePostProcessor`: Spring Bean lifecycle post processor;
+* `BeanRegistry`: Dynamic bean registry;
 
 .Java Examples
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/BeanSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBeanLifecyclePostProcessor.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBean.java[]
+----
+
 [source,java]
 ----
 include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBeanRegistry.java[]
@@ -94,7 +125,7 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/bean/MyBeanRegistry.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/bean/BeanSample.kt[]
 ----
 
 [source,kotlin]
@@ -106,55 +137,75 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 
 Message package provides:
 
-* ReqMessage: Convenient request message definition;
-* RespMessage: Convenient response message definition.
+* `ReqMessage`: Convenient request message definition;
+* `RespMessage`: Convenient response message definition;
 
 ==== Task
 
 Task package provides:
 
-* TaskPoolProperties: Properties for task thread pool;
-* TaskExecutors: Help fast create TaskExecutor with ThreadPoolProperties;
-* TaskDelegate: Task execution delegate.
+* `TaskPoolProperties`: Properties for task thread pool;
+* `TaskExecutors`: Help fast create `TaskExecutor` with `ThreadPoolProperties`;
+* `TaskDelegate`: Task execution delegate;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/MyTaskExecutorConfiguration.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/TaskSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/AsyncService.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/TaskExecutorConfiguration.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/task/MyTaskExecutorConfigurationKt.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/task/TaskSample.kt[]
 ----
 
 ==== Schedule
 
 Schedule package provides:
 
-* ScheduledPoolProperties: Properties for scheduled thread pool;
-* TaskSchedulers: Help fast create TaskScheduler with ScheduledPoolProperties.
+* `ScheduledPoolProperties`: Properties for scheduled thread pool;
+* `TaskSchedulers`: Help fast create `TaskScheduler` with `ScheduledPoolProperties`;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/MyTaskSchedulerConfiguration.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/ScheduleSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/ScheduleService.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/TaskSchedulerConfiguration.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/schedule/MyTaskSchedulerConfiguration.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/schedule/ScheduleSample.kt[]
 ----
 
 ==== Exception
 
 Exception package provides:
 
-* EnableExceptionHandlingService: Annotation to enable exception handling service;
-* ExceptionHandlingService: Autowired global exception handling service, see its javadoc for more detail;
-* ExceptionHandler: Interface to handle exception for ExceptionHandlingService.
+* `EnableExceptionHandlingService`: Annotation to enable global exception handling service;
+* `ExceptionHandlingService`: Autowired global exception handling service, see its javadoc for more detail;
+* `ExceptionHandler`: Interface to handle exception for `ExceptionHandlingService`;
 
 .Java Examples
 [source,java]
@@ -164,12 +215,12 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableStatusHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionHandler.java[]
 ----
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionStatusHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableHandler.java[]
 ----
 
 .Kotlin Examples
@@ -178,18 +229,23 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/exception/ExceptionServiceSample.kt[]
 ----
 
-=== Web (boat-spring-boot-web-starter)
+=== Web (boat-spring-boot-web)
 
 ==== Exception
 
 Web exception package provides:
 
-* EnableWebExceptionService: Annotation to enable web exception service;
-* WebExceptionService: Autowired global web exception service, see its javadoc for more detail;
-* WebExceptionResponseHandler: Interface used to convert exception to ResponseEntity, work for WebExceptionService;
-* WebStatusException: Convenient exception for web.
+* `EnableWebExceptionService`: Annotation to enable global web exception service;
+* `WebExceptionService`: Autowired global web exception service, see its javadoc for more detail;
+* `WebExceptionResponseHandler`: Interface used to convert exception to ResponseEntity, work for `WebExceptionService`;
+* `WebStatusException`: Convenient exception for web;
 
 .Java Examples
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebExceptionSample.java[]
+----
+
 [source,java]
 ----
 include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebExceptionSample.java[]
@@ -221,45 +277,30 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/exception/WebExceptionSample.kt[]
 ----
 
-==== Message
+==== Servlet
 
-Web message package provides:
+Servlet package provides:
 
-* HttpReqMessage, HttpRespMessage: Convenient http message definition;
-* HttpReqMessageResolver: Handler method arguments resolver for HttpReqMessage;
-* MessageProperties: Properties for http messages;
-* EnableHttpReqMessageResolving: Enable to resolve parameter of HttpReqMessage type, see its javadoc for more detail.
+* `WebServlets`: Provides Servlet tools, such as fast build for `ServletRequest`, `ServletInputStream`;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/message/MessageController.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/servlet/ServletSample.java[]
 ----
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/message/WebMessageSample.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/servlet/TestController.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/servlet/TestFilter.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/message/WebMessageSample.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/servlet/ServletSample.kt[]
 ----
-
-==== Utilities
-
-Web module provides some utilities:
-
-* WebExceptions: Provides exception tools for web;
-* WebServlets: Provides Servlet tools, such as fast build for ServletRequest, ServletInputStream.
-
-== Contribution and Contact
-
-* {emaill}
-* {url}
-* {qq-group}
-
-== License
-
-{license}

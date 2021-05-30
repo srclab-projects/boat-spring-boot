@@ -1,4 +1,4 @@
-= image:../logo.svg[Boat Spring Boot] Boat Spring Boot: SrcLab核心基础Spring Boot库
+= image:../logo.svg[Boat Spring Boot] Boat Spring Boot:  基于 Spring Boot 和  {boat-url}[Boat] 的 SrcLab 核心库
 :toc:
 :toclevels: 3
 :toc-title: 目录
@@ -7,28 +7,27 @@ Sun Qian <fredsuvn@163.com>
 :encoding: UTF-8
 :emaill: fredsuvn@163.com
 :url: https://github.com/srclab-projects/boat-spring-boot
-:license: https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license]
-
-:qq-group: QQ group: 1037555759
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.1
 
-== 简介
+== Introduction
 
-Boat Spring Boot是一组基于{boat-url}[Boat]的spring-boot项目集合.
-它在{boat-url}[Boat]的基础上, 提供了许多方便快捷的spring-boot接口, 函数和工具.
+Boat Spring Boot 是使用 {boat-url}[Boat] 来支持 spring-boot 框架的库.
+它提供许多快速方便的接口和工具, 适配 spring-boot 框架.
 
-Boat Spring Boot包括:
+Boat Spring Boot 包括:
 
-* *boat-spring-boot-core*: 核心和基础的接口, 功能和工具, 比如spring bean操作;
-* *boat-spring-boot-test*: 测试依赖管理, 用来在测试编译和运行范围下引入测试框架;
-* *boat-spring-boot-bom*: Boat Spring Boot Bom.
+* <<Core (boat-spring-boot-core)>>: 核心基础接口和工具;
+* <<Web (boat-spring-boot-web)>>: Web接口和工具;
+* `boat-spring-boot-test`: 测试库依赖管理项目;
+* `boat-spring-boot-bom`: BOM (gradle platform) 项目;
 
-根据Spring Boot官方推荐, 我们应当使用starter来导入Boat Spring Boot:
+想要导入以上模块, 请使用``starters``:
 
-* boat-spring-boot-starter
-* boat-spring-boot-starter-test
-* boat-spring-boot-starter-bom
+* `boat-spring-boot-starter`
+* `boat-spring-boot-web-starter`
+* `boat-spring-boot-starter-test`
+* `boat-spring-boot-starter-bom`
 
 == 获取
 
@@ -48,40 +47,72 @@ implementation("xyz.srclab.spring.boot:boat-spring-boot-starter:{boat-spring-boo
 </dependency>
 ----
 
-.Source Code
+.源代码
 {url}
 
-== 使用
+== 用法
 
-=== Core (boat-spring-boot-starter)
+=== Core (boat-spring-boot-core)
 
-==== Lang
+==== Core
 
-Lang包为spring-boot提供扩展的基础功能:
+Core包提供核心接口和工具:
 
-* EncodeString: 代表一个可能经过编码和加密的属性字段.
+* `KeyString`: 代表经过编码和加密的字符串, 主要用于非明文配置配置;
+* `StartGreeting`: 定义启动问候信息的接口;
+* `GreetingProperties`: `StartGreeting` 的配置;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/lang/LangSample.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/core/KeyStringSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/core/TestKeyString.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/core/GreetingSample.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/lang/LangSample.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/core/KeyStringSample.kt[]
+----
+
+[source,kotlin]
+----
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/core/GreetingSample.kt[]
 ----
 
 ==== Bean
 
 Bean包提供:
 
-* BeanProperties: bean属性;
-* BeanLifecyclePostProcessor: Spring Bean整个生命周期后置处理器;
-* BeanRegistry: 动态bean注册.
+* `BeanProperties`: Bean相关配置;
+* `BeanLifecyclePostProcessor`: Spring Bean 生命周期后置处理器;
+* `BeanRegistry`: 动态bean注册;
 
 .Java Examples
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/BeanSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBeanLifecyclePostProcessor.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBean.java[]
+----
+
 [source,java]
 ----
 include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/bean/MyBeanRegistry.java[]
@@ -95,7 +126,7 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/bean/MyBeanRegistry.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/bean/BeanSample.kt[]
 ----
 
 [source,kotlin]
@@ -105,57 +136,77 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 
 ==== Message
 
-消息包提供:
+Message包提供:
 
-* ReqMessage: 方便的请求消息定义;
-* RespMessage: 方便的响应消息定义.
+* `ReqMessage`: 方便的请求消息定义;
+* `RespMessage`: 方便的返回消息定义;
 
 ==== Task
 
 Task包提供:
 
-* TaskPoolProperties: Task线程池属性;
-* TaskExecutors: 快速创建TaskExecutor, 通常使用ThreadPoolProperties;
-* TaskDelegate: Task调度委托.
+* `TaskPoolProperties`: Task线程池相关配置;
+* `TaskExecutors`: 使用 `ThreadPoolProperties` 快速构建 `TaskExecutor`;
+* `TaskDelegate`: Task执行委托器;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/MyTaskExecutorConfiguration.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/TaskSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/AsyncService.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/task/TaskExecutorConfiguration.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/task/MyTaskExecutorConfigurationKt.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/task/TaskSample.kt[]
 ----
 
 ==== Schedule
 
 Schedule包提供:
 
-* ScheduledPoolProperties: 调度线程池属性;
-* TaskSchedulers: 快速创建TaskScheduler, 通常使用ScheduledPoolProperties.
+* `ScheduledPoolProperties`: 调度器的线程池相关配置;
+* `TaskSchedulers`: 使用 `ScheduledPoolProperties` 快速构建 `TaskScheduler`;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/MyTaskSchedulerConfiguration.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/ScheduleSample.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/ScheduleService.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/schedule/TaskSchedulerConfiguration.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/schedule/MyTaskSchedulerConfiguration.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/schedule/ScheduleSample.kt[]
 ----
 
 ==== Exception
 
-异常包提供:
+Exception包提供:
 
-* EnableExceptionHandlingService: 开启异常处理服务的注解;
-* ExceptionHandlingService: 自动注入的全局异常处理服务, 具体参阅其javadoc;
-* ExceptionHandler: 为ExceptionHandlingService处理异常的具体接口.
+* `EnableExceptionHandlingService`: 启动全局异常处理服务的注解;
+* `ExceptionHandlingService`: 全局异常处理服务, 详情请参阅其javadoc;
+* `ExceptionHandler`: 为 `ExceptionHandlingService` 服务的异常处理器;
 
 .Java Examples
 [source,java]
@@ -165,12 +216,12 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableStatusHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionHandler.java[]
 ----
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionStatusHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableHandler.java[]
 ----
 
 .Kotlin Examples
@@ -179,18 +230,23 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/exception/ExceptionServiceSample.kt[]
 ----
 
-=== Web (boat-spring-boot-web-starter)
+=== Web (boat-spring-boot-web)
 
 ==== Exception
 
-Web异常包提供:
+Web exception 包提供:
 
-* EnableWebExceptionService: 开启Web一场服务的注解;
-* WebExceptionService: 自动注入的全局异常服务, 具体请参阅其Javadoc;
-* WebExceptionResponseHandler: 将异常转换成ResponseEntity的接口, 为WebExceptionService工作;
-* WebStatusException: 针对Web场景的便捷异常.
+* `EnableWebExceptionService`: 开启Web全局异常处理的注解;
+* `WebExceptionService`: Web全局异常处理服务, 详情请参阅其javadoc;
+* `WebExceptionResponseHandler`: 为 `WebExceptionService` 服务的Web异常处理器;
+* `WebStatusException`: 便捷的Web异常基类;
 
 .Java Examples
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebExceptionSample.java[]
+----
+
 [source,java]
 ----
 include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebExceptionSample.java[]
@@ -222,45 +278,30 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/exception/WebExceptionSample.kt[]
 ----
 
-==== Message
+==== Servlet
 
-消息包包括:
+Servlet包提供:
 
-* HttpReqMessage, HttpRespMessage: 方便的http消息定义;
-* HttpReqMessageResolver: 针对HttpReqMessage的参数解析器;
-* MessageProperties: Http消息的配置属性;
-* EnableHttpReqMessageResolving: 开启HttpReqMessage类型的参数解析, 具体请参阅它的javadoc.
+* `WebServlets`: 提供 `Servlet` 相关工具, 如快速构建 `ServletRequest`, `ServletInputStream`;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/message/MessageController.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/servlet/ServletSample.java[]
 ----
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/message/WebMessageSample.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/servlet/TestController.java[]
+----
+
+[source,java]
+----
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/servlet/TestFilter.java[]
 ----
 
 .Kotlin Examples
 [source,kotlin]
 ----
-include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/message/WebMessageSample.kt[]
+include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spring/boot/web/servlet/ServletSample.kt[]
 ----
-
-==== Utilities
-
-一些工具类也在web中提供:
-
-* WebExceptions: 提供异常相关的工具方法;
-* WebServlets: 提供Servlet工具, 比如针对ServletRequest, ServletInputStream等的快速构建.
-
-== 共享和联系方式
-
-* {emaill}
-* {url}
-* {qq-group}
-
-== License
-
-{license}
