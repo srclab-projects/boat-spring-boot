@@ -50,13 +50,13 @@
     <text id="element-spring"
           x="44" y="57" text-anchor="end" font-size="7"
           transform="rotate(90, 44, 57)"
-          fill="SkyBlue">
+          fill="#6CB33D">
       Spring
     </text>
     <text id="element-boot"
           x="50" y="57" text-anchor="end" font-size="7"
           transform="rotate(90, 50, 57)"
-          fill="SkyBlue">
+          fill="#6CB33D">
       Boot
     </text>
   </g>
