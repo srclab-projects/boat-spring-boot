@@ -1,7 +1,9 @@
-# <span class="image">![Boat Spring Boot](../logo.svg)</span> Boat Spring Boot: 基于 Spring Boot 和 [Boat](https://github.com/srclab-projects/boat) 的 SrcLab 核心库
+# Boat Spring Boot: 基于 Spring Boot 和 [Boat](https://github.com/srclab-projects/boat) 的 SrcLab 核心库
 
 <span id="author" class="author">Sun Qian</span>  
 <span id="email" class="email"><fredsuvn@163.com></span>  
+
+![logo](../logo.svg)
 
 目录
 

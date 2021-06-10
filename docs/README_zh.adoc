@@ -1,5 +1,5 @@
-= image:../logo.svg[Boat Spring Boot] Boat Spring Boot:  基于 Spring Boot 和  {boat-url}[Boat] 的 SrcLab 核心库
-:toc:
+= Boat Spring Boot: 基于 Spring Boot 和  {boat-url}[Boat] 的 SrcLab 核心库
+:toc: macro
 :toclevels: 3
 :toc-title: 目录
 :last-update-label!:
@@ -9,6 +9,10 @@ Sun Qian <fredsuvn@163.com>
 :url: https://github.com/srclab-projects/boat-spring-boot
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.1
+
+image::../logo.svg[align=center]
+
+toc::[]
 
 == Introduction
 

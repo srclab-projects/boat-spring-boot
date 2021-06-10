@@ -1,6 +1,10 @@
-# ![Boat Spring Boot](logo.svg) Boat Spring Boot: SrcLab Core Libraries for Spring Boot
+# Boat Spring Boot: SrcLab Core Libraries for Spring Boot
 
-## Choose doc style you like:
+<p align="center">
+<img src="logo.svg"/>
+</p>
+
+## Read Me:
 
 - AsciiDoc:
   * [English](docs/README_en.adoc)
