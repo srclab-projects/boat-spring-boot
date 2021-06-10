@@ -1,5 +1,5 @@
-= Boat Spring Boot: SrcLab Core Libraries for Spring Boot and {boat-url}[Boat]
-:toc: macro
+= image:../logo.svg[] Boat Spring Boot: SrcLab Core Libraries for Spring Boot and {boat-url}[Boat]
+:toc:
 :toclevels: 3
 :last-update-label!:
 Sun Qian <fredsuvn@163.com>
@@ -8,10 +8,6 @@ Sun Qian <fredsuvn@163.com>
 :url: https://github.com/srclab-projects/boat-spring-boot
 :boat-url: https://github.com/srclab-projects/boat
 :boat-spring-boot-version: 0.0.1
-
-image::../logo.svg[align=center]
-
-toc::[]
 
 == Introduction
 

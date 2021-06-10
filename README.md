@@ -1,8 +1,4 @@
-# Boat Spring Boot: SrcLab Core Libraries for Spring Boot
-
-<p align="center">
-<img src="logo.svg"/>
-</p>
+# ![](logo.svg) Boat Spring Boot: SrcLab Core Libraries for Spring Boot
 
 ## Read Me:
 
