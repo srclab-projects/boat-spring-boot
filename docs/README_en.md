@@ -1,4 +1,4 @@
-# <span class="image">![Boat Spring Boot](../logo.svg)</span> Boat Spring Boot: SrcLab Core Libraries for Spring Boot and [Boat](https://github.com/srclab-projects/boat)
+# <span class="image">![logo](../logo.svg)</span> Boat Spring Boot: SrcLab Core Libraries for Spring Boot and [Boat](https://github.com/srclab-projects/boat)
 
 <span id="author" class="author">Sun Qian</span>  
 <span id="email" class="email"><fredsuvn@163.com></span>  

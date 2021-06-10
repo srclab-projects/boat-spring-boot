@@ -1,4 +1,4 @@
-= image:../logo.svg[Boat Spring Boot] Boat Spring Boot: SrcLab Core Libraries for Spring Boot and {boat-url}[Boat]
+= image:../logo.svg[] Boat Spring Boot: SrcLab Core Libraries for Spring Boot and {boat-url}[Boat]
 :toc:
 :toclevels: 3
 :last-update-label!:
