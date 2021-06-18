@@ -14,6 +14,27 @@
 
 More see [docs/](docs/)
 
+## Build
+
+This project depends on [boat](https://github.com/srclab-projects/boat), you may:
+
+```shell
+# build boat
+git clone -b master https://github.com/srclab-projects/boat.git
+
+cd boat && gradle clean build
+
+# build boat-spring-boot
+git clone -b master https://github.com/srclab-projects/boat-spring-boot.git
+
+cd boat-spring-boot && gradle clean build
+```
+
+**Note:**
+
+* Some properties should be configured if you want to enable publish to remote, see publish info part
+  of [build.gradle](build.gradle)
+
 ## Join
 
 * fredsuvn@163.com

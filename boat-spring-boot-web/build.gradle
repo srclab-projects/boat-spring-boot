@@ -15,9 +15,6 @@ dependencies {
   api "org.springframework.boot:spring-boot-starter-web"
   api "com.fasterxml.jackson.module:jackson-module-kotlin"
 
-  api "org.springframework.boot:spring-boot-starter-security"
-  api "org.springframework.boot:spring-boot-starter-thymeleaf"
-
   testCompile project(":boat-spring-boot-starters:boat-spring-boot-starter-test")
 
   kapt platform(project(":boat-spring-boot-dependencies"))
