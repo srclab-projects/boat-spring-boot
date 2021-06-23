@@ -31,7 +31,7 @@ open class TaskSample : AbstractTestNGSpringContextTests() {
 
     @Test
     fun testTask() {
-        asyncService!!.testAsync()
+        asyncService.testAsync()
         sleep(1000)
     }
 }
@@ -63,7 +63,7 @@ open class TaskExecutorConfiguration {
             override fun execute(executor: Executor, task: Runnable) {
                 val l1 = Thread.currentThread().id
                 MDC.put("123", "123")
-                executeWithMdc(executor!!, {
+                executeWithMdc(executor, {
                     val l2 = Thread.currentThread().id
                     logger.info("thread l1: {}, thread l2: {}", l1, l2)
                     task.run()

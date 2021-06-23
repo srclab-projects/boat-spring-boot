@@ -1,6 +1,6 @@
 package xyz.srclab.spring.boot.core
 
-import xyz.srclab.common.codec.Codecing.Companion.startCodec
+import xyz.srclab.common.codec.codec
 import xyz.srclab.common.lang.Defaults
 import xyz.srclab.common.lang.asAny
 import xyz.srclab.common.lang.toChars
@@ -36,7 +36,7 @@ open class KeyString {
         }
         val encrypt = this.encrypt
         val encode = this.encode
-        val codec = value.startCodec()
+        val codec = value.codec()
         if (!encode.isNullOrEmpty()) {
             codec.decode(encode)
         }
