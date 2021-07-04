@@ -22,7 +22,7 @@ open class KeyStringSample : AbstractTestNGSpringContextTests() {
 
     @Test
     fun testEncodeString() {
-        log.info("encodeString: {}", testProperties!!.keyString)
+        log.info("encodeString: {}", testProperties.keyString)
         val key = "123".toAesKey()
         Assert.assertEquals(testProperties.keyString.decodeString(key), "some password")
         log.info("testProperties.getEncodeString(): {}", testProperties.keyString)

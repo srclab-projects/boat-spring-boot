@@ -39,7 +39,7 @@ cd boat-spring-boot && gradle clean build
 
 * fredsuvn@163.com
 * https://github.com/srclab-projects/boat-spring-boot
-* QQ group: 1037555759
+* QQ group: 566185308
 
 ## License
 
