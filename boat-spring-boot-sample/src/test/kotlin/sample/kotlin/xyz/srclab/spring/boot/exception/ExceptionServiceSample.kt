@@ -10,7 +10,7 @@ import sample.java.xyz.srclab.spring.boot.exception.ThrowableHandler
 import xyz.srclab.common.exception.ExceptionStatus
 import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration
 import xyz.srclab.spring.boot.exception.EnableExceptionHandlingService
-import xyz.srclab.spring.boot.exception.ExceptionHandler
+import xyz.srclab.spring.boot.exception.ExceptionHandlingComponent
 import xyz.srclab.spring.boot.exception.ExceptionHandlingService
 import javax.annotation.Resource
 
@@ -46,14 +46,14 @@ class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
 }
 
 open class RuntimeExceptionHandler :
-    ExceptionHandler<RuntimeException, ExceptionStatus> {
+    ExceptionHandlingComponent<RuntimeException, ExceptionStatus> {
     override fun handle(e: RuntimeException): ExceptionStatus {
         return ExceptionStatus.of("102")
     }
 }
 
 open class ThrowableHandler :
-    ExceptionHandler<Throwable, ExceptionStatus> {
+    ExceptionHandlingComponent<Throwable, ExceptionStatus> {
     override fun handle(e: Throwable): ExceptionStatus {
         return ExceptionStatus.of("101")
     }
