@@ -1,5 +1,7 @@
 package xyz.srclab.spring.boot.exception
 
+import org.springframework.stereotype.Component
+
 /**
  * Annotates current class is an exception handling component.
  * This component has methods which annotated by [ExceptionHandlingMethod], and [ExceptionHandlingService] will call
@@ -8,6 +10,7 @@ package xyz.srclab.spring.boot.exception
  * @see ExceptionHandlingMethod
  * @see EnableExceptionHandlingService
  */
+@Component
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)

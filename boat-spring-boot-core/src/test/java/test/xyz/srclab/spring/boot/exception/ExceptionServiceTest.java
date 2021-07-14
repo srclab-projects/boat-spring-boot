@@ -15,8 +15,7 @@ import javax.annotation.Resource;
 
 @SpringBootTest(classes = {
     BoatAutoConfiguration.class,
-    RuntimeExceptionHandler.class,
-    ThrowableHandler.class,
+    ExceptionHandler.class,
 })
 @EnableExceptionHandlingService
 public class ExceptionServiceTest extends AbstractTestNGSpringContextTests {
@@ -27,11 +26,11 @@ public class ExceptionServiceTest extends AbstractTestNGSpringContextTests {
     private ExceptionHandlingService exceptionHandlingService;
 
     @Test
-    public void testExceptionStateService() {
-        ExceptionStatus runtime = exceptionHandlingService.handle(new RuntimeException(), ExceptionStatus.class);
+    public void testExceptionHandlingService() {
+        ExceptionStatus runtime = exceptionHandlingService.handle(new RuntimeException());
         logger.info("runtime: {}", runtime);
         Assert.assertEquals(runtime.code(), "102");
-        ExceptionStatus throwable = exceptionHandlingService.handle(new Exception(), ExceptionStatus.class);
+        ExceptionStatus throwable = exceptionHandlingService.handle(new Exception());
         logger.info("throwable: {}", throwable);
         Assert.assertEquals(throwable.code(), "101");
     }
