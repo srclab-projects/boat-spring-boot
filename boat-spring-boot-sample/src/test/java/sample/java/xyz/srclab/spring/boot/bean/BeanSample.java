@@ -19,7 +19,7 @@ import java.util.Arrays;
 })
 public class BeanSample extends AbstractTestNGSpringContextTests {
 
-    private static final Logger log = LoggerFactory.getLogger(BeanSample.class);
+    private static final Logger logger = LoggerFactory.getLogger(BeanSample.class);
 
     @Resource
     private MyBeanLifecyclePostProcessor myBeanLifecyclePostProcessor;
@@ -35,7 +35,7 @@ public class BeanSample extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testBeanPostProcessor() {
-        log.info("Bean processing sequence: {}", myBeanLifecyclePostProcessor.getSequence());
+        logger.info("Bean processing sequence: {}", myBeanLifecyclePostProcessor.getSequence());
         Assert.assertEquals(
             myBeanLifecyclePostProcessor.getSequence(),
             Arrays.asList(
@@ -52,11 +52,11 @@ public class BeanSample extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testBeanManager() {
-        log.info("bean1: {}", bean1);
+        logger.info("bean1: {}", bean1);
         Assert.assertEquals(bean1, "bean1");
-        log.info("bean2: {}", bean2);
+        logger.info("bean2: {}", bean2);
         Assert.assertEquals(bean2, "bean2");
-        log.info("myBean: {}", myBean.getBeanString());
+        logger.info("myBean: {}", myBean.getBeanString());
         Assert.assertEquals(myBean.getBeanString(), bean1 + bean2);
     }
 }

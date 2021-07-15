@@ -27,4 +27,9 @@ public class TestController {
     public String testEncode(String pm) {
         return "encode: " + pm;
     }
+
+    @RequestMapping("exception")
+    public String testException() {
+        throw new RuntimeException("hello");
+    }
 }

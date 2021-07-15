@@ -14,7 +14,7 @@ import xyz.srclab.spring.boot.core.StartGreeting;
 })
 public class GreetingSample extends AbstractTestNGSpringContextTests implements StartGreeting {
 
-    private static final Logger log = LoggerFactory.getLogger(GreetingSample.class);
+    private static final Logger logger = LoggerFactory.getLogger(GreetingSample.class);
 
     @Test
     public void testAutoConfigure() {
@@ -22,6 +22,6 @@ public class GreetingSample extends AbstractTestNGSpringContextTests implements 
 
     @Override
     public void doGreeting() {
-        log.info(">>>>>>>>>>>>>>>>>> This is sample greeting!");
+        logger.info(">>>>>>>>>>>>>>>>>> This is sample greeting!");
     }
 }
