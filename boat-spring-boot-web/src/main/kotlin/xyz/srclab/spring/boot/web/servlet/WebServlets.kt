@@ -16,6 +16,7 @@ import java.io.InputStream
 import java.util.*
 import javax.servlet.ReadListener
 import javax.servlet.ServletInputStream
+import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletRequestWrapper
 import javax.servlet.http.HttpServletResponse
@@ -56,8 +57,11 @@ fun HttpServletRequest.setAttributes(attributes: Map<String, *>) {
 @JvmOverloads
 fun HttpServletResponse.writeResponseEntity(
     responseEntity: ResponseEntity<*>,
-    bodyTransform: (Any?, HttpServletResponse) -> InputStream? = { obj, _ ->
-        if (obj === null) null else obj.toJson().toInputStream()
+    writeAction: (Any?, ServletOutputStream) -> Unit = block@{ body, out ->
+        if (body === null) {
+            return@block
+        }
+        body.toJson().writeTo(out)
     }
 ) {
     this.status = responseEntity.statusCodeValue
@@ -66,10 +70,7 @@ fun HttpServletResponse.writeResponseEntity(
             this.setHeader(header.key, value)
         }
     }
-    val input = bodyTransform(responseEntity.body, this)
-    if (input !== null) {
-        input.copyTo(this.outputStream)
-    }
+    writeAction(responseEntity.body, this.outputStream)
 }
 
 open class PreparedHttpServletRequest(
