@@ -1,9 +1,13 @@
 package sample.java.xyz.srclab.spring.boot.web.servlet;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.filter.OncePerRequestFilter;
-import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
-import xyz.srclab.spring.boot.web.exception.WebExceptionService;
+import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody;
+import xyz.srclab.spring.boot.web.exception.WebExceptions;
 import xyz.srclab.spring.boot.web.servlet.WebServlets;
 
 import javax.annotation.Resource;
@@ -18,11 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@EnableWebExceptionService
 public class TestFilter extends OncePerRequestFilter {
 
     @Resource
-    private WebExceptionService webExceptionService;
+    private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Override
     protected void doFilterInternal(
@@ -36,8 +39,22 @@ public class TestFilter extends OncePerRequestFilter {
         HttpServletRequest newRequest = WebServlets.newPreparedHttpServletRequest(request, parameters);
         try {
             filterChain.doFilter(newRequest, response);
-        } catch (Throwable e) {
-            WebServlets.writeResponseEntity(response, webExceptionService.toResponseEntity(e));
+        } catch (Exception e) {
+            HttpHeaders header = new HttpHeaders();
+            header.set(HttpHeaders.CONTENT_TYPE, "application/json");
+            ResponseEntity<ExceptionResponseBody> responseEntity = new ResponseEntity<>(
+                WebExceptions.toExceptionResponseBody(e),
+                header,
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+            WebServlets.writeResponseEntity(response, responseEntity, (body, out) -> {
+                try {
+                    mappingJackson2HttpMessageConverter.getObjectMapper().writeValue(out, body);
+                } catch (IOException ioException) {
+                    throw new IllegalStateException((ioException));
+                }
+                return null;
+            });
         }
     }
 }

@@ -1,13 +1,13 @@
-# <span class="image">![logo](../logo.svg)</span> Boat Spring Boot: SrcLab Core Libraries for Spring Boot and [Boat](https://github.com/srclab-projects/boat)
+# <span class="image">![logo](../logo.svg)</span> Boat Spring Boot: 基于 Spring Boot 和 [Boat](https://github.com/srclab-projects/boat) 的 SrcLab 核心库
 
 <span id="author" class="author">Sun Qian</span>  
 <span id="email" class="email"><fredsuvn@163.com></span>  
 
-Table of Contents
+目录
 
 -   [Introduction](#_introduction)
--   [Getting](#_getting)
--   [Usage](#_usage)
+-   [获取](#_获取)
+-   [用法](#_用法)
     -   [Core (boat-spring-boot-core)](#_core_boat_spring_boot_core)
         -   [Core](#_core)
         -   [Bean](#_bean)
@@ -21,25 +21,23 @@ Table of Contents
 
 ## Introduction
 
-Boat Spring Boot is spring-boot framework supporting with
-[Boat](https://github.com/srclab-projects/boat). It provides many fast
-and convenient interfaces and utilities adapted for spring-boot
-framework.
+Boat Spring Boot 是使用 [Boat](https://github.com/srclab-projects/boat)
+来支持 spring-boot 框架的库. 它提供许多快速方便的接口和工具, 适配
+spring-boot 框架.
 
-Boat Spring Boot includes:
+Boat Spring Boot 包括:
 
--   [Core (boat-spring-boot-core)](#_core_boat_spring_boot_core): Core
-    and basic interfaces and utilities;
+-   [Core (boat-spring-boot-core)](#_core_boat_spring_boot_core):
+    核心基础接口和工具;
 
--   [Web (boat-spring-boot-web)](#_web_boat_spring_boot_web): Web
-    interfaces and utilities;
+-   [Web (boat-spring-boot-web)](#_web_boat_spring_boot_web):
+    Web接口和工具;
 
--   `boat-spring-boot-test`: Testing libs dependencies management
-    project;
+-   `boat-spring-boot-test`: 测试库依赖管理项目;
 
--   `boat-spring-boot-bom`: BOM (gradle platform) project;
+-   `boat-spring-boot-bom`: BOM (gradle platform) 项目;
 
-To import those modules, use their `starters`:
+想要导入以上模块, 请使用`starters`:
 
 -   `boat-spring-boot-starter`
 
@@ -49,7 +47,7 @@ To import those modules, use their `starters`:
 
 -   `boat-spring-boot-starter-bom`
 
-## Getting
+## 获取
 
 Gradle
 
@@ -63,25 +61,23 @@ Maven
         <version>0.0.1</version>
     </dependency>
 
-Source Code
+源代码
 
 <https://github.com/srclab-projects/boat-spring-boot>
 
-## Usage
+## 用法
 
 ### Core (boat-spring-boot-core)
 
 #### Core
 
-Core package provides core interfaces and utilities:
+Core包提供核心接口和工具:
 
--   `KeyString`: Represents a key string may be encoded and encrypted,
-    mainly used for non-plain text configure;
+-   `KeyString`: 代表经过编码和加密的字符串, 主要用于非明文配置配置;
 
--   `StartGreeting`: Interface to define whether and how to show the
-    greeting message when started;
+-   `StartGreeting`: 定义启动问候信息的接口;
 
--   `GreetingProperties`: Properties for `StartGreeting`;
+-   `GreetingProperties`: `StartGreeting` 的配置;
 
 Java Examples
 
@@ -156,7 +152,7 @@ Java Examples
     })
     public class GreetingSample extends AbstractTestNGSpringContextTests implements StartGreeting {
 
-        private static final Logger log = LoggerFactory.getLogger(GreetingSample.class);
+        private static final Logger logger = LoggerFactory.getLogger(GreetingSample.class);
 
         @Test
         public void testAutoConfigure() {
@@ -164,7 +160,7 @@ Java Examples
 
         @Override
         public void doGreeting() {
-            log.info(">>>>>>>>>>>>>>>>>> This is sample greeting!");
+            logger.info(">>>>>>>>>>>>>>>>>> This is sample greeting!");
         }
     }
 
@@ -194,7 +190,7 @@ Kotlin Examples
 
         @Test
         fun testEncodeString() {
-            log.info("encodeString: {}", testProperties!!.keyString)
+            log.info("encodeString: {}", testProperties.keyString)
             val key = "123".toAesKey()
             Assert.assertEquals(testProperties.keyString.decodeString(key), "some password")
             log.info("testProperties.getEncodeString(): {}", testProperties.keyString)
@@ -241,13 +237,13 @@ Kotlin Examples
 
 #### Bean
 
-Bean package provides:
+Bean包提供:
 
--   `BeanProperties`: Properties for bean configure;
+-   `BeanProperties`: Bean相关配置;
 
--   `BeanLifecyclePostProcessor`: Spring Bean lifecycle post processor;
+-   `BeanLifecyclePostProcessor`: Spring Bean 生命周期后置处理器;
 
--   `BeanRegistry`: Dynamic bean registry;
+-   `BeanRegistry`: 动态bean注册;
 
 Java Examples
 
@@ -272,7 +268,7 @@ Java Examples
     })
     public class BeanSample extends AbstractTestNGSpringContextTests {
 
-        private static final Logger log = LoggerFactory.getLogger(BeanSample.class);
+        private static final Logger logger = LoggerFactory.getLogger(BeanSample.class);
 
         @Resource
         private MyBeanLifecyclePostProcessor myBeanLifecyclePostProcessor;
@@ -288,7 +284,7 @@ Java Examples
 
         @Test
         public void testBeanPostProcessor() {
-            log.info("Bean processing sequence: {}", myBeanLifecyclePostProcessor.getSequence());
+            logger.info("Bean processing sequence: {}", myBeanLifecyclePostProcessor.getSequence());
             Assert.assertEquals(
                 myBeanLifecyclePostProcessor.getSequence(),
                 Arrays.asList(
@@ -305,11 +301,11 @@ Java Examples
 
         @Test
         public void testBeanManager() {
-            log.info("bean1: {}", bean1);
+            logger.info("bean1: {}", bean1);
             Assert.assertEquals(bean1, "bean1");
-            log.info("bean2: {}", bean2);
+            logger.info("bean2: {}", bean2);
             Assert.assertEquals(bean2, "bean2");
-            log.info("myBean: {}", myBean.getBeanString());
+            logger.info("myBean: {}", myBean.getBeanString());
             Assert.assertEquals(myBean.getBeanString(), bean1 + bean2);
         }
     }
@@ -727,22 +723,22 @@ Kotlin Examples
 
 #### Message
 
-Message package provides:
+Message包提供:
 
--   `ReqMessage`: Convenient request message definition;
+-   `ReqMessage`: 方便的请求消息定义;
 
--   `RespMessage`: Convenient response message definition;
+-   `RespMessage`: 方便的返回消息定义;
 
 #### Task
 
-Task package provides:
+Task包提供:
 
--   `TaskPoolProperties`: Properties for task thread pool;
+-   `TaskPoolProperties`: Task线程池相关配置;
 
--   `TaskExecutors`: Help fast create `TaskExecutor` with
-    `ThreadPoolProperties`;
+-   `TaskExecutors`: 使用 `ThreadPoolProperties` 快速构建
+    `TaskExecutor`;
 
--   `TaskDelegate`: Task execution delegate;
+-   `TaskDelegate`: Task执行委托器;
 
 Java Examples
 
@@ -867,7 +863,7 @@ Kotlin Examples
 
         @Test
         fun testTask() {
-            asyncService!!.testAsync()
+            asyncService.testAsync()
             sleep(1000)
         }
     }
@@ -899,7 +895,7 @@ Kotlin Examples
                 override fun execute(executor: Executor, task: Runnable) {
                     val l1 = Thread.currentThread().id
                     MDC.put("123", "123")
-                    executeWithMdc(executor!!, {
+                    executeWithMdc(executor, {
                         val l2 = Thread.currentThread().id
                         logger.info("thread l1: {}, thread l2: {}", l1, l2)
                         task.run()
@@ -915,12 +911,12 @@ Kotlin Examples
 
 #### Schedule
 
-Schedule package provides:
+Schedule包提供:
 
--   `ScheduledPoolProperties`: Properties for scheduled thread pool;
+-   `ScheduledPoolProperties`: 调度器的线程池相关配置;
 
--   `TaskSchedulers`: Help fast create `TaskScheduler` with
-    `ScheduledPoolProperties`;
+-   `TaskSchedulers`: 使用 `ScheduledPoolProperties` 快速构建
+    `TaskScheduler`;
 
 Java Examples
 
@@ -1041,20 +1037,18 @@ Kotlin Examples
 
 #### Exception
 
-Exception package provides:
+Exception包提供:
 
--   `EnableExceptionHandlingService`: Annotation to enable global
-    exception handling service;
+-   `EnableExceptionHandlingService`: 启动全局异常处理服务的注解;
 
--   `ExceptionHandlingService`: Autowired global exception handling
-    service, see its javadoc for more detail;
+-   `ExceptionHandlingService`: 全局异常处理服务, 详情请参阅其javadoc;
 
--   `ExceptionHandler`: Interface to handle exception for
-    `ExceptionHandlingService`;
+-   `ExceptionHandlingComponent`, `ExceptionHandlingMethod`: 为
+    `ExceptionHandlingService` 提供异常处理器的注解;
 
 Java Examples
 
-    package sample.java.xyz.srclab.spring.boot.exception;
+    package test.xyz.srclab.spring.boot.exception;
 
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
@@ -1071,53 +1065,43 @@ Java Examples
 
     @SpringBootTest(classes = {
         BoatAutoConfiguration.class,
-        RuntimeExceptionHandler.class,
-        ThrowableHandler.class,
+        ExceptionHandler.class,
     })
     @EnableExceptionHandlingService
-    public class ExceptionServiceSample extends AbstractTestNGSpringContextTests {
+    public class ExceptionServiceTest extends AbstractTestNGSpringContextTests {
 
-        public static final Logger log = LoggerFactory.getLogger(ExceptionServiceSample.class);
+        public static final Logger logger = LoggerFactory.getLogger(ExceptionServiceTest.class);
 
         @Resource
         private ExceptionHandlingService exceptionHandlingService;
 
         @Test
-        public void testExceptionStateService() {
-            ExceptionStatus runtime = exceptionHandlingService.handle(new RuntimeException(), ExceptionStatus.class);
-            log.info("runtime: {}", runtime);
+        public void testExceptionHandlingService() {
+            ExceptionStatus runtime = exceptionHandlingService.handle(new RuntimeException());
+            logger.info("runtime: {}", runtime);
             Assert.assertEquals(runtime.code(), "102");
-            ExceptionStatus throwable = exceptionHandlingService.handle(new Exception(), ExceptionStatus.class);
-            log.info("throwable: {}", throwable);
+            ExceptionStatus throwable = exceptionHandlingService.handle(new Exception());
+            logger.info("throwable: {}", throwable);
             Assert.assertEquals(throwable.code(), "101");
         }
     }
 
-    package sample.java.xyz.srclab.spring.boot.exception;
+    package test.xyz.srclab.spring.boot.exception;
 
     import org.jetbrains.annotations.NotNull;
     import xyz.srclab.common.exception.ExceptionStatus;
-    import xyz.srclab.spring.boot.exception.ExceptionHandler;
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingComponent;
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingMethod;
 
-    public class RuntimeExceptionHandler implements ExceptionHandler<RuntimeException, ExceptionStatus> {
+    @ExceptionHandlingComponent
+    public class ExceptionHandler {
 
-        @NotNull
-        @Override
+        @ExceptionHandlingMethod
         public ExceptionStatus handle(@NotNull RuntimeException exception) {
             return ExceptionStatus.of("102");
         }
-    }
 
-    package sample.java.xyz.srclab.spring.boot.exception;
-
-    import org.jetbrains.annotations.NotNull;
-    import xyz.srclab.common.exception.ExceptionStatus;
-    import xyz.srclab.spring.boot.exception.ExceptionHandler;
-
-    public class ThrowableHandler implements ExceptionHandler<Throwable, ExceptionStatus> {
-
-        @NotNull
-        @Override
+        @ExceptionHandlingMethod
         public ExceptionStatus handle(@NotNull Throwable throwable) {
             return ExceptionStatus.of("101");
         }
@@ -1132,18 +1116,17 @@ Kotlin Examples
     import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
     import org.testng.Assert
     import org.testng.annotations.Test
-    import sample.java.xyz.srclab.spring.boot.exception.RuntimeExceptionHandler
-    import sample.java.xyz.srclab.spring.boot.exception.ThrowableHandler
     import xyz.srclab.common.exception.ExceptionStatus
     import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration
     import xyz.srclab.spring.boot.exception.EnableExceptionHandlingService
-    import xyz.srclab.spring.boot.exception.ExceptionHandler
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingComponent
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingMethod
     import xyz.srclab.spring.boot.exception.ExceptionHandlingService
     import javax.annotation.Resource
 
     @SpringBootTest(
         classes = [
-            BoatAutoConfiguration::class, RuntimeExceptionHandler::class, ThrowableHandler::class]
+            BoatAutoConfiguration::class, ExceptionHandler::class]
     )
     @EnableExceptionHandlingService
     class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
@@ -1153,16 +1136,10 @@ Kotlin Examples
 
         @Test
         fun testExceptionStateService() {
-            val runtime = exceptionHandlingService.handle(
-                RuntimeException(),
-                ExceptionStatus::class.java
-            )
+            val runtime = exceptionHandlingService.handle<ExceptionStatus>(RuntimeException())
             log.info("runtime: {}", runtime)
             Assert.assertEquals(runtime.code, "102")
-            val throwable = exceptionHandlingService.handle(
-                Exception(),
-                ExceptionStatus::class.java
-            )
+            val throwable = exceptionHandlingService.handle<ExceptionStatus>(Exception())
             log.info("throwable: {}", throwable)
             Assert.assertEquals(throwable.code, "101")
         }
@@ -1172,16 +1149,16 @@ Kotlin Examples
         }
     }
 
-    open class RuntimeExceptionHandler :
-        ExceptionHandler<RuntimeException, ExceptionStatus> {
-        override fun handle(e: RuntimeException): ExceptionStatus {
+    @ExceptionHandlingComponent
+    class ExceptionHandler {
+
+        @ExceptionHandlingMethod
+        fun handle(exception: RuntimeException): ExceptionStatus {
             return ExceptionStatus.of("102")
         }
-    }
 
-    open class ThrowableHandler :
-        ExceptionHandler<Throwable, ExceptionStatus> {
-        override fun handle(e: Throwable): ExceptionStatus {
+        @ExceptionHandlingMethod
+        fun handle(throwable: Throwable): ExceptionStatus {
             return ExceptionStatus.of("101")
         }
     }
@@ -1190,18 +1167,13 @@ Kotlin Examples
 
 #### Exception
 
-Web exception package provides:
+Web exception 包提供:
 
--   `EnableWebExceptionService`: Annotation to enable global web
-    exception service;
+-   `EnableWebExceptionHandling`: 开启Web全局异常处理的注解;
 
--   `WebExceptionService`: Autowired global web exception service, see
-    its javadoc for more detail;
+-   `WebStatusException`: Web异常基类;
 
--   `WebExceptionResponseHandler`: Interface used to convert exception
-    to ResponseEntity, work for `WebExceptionService`;
-
--   `WebStatusException`: Convenient exception for web;
+-   `ExceptionResponseBody`: Web异常信息消息体;
 
 Java Examples
 
@@ -1218,28 +1190,26 @@ Java Examples
     import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
     import org.testng.Assert;
     import org.testng.annotations.Test;
-    import xyz.srclab.common.exception.ExceptionStatus;
-    import xyz.srclab.common.serialize.json.JsonSerials;
     import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
-    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
+    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionHandling;
+    import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody;
 
     import javax.annotation.Resource;
+    import java.util.Objects;
 
     @SpringBootTest(
         classes = {
             BoatAutoConfiguration.class,
-            RuntimeExceptionHandler.class,
-            ThrowableHandler.class,
-            WebStatusExceptionHandler.class,
+            ExceptionHandler.class,
             TestController.class,
         },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
-    @EnableWebExceptionService
+    @EnableWebExceptionHandling
     @EnableAutoConfiguration
     public class WebExceptionSample extends AbstractTestNGSpringContextTests {
 
-        private static final Logger log = LoggerFactory.getLogger(WebExceptionSample.class);
+        private static final Logger logger = LoggerFactory.getLogger(WebExceptionSample.class);
 
         @LocalServerPort
         private int port;
@@ -1248,96 +1218,36 @@ Java Examples
         private TestRestTemplate restTemplate;
 
         @Test
-        public void testException() {
-            String result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException",
-                String.class
+        public void testIllegalException() {
+            ResponseEntity<ExceptionResponseBody> result = restTemplate.getForEntity(
+                "http://localhost:" + port + "/test/illegalState",
+                ExceptionResponseBody.class
             );
-            log.info("/test/exception?body=testException: {}", result);
-            Assert.assertEquals(result, JsonSerials.toJsonString(new TestController.ResponseMessage()));
-
-            result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException0",
-                String.class
-            );
-            log.info("/test/exception?body=testException0: {}", result);
-            Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
-
-            ResponseEntity<String> entity = restTemplate.getForEntity(
-                "http://localhost:" + port + "/test/webException?body=testWebException0",
-                String.class
-            );
-            log.info("/test/webException?body=testWebException0: {}", entity);
-            Assert.assertEquals(entity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
-            Assert.assertEquals(entity.getBody(), JsonSerials.toJsonString(ExceptionStatus.of("103")));
+            logger.info("/test/illegalState: {}", result);
+            Assert.assertEquals(result.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+            Assert.assertEquals(Objects.requireNonNull(result.getBody()).getCode(), "101");
         }
-    }
 
-    package sample.java.xyz.srclab.spring.boot.web.exception;
-
-    import org.slf4j.Logger;
-    import org.slf4j.LoggerFactory;
-    import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-    import org.springframework.boot.test.context.SpringBootTest;
-    import org.springframework.boot.test.web.client.TestRestTemplate;
-    import org.springframework.boot.web.server.LocalServerPort;
-    import org.springframework.http.HttpStatus;
-    import org.springframework.http.ResponseEntity;
-    import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-    import org.testng.Assert;
-    import org.testng.annotations.Test;
-    import xyz.srclab.common.exception.ExceptionStatus;
-    import xyz.srclab.common.serialize.json.JsonSerials;
-    import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
-    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
-
-    import javax.annotation.Resource;
-
-    @SpringBootTest(
-        classes = {
-            BoatAutoConfiguration.class,
-            RuntimeExceptionHandler.class,
-            ThrowableHandler.class,
-            WebStatusExceptionHandler.class,
-            TestController.class,
-        },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-    )
-    @EnableWebExceptionService
-    @EnableAutoConfiguration
-    public class WebExceptionSample extends AbstractTestNGSpringContextTests {
-
-        private static final Logger log = LoggerFactory.getLogger(WebExceptionSample.class);
-
-        @LocalServerPort
-        private int port;
-
-        @Resource
-        private TestRestTemplate restTemplate;
+        @Test
+        public void testRuntimeException() {
+            ResponseEntity<ExceptionResponseBody> result = restTemplate.getForEntity(
+                "http://localhost:" + port + "/test/runtimeException",
+                ExceptionResponseBody.class
+            );
+            logger.info("/test/runtimeException: {}", result);
+            Assert.assertEquals(result.getStatusCode(), HttpStatus.BAD_REQUEST);
+            Assert.assertEquals(Objects.requireNonNull(result.getBody()).getCode(), "102");
+        }
 
         @Test
         public void testException() {
-            String result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException",
+            ResponseEntity<String> result3 = restTemplate.getForEntity(
+                "http://localhost:" + port + "/test/exception",
                 String.class
             );
-            log.info("/test/exception?body=testException: {}", result);
-            Assert.assertEquals(result, JsonSerials.toJsonString(new TestController.ResponseMessage()));
-
-            result = restTemplate.getForObject(
-                "http://localhost:" + port + "/test/exception?body=testException0",
-                String.class
-            );
-            log.info("/test/exception?body=testException0: {}", result);
-            Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
-
-            ResponseEntity<String> entity = restTemplate.getForEntity(
-                "http://localhost:" + port + "/test/webException?body=testWebException0",
-                String.class
-            );
-            log.info("/test/webException?body=testWebException0: {}", entity);
-            Assert.assertEquals(entity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
-            Assert.assertEquals(entity.getBody(), JsonSerials.toJsonString(ExceptionStatus.of("103")));
+            logger.info("/test/exception: {}", result3);
+            Assert.assertEquals(result3.getStatusCode(), HttpStatus.OK);
+            Assert.assertEquals(result3.getBody(), "103");
         }
     }
 
@@ -1345,48 +1255,26 @@ Java Examples
 
     import org.springframework.web.bind.annotation.RequestMapping;
     import org.springframework.web.bind.annotation.RestController;
-    import xyz.srclab.spring.boot.web.exception.WebStatusException;
+
+    import java.util.Map;
 
     @RequestMapping("test")
     @RestController
     public class TestController {
 
+        @RequestMapping("illegalState")
+        public Map<Object, Object> testIllegalState() {
+            throw new IllegalStateException();
+        }
+
+        @RequestMapping("runtimeException")
+        public Map<Object, Object> testRuntimeException() {
+            throw new RuntimeException();
+        }
+
         @RequestMapping("exception")
-        public ResponseMessage testException(String body) {
-            if ("testException".equals(body)) {
-                return new ResponseMessage();
-            }
-            throw new IllegalArgumentException("Must be testException!");
-        }
-
-        @RequestMapping("webException")
-        public ResponseMessage testWebException(String body) {
-            if ("testWebException".equals(body)) {
-                return new ResponseMessage();
-            }
-            throw new WebStatusException("Must be testWebException!");
-        }
-
-        public static class ResponseMessage {
-
-            private String subscription = "subscription";
-            private String description = "description";
-
-            public String getSubscription() {
-                return subscription;
-            }
-
-            public void setSubscription(String subscription) {
-                this.subscription = subscription;
-            }
-
-            public String getDescription() {
-                return description;
-            }
-
-            public void setDescription(String description) {
-                this.description = description;
-            }
+        public Map<Object, Object> testException() throws Exception {
+            throw new Exception();
         }
     }
 
@@ -1396,48 +1284,26 @@ Java Examples
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import xyz.srclab.common.exception.ExceptionStatus;
-    import xyz.srclab.spring.boot.web.exception.WebExceptionResponseHandler;
-
-    public class ThrowableHandler implements WebExceptionResponseHandler<Throwable> {
-
-        @NotNull
-        @Override
-        public ResponseEntity<ExceptionStatus> handle(@NotNull Throwable throwable) {
-            return new ResponseEntity<>(ExceptionStatus.of("101"), HttpStatus.OK);
-        }
-    }
-
-    package sample.java.xyz.srclab.spring.boot.web.exception;
-
-    import org.jetbrains.annotations.NotNull;
-    import org.springframework.http.HttpStatus;
-    import org.springframework.http.ResponseEntity;
-    import xyz.srclab.common.exception.ExceptionStatus;
-    import xyz.srclab.spring.boot.web.exception.WebExceptionResponseHandler;
-
-    public class RuntimeExceptionHandler implements WebExceptionResponseHandler<RuntimeException> {
-
-        @NotNull
-        @Override
-        public ResponseEntity<ExceptionStatus> handle(@NotNull RuntimeException exception) {
-            return new ResponseEntity<>(ExceptionStatus.of("102"), HttpStatus.OK);
-        }
-    }
-
-    package sample.java.xyz.srclab.spring.boot.web.exception;
-
-    import org.jetbrains.annotations.NotNull;
-    import org.springframework.http.ResponseEntity;
-    import xyz.srclab.common.exception.ExceptionStatus;
-    import xyz.srclab.spring.boot.web.exception.WebExceptionResponseHandler;
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingComponent;
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingMethod;
     import xyz.srclab.spring.boot.web.exception.WebStatusException;
 
-    public class WebStatusExceptionHandler implements WebExceptionResponseHandler<WebStatusException> {
+    @ExceptionHandlingComponent
+    public class ExceptionHandler {
 
-        @NotNull
-        @Override
-        public ResponseEntity<ExceptionStatus> handle(@NotNull WebStatusException exception) {
-            return new ResponseEntity<>(ExceptionStatus.of("103"), exception.httpStatus());
+        @ExceptionHandlingMethod
+        public Object handle(@NotNull IllegalStateException illegalStateException) {
+            return ExceptionStatus.of("101");
+        }
+
+        @ExceptionHandlingMethod
+        public Object handle(@NotNull RuntimeException runtimeException) {
+            return new WebStatusException("102", "desc", null, HttpStatus.BAD_REQUEST);
+        }
+
+        @ExceptionHandlingMethod
+        public Object handle(@NotNull Exception exception) {
+            return new ResponseEntity<>("103", HttpStatus.OK);
         }
     }
 
@@ -1458,26 +1324,22 @@ Kotlin Examples
     import org.testng.Assert
     import org.testng.annotations.Test
     import xyz.srclab.common.exception.ExceptionStatus
-    import xyz.srclab.common.serialize.json.toJsonString
     import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration
-    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService
-    import xyz.srclab.spring.boot.web.exception.WebExceptionResponseHandler
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingComponent
+    import xyz.srclab.spring.boot.exception.ExceptionHandlingMethod
+    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionHandling
+    import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody
     import xyz.srclab.spring.boot.web.exception.WebStatusException
+    import java.util.*
     import javax.annotation.Resource
 
     @SpringBootTest(
-        classes = [
-            BoatAutoConfiguration::class,
-            RuntimeExceptionHandler::class,
-            ThrowableHandler::class,
-            WebStatusExceptionHandler::class,
-            TestController::class
-        ],
+        classes = [BoatAutoConfiguration::class, ExceptionHandler::class, TestController::class],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
-    @EnableWebExceptionService
+    @EnableWebExceptionHandling
     @EnableAutoConfiguration
-    open class WebExceptionSample : AbstractTestNGSpringContextTests() {
+    class WebExceptionSample : AbstractTestNGSpringContextTests() {
 
         @LocalServerPort
         private var port = 0
@@ -1486,26 +1348,36 @@ Kotlin Examples
         private lateinit var restTemplate: TestRestTemplate
 
         @Test
+        fun testIllegalException() {
+            val result = restTemplate.getForEntity(
+                "http://localhost:$port/test/illegalState",
+                ExceptionResponseBody::class.java
+            )
+            log.info("/test/illegalState: {}", result)
+            Assert.assertEquals(result.statusCode, HttpStatus.INTERNAL_SERVER_ERROR)
+            Assert.assertEquals(Objects.requireNonNull(result.body).code, "101")
+        }
+
+        @Test
+        fun testRuntimeException() {
+            val result = restTemplate.getForEntity(
+                "http://localhost:$port/test/runtimeException",
+                ExceptionResponseBody::class.java
+            )
+            log.info("/test/runtimeException: {}", result)
+            Assert.assertEquals(result.statusCode, HttpStatus.BAD_REQUEST)
+            Assert.assertEquals(Objects.requireNonNull(result.body).code, "102")
+        }
+
+        @Test
         fun testException() {
-            var result = restTemplate.getForObject(
-                "http://localhost:$port/test/exception?body=testException",
+            val result3 = restTemplate.getForEntity(
+                "http://localhost:$port/test/exception",
                 String::class.java
             )
-            log.info("/test/exception?body=testException: {}", result)
-            Assert.assertEquals(result, TestController.ResponseMessage().toJsonString())
-            result = restTemplate.getForObject(
-                "http://localhost:$port/test/exception?body=testException0",
-                String::class.java
-            )
-            log.info("/test/exception?body=testException0: {}", result)
-            Assert.assertEquals(result, ExceptionStatus.of("102").toJsonString())
-            val entity = restTemplate.getForEntity(
-                "http://localhost:$port/test/webException?body=testWebException0",
-                String::class.java
-            )
-            log.info("/test/webException?body=testWebException0: {}", entity)
-            Assert.assertEquals(entity.statusCode, HttpStatus.INTERNAL_SERVER_ERROR)
-            Assert.assertEquals(entity.body, ExceptionStatus.of("103").toJsonString())
+            log.info("/test/exception: {}", result3)
+            Assert.assertEquals(result3.statusCode, HttpStatus.OK)
+            Assert.assertEquals(result3.body, "103")
         }
 
         companion object {
@@ -1515,54 +1387,49 @@ Kotlin Examples
 
     @RequestMapping("test")
     @RestController
-    open class TestController {
+    class TestController {
+
+        @RequestMapping("illegalState")
+        fun testIllegalState(): Map<Any, Any> {
+            throw IllegalStateException()
+        }
+
+        @RequestMapping("runtimeException")
+        fun testRuntimeException(): Map<Any, Any> {
+            throw RuntimeException()
+        }
 
         @RequestMapping("exception")
-        open fun testException(body: String): ResponseMessage {
-            if ("testException" == body) {
-                return ResponseMessage()
-            }
-            throw IllegalArgumentException("Must be testException!")
-        }
-
-        @RequestMapping("webException")
-        open fun testWebException(body: String): ResponseMessage {
-            if ("testWebException" == body) {
-                return ResponseMessage()
-            }
-            throw WebStatusException("Must be testWebException!")
-        }
-
-        class ResponseMessage {
-            var subscription = "subscription"
-            var description = "description"
+        fun testException(): Map<Any, Any> {
+            throw Exception()
         }
     }
 
-    open class RuntimeExceptionHandler : WebExceptionResponseHandler<RuntimeException> {
-        override fun handle(e: RuntimeException): ResponseEntity<ExceptionStatus> {
-            return ResponseEntity(ExceptionStatus.of("102"), HttpStatus.OK)
-        }
-    }
+    @ExceptionHandlingComponent
+    class ExceptionHandler {
 
-    open class ThrowableHandler : WebExceptionResponseHandler<Throwable> {
-        override fun handle(e: Throwable): ResponseEntity<ExceptionStatus> {
-            return ResponseEntity(ExceptionStatus.of("101"), HttpStatus.OK)
+        @ExceptionHandlingMethod
+        fun handle(illegalStateException: IllegalStateException): Any {
+            return ExceptionStatus.of("101")
         }
-    }
 
-    open class WebStatusExceptionHandler : WebExceptionResponseHandler<WebStatusException> {
-        override fun handle(e: WebStatusException): ResponseEntity<ExceptionStatus> {
-            return ResponseEntity(ExceptionStatus.of("103"), e.httpStatus)
+        @ExceptionHandlingMethod
+        fun handle(runtimeException: RuntimeException): Any {
+            return WebStatusException("102", "desc", null, HttpStatus.BAD_REQUEST)
+        }
+
+        @ExceptionHandlingMethod
+        fun handle(exception: Exception): Any {
+            return ResponseEntity("103", HttpStatus.OK)
         }
     }
 
 #### Servlet
 
-Servlet package provides:
+Servlet包提供:
 
--   `WebServlets`: Provides Servlet tools, such as fast build for
-    `ServletRequest`, `ServletInputStream`;
+-   `WebServlets`: 提供 `Servlet` 相关工具, 如快速构建 `ServletRequest`,
+    `ServletInputStream`;
 
 Java Examples
 
@@ -1574,16 +1441,18 @@ Java Examples
     import org.springframework.boot.test.context.SpringBootTest;
     import org.springframework.boot.test.web.client.TestRestTemplate;
     import org.springframework.boot.web.server.LocalServerPort;
+    import org.springframework.http.ResponseEntity;
     import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
     import org.testng.Assert;
     import org.testng.annotations.Test;
-    import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
+    import xyz.srclab.common.exception.ExceptionStatus;
+    import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody;
 
     import javax.annotation.Resource;
+    import java.util.Objects;
 
     @SpringBootTest(
         classes = {
-            BoatAutoConfiguration.class,
             TestController.class,
             TestFilter.class,
         },
@@ -1592,7 +1461,7 @@ Java Examples
     @EnableAutoConfiguration
     public class ServletSample extends AbstractTestNGSpringContextTests {
 
-        private static final Logger log = LoggerFactory.getLogger(ServletSample.class);
+        private static final Logger logger = LoggerFactory.getLogger(ServletSample.class);
 
         @LocalServerPort
         private int port;
@@ -1607,16 +1476,33 @@ Java Examples
                 "ppp1",
                 String.class
             );
-            log.info("/test/servlet: " + result);
+            logger.info("/test/servlet: " + result);
             Assert.assertEquals(result, "ppp1");
+        }
 
-            result = restTemplate.postForObject(
+        @Test
+        public void testIndex() {
+            String result = restTemplate.postForObject(
                 "http://localhost:" + port + "/test/index",
                 "ppp2",
                 String.class
             );
-            log.info("/test/index: " + result);
+            logger.info("/test/index: " + result);
             Assert.assertEquals(result, "encode: ppp2");
+        }
+
+        @Test
+        public void testException() {
+            ResponseEntity<ExceptionResponseBody> result = restTemplate.getForEntity(
+                "http://localhost:" + port + "/test/exception",
+                ExceptionResponseBody.class
+            );
+            logger.info("/test/exception: " + result);
+            logger.info("/test/exception: " + restTemplate.getForObject(
+                "http://localhost:" + port + "/test/exception",
+                String.class
+            ));
+            Assert.assertEquals(Objects.requireNonNull(result.getBody()).getCode(), ExceptionStatus.INTERNAL.code());
         }
     }
 
@@ -1649,14 +1535,23 @@ Java Examples
         public String testEncode(String pm) {
             return "encode: " + pm;
         }
+
+        @RequestMapping("exception")
+        public String testException() {
+            throw new RuntimeException("hello");
+        }
     }
 
     package sample.java.xyz.srclab.spring.boot.web.servlet;
 
     import org.apache.commons.io.IOUtils;
+    import org.springframework.http.HttpHeaders;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
     import org.springframework.web.filter.OncePerRequestFilter;
-    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
-    import xyz.srclab.spring.boot.web.exception.WebExceptionService;
+    import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody;
+    import xyz.srclab.spring.boot.web.exception.WebExceptions;
     import xyz.srclab.spring.boot.web.servlet.WebServlets;
 
     import javax.annotation.Resource;
@@ -1671,11 +1566,10 @@ Java Examples
     import java.util.List;
     import java.util.Map;
 
-    @EnableWebExceptionService
     public class TestFilter extends OncePerRequestFilter {
 
         @Resource
-        private WebExceptionService webExceptionService;
+        private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
         @Override
         protected void doFilterInternal(
@@ -1689,8 +1583,22 @@ Java Examples
             HttpServletRequest newRequest = WebServlets.newPreparedHttpServletRequest(request, parameters);
             try {
                 filterChain.doFilter(newRequest, response);
-            } catch (Throwable e) {
-                WebServlets.writeResponseEntity(response, webExceptionService.toResponseEntity(e));
+            } catch (Exception e) {
+                HttpHeaders header = new HttpHeaders();
+                header.set(HttpHeaders.CONTENT_TYPE, "application/json");
+                ResponseEntity<ExceptionResponseBody> responseEntity = new ResponseEntity<>(
+                    WebExceptions.toExceptionResponseBody(e),
+                    header,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                );
+                WebServlets.writeResponseEntity(response, responseEntity, (body, out) -> {
+                    try {
+                        mappingJackson2HttpMessageConverter.getObjectMapper().writeValue(out, body);
+                    } catch (IOException ioException) {
+                        throw new IllegalStateException((ioException));
+                    }
+                    return null;
+                });
             }
         }
     }
@@ -1705,6 +1613,10 @@ Kotlin Examples
     import org.springframework.boot.test.context.SpringBootTest
     import org.springframework.boot.test.web.client.TestRestTemplate
     import org.springframework.boot.web.server.LocalServerPort
+    import org.springframework.http.HttpHeaders
+    import org.springframework.http.HttpStatus
+    import org.springframework.http.ResponseEntity
+    import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
     import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
     import org.springframework.web.bind.annotation.RequestMapping
     import org.springframework.web.bind.annotation.RestController
@@ -1712,26 +1624,27 @@ Kotlin Examples
     import org.springframework.web.servlet.ModelAndView
     import org.testng.Assert
     import org.testng.annotations.Test
-    import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration
-    import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService
-    import xyz.srclab.spring.boot.web.exception.WebExceptionService
+    import xyz.srclab.common.exception.ExceptionStatus
+    import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody
+    import xyz.srclab.spring.boot.web.exception.toExceptionResponseBody
     import xyz.srclab.spring.boot.web.servlet.toPreparedHttpServletRequest
     import xyz.srclab.spring.boot.web.servlet.writeResponseEntity
     import java.io.IOException
     import java.nio.charset.StandardCharsets
+    import java.util.*
     import javax.annotation.Resource
     import javax.servlet.FilterChain
     import javax.servlet.ServletException
+    import javax.servlet.ServletOutputStream
     import javax.servlet.http.HttpServletRequest
     import javax.servlet.http.HttpServletResponse
 
     @SpringBootTest(
-        classes = [
-            BoatAutoConfiguration::class, TestController::class, TestFilter::class],
+        classes = [TestController::class, TestFilter::class],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
     @EnableAutoConfiguration
-    open class ServletSample : AbstractTestNGSpringContextTests() {
+    class ServletSample : AbstractTestNGSpringContextTests() {
 
         @LocalServerPort
         private var port = 0
@@ -1741,20 +1654,40 @@ Kotlin Examples
 
         @Test
         fun testServlet() {
-            var result = restTemplate.postForObject(
+            val result = restTemplate!!.postForObject(
                 "http://localhost:$port/test/servlet",
                 "ppp1",
                 String::class.java
             )
             log.info("/test/servlet: $result")
             Assert.assertEquals(result, "ppp1")
-            result = restTemplate.postForObject(
+        }
+
+        @Test
+        fun testIndex() {
+            val result = restTemplate!!.postForObject(
                 "http://localhost:$port/test/index",
                 "ppp2",
                 String::class.java
             )
             log.info("/test/index: $result")
             Assert.assertEquals(result, "encode: ppp2")
+        }
+
+        @Test
+        fun testException() {
+            val result = restTemplate!!.getForEntity(
+                "http://localhost:$port/test/exception",
+                ExceptionResponseBody::class.java
+            )
+            log.info("/test/exception: $result")
+            log.info(
+                "/test/exception: " + restTemplate.getForObject(
+                    "http://localhost:$port/test/exception",
+                    String::class.java
+                )
+            )
+            Assert.assertEquals(Objects.requireNonNull(result.body).code, ExceptionStatus.INTERNAL.code)
         }
 
         companion object {
@@ -1764,31 +1697,35 @@ Kotlin Examples
 
     @RequestMapping("test")
     @RestController
-    open class TestController {
+    class TestController {
 
         @RequestMapping("servlet")
-        open fun testServlet(p1: String): String {
+        fun testServlet(p1: String): String {
             return p1
         }
 
         @RequestMapping("index")
-        open fun testIndex(p1: String?): ModelAndView {
+        fun testIndex(p1: String?): ModelAndView {
             val model: MutableMap<String, Any?> = HashMap()
             model["pm"] = p1
             return ModelAndView("encode", model)
         }
 
         @RequestMapping("encode")
-        open fun testEncode(pm: String): String {
+        fun testEncode(pm: String): String {
             return "encode: $pm"
+        }
+
+        @RequestMapping("exception")
+        fun testException(): String {
+            throw RuntimeException("hello")
         }
     }
 
-    @EnableWebExceptionService
-    open class TestFilter : OncePerRequestFilter() {
+    class TestFilter : OncePerRequestFilter() {
 
         @Resource
-        private lateinit var webExceptionService: WebExceptionService
+        private lateinit var mappingJackson2HttpMessageConverter: MappingJackson2HttpMessageConverter
 
         @Throws(ServletException::class, IOException::class)
         override fun doFilterInternal(
@@ -1797,13 +1734,26 @@ Kotlin Examples
             filterChain: FilterChain
         ) {
             val p1 = IOUtils.toString(request.inputStream, StandardCharsets.UTF_8)
-            val parameters: MutableMap<String, List<String>> = HashMap()
+            val parameters: MutableMap<String, List<String>> = java.util.HashMap()
             parameters["p1"] = listOf(p1)
             val newRequest: HttpServletRequest = request.toPreparedHttpServletRequest(parameters)
             try {
                 filterChain.doFilter(newRequest, response)
-            } catch (e: Throwable) {
-                response.writeResponseEntity(webExceptionService.toResponseEntity(e))
+            } catch (e: Exception) {
+                val header = HttpHeaders()
+                header[HttpHeaders.CONTENT_TYPE] = "application/json"
+                val responseEntity = ResponseEntity(
+                    e.toExceptionResponseBody(),
+                    header,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                )
+                response.writeResponseEntity(responseEntity) { body: Any?, out: ServletOutputStream? ->
+                    try {
+                        mappingJackson2HttpMessageConverter.objectMapper.writeValue(out, body)
+                    } catch (ioException: IOException) {
+                        throw IllegalStateException(ioException)
+                    }
+                }
             }
         }
     }

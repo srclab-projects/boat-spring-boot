@@ -3,12 +3,10 @@ package xyz.srclab.spring.boot.exception
 import org.springframework.context.annotation.Import
 
 /**
- * Enable exception service, include:
- *
- * * [ExceptionHandlingService]: autowired bean to convert exception to specified object by [ExceptionHandler].
+ * Enable exception handling Service: [ExceptionHandlingService].
  *
  * @see ExceptionHandlingService
- * @see ExceptionHandler
+ * @see ExceptionHandlingComponent
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE, AnnotationTarget.TYPEALIAS)
 @Retention(AnnotationRetention.RUNTIME)

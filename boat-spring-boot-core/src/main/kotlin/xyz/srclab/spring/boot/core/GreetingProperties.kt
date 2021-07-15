@@ -14,7 +14,7 @@ open class GreetingProperties {
      * Greeting message.
      */
     var message: String? = "${SgrChars.foregroundGreen("Start")} " +
-        "${SgrChars.foregroundYellow(BoatSpringBoot.about.name)} " +
+        "${SgrChars.foregroundYellow(BoatSpringBoot.about.name.split(" ").joinToString("-"))} " +
         "${SgrChars.foregroundRed("v" + BoatSpringBoot.version)} " +
         "${SgrChars.foregroundMagenta("successful")}!"
 }

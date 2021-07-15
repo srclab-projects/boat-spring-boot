@@ -206,22 +206,17 @@ Exception包提供:
 
 * `EnableExceptionHandlingService`: 启动全局异常处理服务的注解;
 * `ExceptionHandlingService`: 全局异常处理服务, 详情请参阅其javadoc;
-* `ExceptionHandler`: 为 `ExceptionHandlingService` 服务的异常处理器;
+* `ExceptionHandlingComponent`, `ExceptionHandlingMethod`: 为 `ExceptionHandlingService` 提供异常处理器的注解;
 
 .Java Examples
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ExceptionServiceSample.java[]
+include::../boat-spring-boot-core/src/test/java/test/xyz/srclab/spring/boot/exception/ExceptionServiceTest.java[]
 ----
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/RuntimeExceptionHandler.java[]
-----
-
-[source,java]
-----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/exception/ThrowableHandler.java[]
+include::../boat-spring-boot-core/src/test/java/test/xyz/srclab/spring/boot/exception/ExceptionHandler.java[]
 ----
 
 .Kotlin Examples
@@ -236,17 +231,11 @@ include::../boat-spring-boot-sample/src/test/kotlin/sample/kotlin/xyz/srclab/spr
 
 Web exception 包提供:
 
-* `EnableWebExceptionService`: 开启Web全局异常处理的注解;
-* `WebExceptionService`: Web全局异常处理服务, 详情请参阅其javadoc;
-* `WebExceptionResponseHandler`: 为 `WebExceptionService` 服务的Web异常处理器;
-* `WebStatusException`: 便捷的Web异常基类;
+* `EnableWebExceptionHandling`: 开启Web全局异常处理的注解;
+* `WebStatusException`: Web异常基类;
+* `ExceptionResponseBody`: Web异常信息消息体;
 
 .Java Examples
-[source,java]
-----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebExceptionSample.java[]
-----
-
 [source,java]
 ----
 include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebExceptionSample.java[]
@@ -259,17 +248,7 @@ include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/
 
 [source,java]
 ----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/ThrowableHandler.java[]
-----
-
-[source,java]
-----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/RuntimeExceptionHandler.java[]
-----
-
-[source,java]
-----
-include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/WebStatusExceptionHandler.java[]
+include::../boat-spring-boot-sample/src/test/java/sample/java/xyz/srclab/spring/boot/web/exception/ExceptionHandler.java[]
 ----
 
 .Kotlin Examples

@@ -6,6 +6,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -13,26 +17,27 @@ import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.ModelAndView
 import org.testng.Assert
 import org.testng.annotations.Test
-import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration
-import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService
-import xyz.srclab.spring.boot.web.exception.WebExceptionService
+import xyz.srclab.common.exception.ExceptionStatus
+import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody
+import xyz.srclab.spring.boot.web.exception.toExceptionResponseBody
 import xyz.srclab.spring.boot.web.servlet.toPreparedHttpServletRequest
 import xyz.srclab.spring.boot.web.servlet.writeResponseEntity
 import java.io.IOException
 import java.nio.charset.StandardCharsets
+import java.util.*
 import javax.annotation.Resource
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
+import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @SpringBootTest(
-    classes = [
-        BoatAutoConfiguration::class, TestController::class, TestFilter::class],
+    classes = [TestController::class, TestFilter::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @EnableAutoConfiguration
-open class ServletSample : AbstractTestNGSpringContextTests() {
+class ServletSample : AbstractTestNGSpringContextTests() {
 
     @LocalServerPort
     private var port = 0
@@ -42,20 +47,40 @@ open class ServletSample : AbstractTestNGSpringContextTests() {
 
     @Test
     fun testServlet() {
-        var result = restTemplate.postForObject(
+        val result = restTemplate!!.postForObject(
             "http://localhost:$port/test/servlet",
             "ppp1",
             String::class.java
         )
         log.info("/test/servlet: $result")
         Assert.assertEquals(result, "ppp1")
-        result = restTemplate.postForObject(
+    }
+
+    @Test
+    fun testIndex() {
+        val result = restTemplate!!.postForObject(
             "http://localhost:$port/test/index",
             "ppp2",
             String::class.java
         )
         log.info("/test/index: $result")
         Assert.assertEquals(result, "encode: ppp2")
+    }
+
+    @Test
+    fun testException() {
+        val result = restTemplate!!.getForEntity(
+            "http://localhost:$port/test/exception",
+            ExceptionResponseBody::class.java
+        )
+        log.info("/test/exception: $result")
+        log.info(
+            "/test/exception: " + restTemplate.getForObject(
+                "http://localhost:$port/test/exception",
+                String::class.java
+            )
+        )
+        Assert.assertEquals(Objects.requireNonNull(result.body).code, ExceptionStatus.INTERNAL.code)
     }
 
     companion object {
@@ -65,31 +90,35 @@ open class ServletSample : AbstractTestNGSpringContextTests() {
 
 @RequestMapping("test")
 @RestController
-open class TestController {
+class TestController {
 
     @RequestMapping("servlet")
-    open fun testServlet(p1: String): String {
+    fun testServlet(p1: String): String {
         return p1
     }
 
     @RequestMapping("index")
-    open fun testIndex(p1: String?): ModelAndView {
+    fun testIndex(p1: String?): ModelAndView {
         val model: MutableMap<String, Any?> = HashMap()
         model["pm"] = p1
         return ModelAndView("encode", model)
     }
 
     @RequestMapping("encode")
-    open fun testEncode(pm: String): String {
+    fun testEncode(pm: String): String {
         return "encode: $pm"
+    }
+
+    @RequestMapping("exception")
+    fun testException(): String {
+        throw RuntimeException("hello")
     }
 }
 
-@EnableWebExceptionService
-open class TestFilter : OncePerRequestFilter() {
+class TestFilter : OncePerRequestFilter() {
 
     @Resource
-    private lateinit var webExceptionService: WebExceptionService
+    private lateinit var mappingJackson2HttpMessageConverter: MappingJackson2HttpMessageConverter
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
@@ -98,13 +127,26 @@ open class TestFilter : OncePerRequestFilter() {
         filterChain: FilterChain
     ) {
         val p1 = IOUtils.toString(request.inputStream, StandardCharsets.UTF_8)
-        val parameters: MutableMap<String, List<String>> = HashMap()
+        val parameters: MutableMap<String, List<String>> = java.util.HashMap()
         parameters["p1"] = listOf(p1)
         val newRequest: HttpServletRequest = request.toPreparedHttpServletRequest(parameters)
         try {
             filterChain.doFilter(newRequest, response)
-        } catch (e: Throwable) {
-            response.writeResponseEntity(webExceptionService.toResponseEntity(e))
+        } catch (e: Exception) {
+            val header = HttpHeaders()
+            header[HttpHeaders.CONTENT_TYPE] = "application/json"
+            val responseEntity = ResponseEntity(
+                e.toExceptionResponseBody(),
+                header,
+                HttpStatus.INTERNAL_SERVER_ERROR
+            )
+            response.writeResponseEntity(responseEntity) { body: Any?, out: ServletOutputStream? ->
+                try {
+                    mappingJackson2HttpMessageConverter.objectMapper.writeValue(out, body)
+                } catch (ioException: IOException) {
+                    throw IllegalStateException(ioException)
+                }
+            }
         }
     }
 }

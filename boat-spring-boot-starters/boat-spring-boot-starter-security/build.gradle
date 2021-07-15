@@ -1,0 +1,15 @@
+plugins {
+  id 'build.jar'
+}
+
+description = "Boat Spring Boot Starter for Security: Security Helper for Boat Spring Boot."
+
+java {
+  registerFeature('optionalSupport') {
+    usingSourceSet(sourceSets.main)
+  }
+}
+
+dependencies {
+  api project(":boat-spring-boot-security")
+}

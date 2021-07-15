@@ -13,26 +13,22 @@ import org.springframework.web.bind.annotation.RestController
 import org.testng.Assert
 import org.testng.annotations.Test
 import xyz.srclab.common.exception.ExceptionStatus
-import xyz.srclab.common.serialize.json.toJsonString
 import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration
-import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService
-import xyz.srclab.spring.boot.web.exception.WebExceptionResponseHandler
+import xyz.srclab.spring.boot.exception.ExceptionHandlingComponent
+import xyz.srclab.spring.boot.exception.ExceptionHandlingMethod
+import xyz.srclab.spring.boot.web.exception.EnableWebExceptionHandling
+import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody
 import xyz.srclab.spring.boot.web.exception.WebStatusException
+import java.util.*
 import javax.annotation.Resource
 
 @SpringBootTest(
-    classes = [
-        BoatAutoConfiguration::class,
-        RuntimeExceptionHandler::class,
-        ThrowableHandler::class,
-        WebStatusExceptionHandler::class,
-        TestController::class
-    ],
+    classes = [BoatAutoConfiguration::class, ExceptionHandler::class, TestController::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@EnableWebExceptionService
+@EnableWebExceptionHandling
 @EnableAutoConfiguration
-open class WebExceptionSample : AbstractTestNGSpringContextTests() {
+class WebExceptionSample : AbstractTestNGSpringContextTests() {
 
     @LocalServerPort
     private var port = 0
@@ -41,26 +37,36 @@ open class WebExceptionSample : AbstractTestNGSpringContextTests() {
     private lateinit var restTemplate: TestRestTemplate
 
     @Test
+    fun testIllegalException() {
+        val result = restTemplate.getForEntity(
+            "http://localhost:$port/test/illegalState",
+            ExceptionResponseBody::class.java
+        )
+        log.info("/test/illegalState: {}", result)
+        Assert.assertEquals(result.statusCode, HttpStatus.INTERNAL_SERVER_ERROR)
+        Assert.assertEquals(Objects.requireNonNull(result.body).code, "101")
+    }
+
+    @Test
+    fun testRuntimeException() {
+        val result = restTemplate.getForEntity(
+            "http://localhost:$port/test/runtimeException",
+            ExceptionResponseBody::class.java
+        )
+        log.info("/test/runtimeException: {}", result)
+        Assert.assertEquals(result.statusCode, HttpStatus.BAD_REQUEST)
+        Assert.assertEquals(Objects.requireNonNull(result.body).code, "102")
+    }
+
+    @Test
     fun testException() {
-        var result = restTemplate.getForObject(
-            "http://localhost:$port/test/exception?body=testException",
+        val result3 = restTemplate.getForEntity(
+            "http://localhost:$port/test/exception",
             String::class.java
         )
-        log.info("/test/exception?body=testException: {}", result)
-        Assert.assertEquals(result, TestController.ResponseMessage().toJsonString())
-        result = restTemplate.getForObject(
-            "http://localhost:$port/test/exception?body=testException0",
-            String::class.java
-        )
-        log.info("/test/exception?body=testException0: {}", result)
-        Assert.assertEquals(result, ExceptionStatus.of("102").toJsonString())
-        val entity = restTemplate.getForEntity(
-            "http://localhost:$port/test/webException?body=testWebException0",
-            String::class.java
-        )
-        log.info("/test/webException?body=testWebException0: {}", entity)
-        Assert.assertEquals(entity.statusCode, HttpStatus.INTERNAL_SERVER_ERROR)
-        Assert.assertEquals(entity.body, ExceptionStatus.of("103").toJsonString())
+        log.info("/test/exception: {}", result3)
+        Assert.assertEquals(result3.statusCode, HttpStatus.OK)
+        Assert.assertEquals(result3.body, "103")
     }
 
     companion object {
@@ -70,44 +76,39 @@ open class WebExceptionSample : AbstractTestNGSpringContextTests() {
 
 @RequestMapping("test")
 @RestController
-open class TestController {
+class TestController {
+
+    @RequestMapping("illegalState")
+    fun testIllegalState(): Map<Any, Any> {
+        throw IllegalStateException()
+    }
+
+    @RequestMapping("runtimeException")
+    fun testRuntimeException(): Map<Any, Any> {
+        throw RuntimeException()
+    }
 
     @RequestMapping("exception")
-    open fun testException(body: String): ResponseMessage {
-        if ("testException" == body) {
-            return ResponseMessage()
-        }
-        throw IllegalArgumentException("Must be testException!")
-    }
-
-    @RequestMapping("webException")
-    open fun testWebException(body: String): ResponseMessage {
-        if ("testWebException" == body) {
-            return ResponseMessage()
-        }
-        throw WebStatusException("Must be testWebException!")
-    }
-
-    class ResponseMessage {
-        var subscription = "subscription"
-        var description = "description"
+    fun testException(): Map<Any, Any> {
+        throw Exception()
     }
 }
 
-open class RuntimeExceptionHandler : WebExceptionResponseHandler<RuntimeException> {
-    override fun handle(e: RuntimeException): ResponseEntity<ExceptionStatus> {
-        return ResponseEntity(ExceptionStatus.of("102"), HttpStatus.OK)
-    }
-}
+@ExceptionHandlingComponent
+class ExceptionHandler {
 
-open class ThrowableHandler : WebExceptionResponseHandler<Throwable> {
-    override fun handle(e: Throwable): ResponseEntity<ExceptionStatus> {
-        return ResponseEntity(ExceptionStatus.of("101"), HttpStatus.OK)
+    @ExceptionHandlingMethod
+    fun handle(illegalStateException: IllegalStateException): Any {
+        return ExceptionStatus.of("101")
     }
-}
 
-open class WebStatusExceptionHandler : WebExceptionResponseHandler<WebStatusException> {
-    override fun handle(e: WebStatusException): ResponseEntity<ExceptionStatus> {
-        return ResponseEntity(ExceptionStatus.of("103"), e.httpStatus)
+    @ExceptionHandlingMethod
+    fun handle(runtimeException: RuntimeException): Any {
+        return WebStatusException("102", "desc", null, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandlingMethod
+    fun handle(exception: Exception): Any {
+        return ResponseEntity("103", HttpStatus.OK)
     }
 }

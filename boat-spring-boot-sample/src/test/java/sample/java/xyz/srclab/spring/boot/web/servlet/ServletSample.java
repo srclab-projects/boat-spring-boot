@@ -6,16 +6,18 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
+import xyz.srclab.common.exception.ExceptionStatus;
+import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 @SpringBootTest(
     classes = {
-        BoatAutoConfiguration.class,
         TestController.class,
         TestFilter.class,
     },
@@ -24,7 +26,7 @@ import javax.annotation.Resource;
 @EnableAutoConfiguration
 public class ServletSample extends AbstractTestNGSpringContextTests {
 
-    private static final Logger log = LoggerFactory.getLogger(ServletSample.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServletSample.class);
 
     @LocalServerPort
     private int port;
@@ -39,15 +41,32 @@ public class ServletSample extends AbstractTestNGSpringContextTests {
             "ppp1",
             String.class
         );
-        log.info("/test/servlet: " + result);
+        logger.info("/test/servlet: " + result);
         Assert.assertEquals(result, "ppp1");
+    }
 
-        result = restTemplate.postForObject(
+    @Test
+    public void testIndex() {
+        String result = restTemplate.postForObject(
             "http://localhost:" + port + "/test/index",
             "ppp2",
             String.class
         );
-        log.info("/test/index: " + result);
+        logger.info("/test/index: " + result);
         Assert.assertEquals(result, "encode: ppp2");
+    }
+
+    @Test
+    public void testException() {
+        ResponseEntity<ExceptionResponseBody> result = restTemplate.getForEntity(
+            "http://localhost:" + port + "/test/exception",
+            ExceptionResponseBody.class
+        );
+        logger.info("/test/exception: " + result);
+        logger.info("/test/exception: " + restTemplate.getForObject(
+            "http://localhost:" + port + "/test/exception",
+            String.class
+        ));
+        Assert.assertEquals(Objects.requireNonNull(result.getBody()).getCode(), ExceptionStatus.INTERNAL.code());
     }
 }

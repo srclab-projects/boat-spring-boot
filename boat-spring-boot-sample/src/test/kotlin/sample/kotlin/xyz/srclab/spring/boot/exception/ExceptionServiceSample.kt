@@ -5,18 +5,17 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.testng.Assert
 import org.testng.annotations.Test
-import sample.java.xyz.srclab.spring.boot.exception.RuntimeExceptionHandler
-import sample.java.xyz.srclab.spring.boot.exception.ThrowableHandler
 import xyz.srclab.common.exception.ExceptionStatus
 import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration
 import xyz.srclab.spring.boot.exception.EnableExceptionHandlingService
-import xyz.srclab.spring.boot.exception.ExceptionHandler
+import xyz.srclab.spring.boot.exception.ExceptionHandlingComponent
+import xyz.srclab.spring.boot.exception.ExceptionHandlingMethod
 import xyz.srclab.spring.boot.exception.ExceptionHandlingService
 import javax.annotation.Resource
 
 @SpringBootTest(
     classes = [
-        BoatAutoConfiguration::class, RuntimeExceptionHandler::class, ThrowableHandler::class]
+        BoatAutoConfiguration::class, ExceptionHandler::class]
 )
 @EnableExceptionHandlingService
 class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
@@ -26,16 +25,10 @@ class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
 
     @Test
     fun testExceptionStateService() {
-        val runtime = exceptionHandlingService.handle(
-            RuntimeException(),
-            ExceptionStatus::class.java
-        )
+        val runtime = exceptionHandlingService.handle<ExceptionStatus>(RuntimeException())
         log.info("runtime: {}", runtime)
         Assert.assertEquals(runtime.code, "102")
-        val throwable = exceptionHandlingService.handle(
-            Exception(),
-            ExceptionStatus::class.java
-        )
+        val throwable = exceptionHandlingService.handle<ExceptionStatus>(Exception())
         log.info("throwable: {}", throwable)
         Assert.assertEquals(throwable.code, "101")
     }
@@ -45,16 +38,16 @@ class ExceptionServiceSample : AbstractTestNGSpringContextTests() {
     }
 }
 
-open class RuntimeExceptionHandler :
-    ExceptionHandler<RuntimeException, ExceptionStatus> {
-    override fun handle(e: RuntimeException): ExceptionStatus {
+@ExceptionHandlingComponent
+class ExceptionHandler {
+
+    @ExceptionHandlingMethod
+    fun handle(exception: RuntimeException): ExceptionStatus {
         return ExceptionStatus.of("102")
     }
-}
 
-open class ThrowableHandler :
-    ExceptionHandler<Throwable, ExceptionStatus> {
-    override fun handle(e: Throwable): ExceptionStatus {
+    @ExceptionHandlingMethod
+    fun handle(throwable: Throwable): ExceptionStatus {
         return ExceptionStatus.of("101")
     }
 }

@@ -11,24 +11,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import xyz.srclab.common.exception.ExceptionStatus;
-import xyz.srclab.common.serialize.json.JsonSerials;
 import xyz.srclab.spring.boot.autoconfigure.BoatAutoConfiguration;
-import xyz.srclab.spring.boot.web.exception.EnableWebExceptionService;
+import xyz.srclab.spring.boot.web.exception.EnableWebExceptionHandling;
+import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 @SpringBootTest(
     classes = {
         BoatAutoConfiguration.class,
-        RuntimeExceptionHandler.class,
-        ThrowableHandler.class,
-        WebStatusExceptionHandler.class,
+        ExceptionHandler.class,
         TestController.class,
     },
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@EnableWebExceptionService
+@EnableWebExceptionHandling
 @EnableAutoConfiguration
 public class WebExceptionTest extends AbstractTestNGSpringContextTests {
 
@@ -41,27 +39,35 @@ public class WebExceptionTest extends AbstractTestNGSpringContextTests {
     private TestRestTemplate restTemplate;
 
     @Test
+    public void testIllegalException() {
+        ResponseEntity<ExceptionResponseBody> result = restTemplate.getForEntity(
+            "http://localhost:" + port + "/test/illegalState",
+            ExceptionResponseBody.class
+        );
+        logger.info("/test/illegalState: {}", result);
+        Assert.assertEquals(result.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        Assert.assertEquals(Objects.requireNonNull(result.getBody()).getCode(), "101");
+    }
+
+    @Test
+    public void testRuntimeException() {
+        ResponseEntity<ExceptionResponseBody> result = restTemplate.getForEntity(
+            "http://localhost:" + port + "/test/runtimeException",
+            ExceptionResponseBody.class
+        );
+        logger.info("/test/runtimeException: {}", result);
+        Assert.assertEquals(result.getStatusCode(), HttpStatus.BAD_REQUEST);
+        Assert.assertEquals(Objects.requireNonNull(result.getBody()).getCode(), "102");
+    }
+
+    @Test
     public void testException() {
-        String result = restTemplate.getForObject(
-            "http://localhost:" + port + "/test/exception?body=testException",
+        ResponseEntity<String> result3 = restTemplate.getForEntity(
+            "http://localhost:" + port + "/test/exception",
             String.class
         );
-        logger.info("/test/exception?body=testException: {}", result);
-        Assert.assertEquals(result, JsonSerials.toJsonString(new TestController.ResponseMessage()));
-
-        result = restTemplate.getForObject(
-            "http://localhost:" + port + "/test/exception?body=testException0",
-            String.class
-        );
-        logger.info("/test/exception?body=testException0: {}", result);
-        Assert.assertEquals(result, JsonSerials.toJsonString(ExceptionStatus.of("102")));
-
-        ResponseEntity<String> entity = restTemplate.getForEntity(
-            "http://localhost:" + port + "/test/webException?body=testWebException0",
-            String.class
-        );
-        logger.info("/test/webException?body=testWebException0: {}", entity);
-        Assert.assertEquals(entity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
-        Assert.assertEquals(entity.getBody(), JsonSerials.toJsonString(ExceptionStatus.of("103")));
+        logger.info("/test/exception: {}", result3);
+        Assert.assertEquals(result3.getStatusCode(), HttpStatus.OK);
+        Assert.assertEquals(result3.getBody(), "103");
     }
 }

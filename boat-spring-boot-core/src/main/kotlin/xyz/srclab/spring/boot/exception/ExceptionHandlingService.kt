@@ -1,72 +1,91 @@
 package xyz.srclab.spring.boot.exception
 
 import org.springframework.context.ApplicationContext
-import xyz.srclab.common.convert.FastConvertHandler
-import xyz.srclab.common.convert.FastConverter
-import xyz.srclab.common.lang.asAny
-import xyz.srclab.common.reflect.TypeRef
-import xyz.srclab.common.reflect.rawClass
-import xyz.srclab.common.reflect.toTypeSignature
+import xyz.srclab.common.invoke.Invoker
+import xyz.srclab.common.lang.INHERITANCE_COMPARATOR
 import java.lang.reflect.Method
-import java.lang.reflect.Type
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.annotation.Resource
 
 /**
- * Provides global exception service.
+ * Global exception handling service.
+ *
+ * It gets all beans with annotation [ExceptionHandlingComponent] and resolve their [ExceptionHandlingMethod] method to
+ * handle exceptions.
  *
  * @see EnableExceptionHandlingService
- * @see ExceptionHandler
+ * @see ExceptionHandlingComponent
  */
 open class ExceptionHandlingService {
 
     @Resource
     private lateinit var applicationContext: ApplicationContext
 
-    private lateinit var exceptionConverter: FastConverter
+    private val handlers: TreeMap<Class<*>, HandlingMethod> = TreeMap(COMPARATOR)
 
     @PostConstruct
     private fun init() {
-        val handlers = LinkedList<ExceptionHandler<Throwable, *>>()
-        for (entry in applicationContext.getBeansOfType(ExceptionHandler::class.java)) {
-            handlers.add(entry.value.asAny())
-        }
 
-        fun Class<*>.getHandleMethod(): Method {
-            val type = this.toTypeSignature(ExceptionHandler::class.java)
-            val parameterType = type.actualTypeArguments[0].rawClass
-            return this.getMethod("handle", parameterType)
-        }
-
-        exceptionConverter = FastConverter.newFastConverter(handlers.map {
-            object : FastConvertHandler<Throwable, Any> {
-                private val handleMethod: Method = it.javaClass.getHandleMethod()
-                override val fromType: Class<*> = handleMethod.parameterTypes[0]
-                override val toType: Class<*> = handleMethod.returnType
-                override fun convert(from: Throwable): Any {
-                    return it.handle(from)
+        fun resolveExceptionHandler(handler: Any) {
+            val methods = handler.javaClass.methods
+            for (method in methods) {
+                val exceptionHandlerMethod = method.getAnnotation(ExceptionHandlingMethod::class.java)
+                if (exceptionHandlerMethod === null || method.isBridge) {
+                    continue
                 }
+                if (method.parameterCount != 1) {
+                    throw IllegalArgumentException("Exception handler method must have only one parameter.")
+                }
+                val exceptionClass = method.parameterTypes[0]
+                if (!Throwable::class.java.isAssignableFrom(exceptionClass)) {
+                    throw IllegalArgumentException("Exception handler method's'parameter must be type of Throwable.")
+                }
+                val existsMethod = handlers[exceptionClass]
+                if (existsMethod !== null) {
+                    throw IllegalArgumentException(
+                        "Each type of exception must have one handling method but now there are two: " +
+                            "${existsMethod.method}, $method"
+                    )
+                }
+                handlers[exceptionClass] = HandlingMethod(handler, method, Invoker.forMethod(method))
             }
-        },
-            object : FastConvertHandler<Throwable, Nothing> {
-                override val fromType: Class<*> = Throwable::class.java
-                override val toType: Class<*> = Nothing::class.java
-                override fun convert(from: Throwable): Nothing {
-                    throw IllegalArgumentException("Cannot handle exception $from")
-                }
-            })
+        }
+
+        for (entry in applicationContext.getBeansWithAnnotation(ExceptionHandlingComponent::class.java)) {
+            resolveExceptionHandler(entry.value)
+        }
     }
 
-    open fun <T : Any> handle(e: Throwable, type: Class<T>): T {
-        return exceptionConverter.convert(e, type)
+    open fun <T> handle(e: Throwable): T {
+        val exceptionClass = e.javaClass
+        val handlingMethod = handlers[exceptionClass]
+        if (handlingMethod !== null) {
+            return handlingMethod.invoker.invoke(handlingMethod.component, e)
+        }
+        val handlingMethods = handlers
+            .subMap(Throwable::class.java, true, exceptionClass, true)
+            .descendingMap()
+        for (handlingMethodEntry in handlingMethods) {
+            val superClass = handlingMethodEntry.key
+            if (superClass.isAssignableFrom(exceptionClass)) {
+                val method = handlingMethodEntry.value
+                return method.invoker.invoke(method.component, e)
+            }
+        }
+        throw IllegalArgumentException("Exception handling method not found: $e")
     }
 
-    open fun <T : Any> handle(e: Throwable, type: Type): T {
-        return exceptionConverter.convert(e, type)
-    }
+    private data class HandlingMethod(
+        val component: Any,
+        val method: Method,
+        val invoker: Invoker
+    )
 
-    open fun <T : Any> handle(e: Throwable, type: TypeRef<T>): T {
-        return exceptionConverter.convert(e, type)
+    companion object {
+
+        private val COMPARATOR: Comparator<Class<*>> = Comparator { c1, c2 ->
+            -INHERITANCE_COMPARATOR.compare(c1, c2)
+        }
     }
 }
