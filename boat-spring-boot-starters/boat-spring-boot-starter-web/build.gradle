@@ -2,7 +2,7 @@ plugins {
   id 'build.jar'
 }
 
-description = "Boat Spring Boot Starter for Core: Core and basic interfaces, functions and utilities for Spring Boot."
+description = "Boat Spring Boot Starter for Web: Web interfaces, functions and utilities for Spring Boot."
 
 java {
   registerFeature('optionalSupport') {
