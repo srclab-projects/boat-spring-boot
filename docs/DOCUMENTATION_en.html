@@ -2211,7 +2211,7 @@ public class TestFilter extends OncePerRequestFilter {
                 header,
                 HttpStatus.INTERNAL_SERVER_ERROR
             );
-            WebServlets.writeResponseEntity(response, responseEntity, (body, out) -&gt; {
+            WebServlets.writeFromResponseEntity(response, responseEntity, (body, out) -&gt; {
                 try {
                     mappingJackson2HttpMessageConverter.getObjectMapper().writeValue(out, body);
                 } catch (IOException ioException) {
@@ -2250,7 +2250,7 @@ import xyz.srclab.common.exception.ExceptionStatus
 import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody
 import xyz.srclab.spring.boot.web.exception.toExceptionResponseBody
 import xyz.srclab.spring.boot.web.servlet.toPreparedHttpServletRequest
-import xyz.srclab.spring.boot.web.servlet.writeResponseEntity
+import xyz.srclab.spring.boot.web.servlet.writeFromResponseEntity
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -2369,7 +2369,7 @@ class TestFilter : OncePerRequestFilter() {
                 header,
                 HttpStatus.INTERNAL_SERVER_ERROR
             )
-            response.writeResponseEntity(responseEntity) { body: Any?, out: ServletOutputStream? -&gt;
+            response.writeFromResponseEntity(responseEntity) { body: Any?, out: ServletOutputStream? -&gt;
                 try {
                     mappingJackson2HttpMessageConverter.objectMapper.writeValue(out, body)
                 } catch (ioException: IOException) {

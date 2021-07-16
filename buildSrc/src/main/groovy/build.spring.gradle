@@ -1,0 +1,19 @@
+plugins {
+  id 'build.core'
+}
+
+project.afterEvaluate {
+
+  printer.info("${project.name}: import build.spring")
+
+  if (configs.spring.useLog4j2) {
+    configurations {
+      all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+      }
+    }
+    dependencies {
+      api "org.springframework.boot:spring-boot-starter-log4j2"
+    }
+  }
+}
