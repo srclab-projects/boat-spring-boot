@@ -1,5 +1,6 @@
 plugins {
   id 'build.sample'
+  id 'build.spring'
 }
 
 description = "Boat Spring Boot Samples"

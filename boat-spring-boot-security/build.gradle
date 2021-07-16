@@ -1,5 +1,6 @@
 plugins {
   id 'build.jar'
+  id 'build.spring'
 }
 
 description = "Boat Spring Boot Security: Security Helper for Boat Spring Boot."
