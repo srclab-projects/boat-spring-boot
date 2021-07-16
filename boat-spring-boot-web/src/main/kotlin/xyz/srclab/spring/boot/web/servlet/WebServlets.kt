@@ -14,6 +14,7 @@ import xyz.srclab.common.serialize.json.toJson
 import java.io.BufferedReader
 import java.io.InputStream
 import java.util.*
+import java.util.function.BiConsumer
 import javax.servlet.ReadListener
 import javax.servlet.ServletInputStream
 import javax.servlet.ServletOutputStream
@@ -55,7 +56,7 @@ fun HttpServletRequest.setAttributes(attributes: Map<String, *>) {
 }
 
 @JvmOverloads
-fun HttpServletResponse.writeResponseEntity(
+fun HttpServletResponse.writeFromResponseEntity(
     responseEntity: ResponseEntity<*>,
     writeAction: (Any?, ServletOutputStream) -> Unit = block@{ body, out ->
         if (body === null) {
@@ -71,6 +72,20 @@ fun HttpServletResponse.writeResponseEntity(
         }
     }
     writeAction(responseEntity.body, this.outputStream)
+}
+
+fun HttpServletResponse.writeFromResponseEntity(
+    responseEntity: ResponseEntity<*>,
+    writeAction: BiConsumer<Any?, ServletOutputStream> = BiConsumer { body, out ->
+        if (body === null) {
+            return@BiConsumer
+        }
+        body.toJson().writeTo(out)
+    }
+) {
+    writeFromResponseEntity(responseEntity) { body, out ->
+        writeAction.accept(body, out)
+    }
 }
 
 open class PreparedHttpServletRequest(

@@ -47,13 +47,12 @@ public class TestFilter extends OncePerRequestFilter {
                 header,
                 HttpStatus.INTERNAL_SERVER_ERROR
             );
-            WebServlets.writeResponseEntity(response, responseEntity, (body, out) -> {
+            WebServlets.writeFromResponseEntity(response, responseEntity, (body, out) -> {
                 try {
                     mappingJackson2HttpMessageConverter.getObjectMapper().writeValue(out, body);
                 } catch (IOException ioException) {
                     throw new IllegalStateException((ioException));
                 }
-                return null;
             });
         }
     }

@@ -1591,7 +1591,7 @@ Java Examples
                     header,
                     HttpStatus.INTERNAL_SERVER_ERROR
                 );
-                WebServlets.writeResponseEntity(response, responseEntity, (body, out) -> {
+                WebServlets.writeFromResponseEntity(response, responseEntity, (body, out) -> {
                     try {
                         mappingJackson2HttpMessageConverter.getObjectMapper().writeValue(out, body);
                     } catch (IOException ioException) {
@@ -1628,7 +1628,7 @@ Kotlin Examples
     import xyz.srclab.spring.boot.web.exception.ExceptionResponseBody
     import xyz.srclab.spring.boot.web.exception.toExceptionResponseBody
     import xyz.srclab.spring.boot.web.servlet.toPreparedHttpServletRequest
-    import xyz.srclab.spring.boot.web.servlet.writeResponseEntity
+    import xyz.srclab.spring.boot.web.servlet.writeFromResponseEntity
     import java.io.IOException
     import java.nio.charset.StandardCharsets
     import java.util.*
@@ -1747,7 +1747,7 @@ Kotlin Examples
                     header,
                     HttpStatus.INTERNAL_SERVER_ERROR
                 )
-                response.writeResponseEntity(responseEntity) { body: Any?, out: ServletOutputStream? ->
+                response.writeFromResponseEntity(responseEntity) { body: Any?, out: ServletOutputStream? ->
                     try {
                         mappingJackson2HttpMessageConverter.objectMapper.writeValue(out, body)
                     } catch (ioException: IOException) {
