@@ -15,6 +15,13 @@ project.afterEvaluate {
   //  test.java.srcDirs += ['src/test/kotlin', 'src/test/java']
   //}
 
+  compileJava {
+    options.encoding = 'UTF-8'
+  }
+  compileTestJava {
+    options.encoding = 'UTF-8'
+  }
+
   compileKotlin {
     kotlinOptions {
       jvmTarget = javaVersion
